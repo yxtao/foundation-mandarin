@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import './NavBar.css'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import{
     AppBar,
     Toolbar,
@@ -8,7 +8,10 @@ import{
     IconButton
 }from '@material-ui/core';
 
-const navItems = ["Home 主页", "Word Wall 汉字墙", "Reading 阅读"]
+
+import './NavBar.css';
+
+const navItems = [ {label:"Home 主页", link:"/"},{label:"Word Wall 汉字墙", link:"/wordwall"}, {label:"Reading 阅读", link:"/reading"}]
 
 const displayDesktop =()=>{
     return(
@@ -17,8 +20,8 @@ const displayDesktop =()=>{
                     Logo
                 </Box>
                 <div>
-                    {navItems.map((label, index)=>
-                        <Button style={{border:"solid 1px black ",margin:"2px"}} key={index}>{label}</Button>
+                    {navItems.map((item, index)=>
+                        <Button component ={Link} to={item.link} style={{border:"solid 1px black ",margin:"2px"}} key={index}>{item.label}</Button>
                     )}
                 </div>    
             </Toolbar>     
