@@ -30,7 +30,7 @@ const displayDesktop =()=>{
 
 const NavBar = ()=>{
     return (
-        <AppBar position="static"  style={{ background: 'transparent', boxShadow: 'none', height:"auto"}}  >
+        <AppBar position="fixed"  style={{ background: '#CBF3F3', opacity:"0.9",boxShadow: 'none', height:"auto"}}  >
             {displayDesktop()}
         </AppBar>
     )
