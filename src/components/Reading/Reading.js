@@ -16,6 +16,8 @@ const cardList = [
     {word:"看", phrases:["看见","看到"],sentences:["我看到一只猫"]},
     {word:"水", phrases:["喝水"],sentences:["我喝水"]},
     {word:"只", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
+    {word:"很", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
+    {word:"树", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
 ]
 
 
@@ -32,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   
 const Reading = (props)=>{
     const classes = useStyles();
-    const [notes,setNotes] = useState(["水"])
+    const [notes,setNotes] = useState([])
     const [story, setStory] = useState(null)
 
     const name = useParams().name

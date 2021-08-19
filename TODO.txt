@@ -1,2 +1,7 @@
-1. change the history.push(`/story/${name}`); "name" shoud be id   (ReadingList.js, App.js, Reading.js) 
-2. add auto id generate for story collection in firebase (Teacher.js, firebase)
+set up levels and contents arrays （done)
+set up story page add next page if there are too many characters 
+set up audio 
+set up auth 
+
+set up an online real time chating (firebase) chating for language exchange
+看图聊天

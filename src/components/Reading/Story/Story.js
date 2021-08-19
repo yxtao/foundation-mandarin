@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Grid, Typography} from '@material-ui/core';
 
 //TODO : store keywords in firebase, category them to different levels 
-const keywords=["只","水","看"]
+const keywords=["只","水","看","很","树"]
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,14 +41,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Story =({story, parentCallback})=>{
     const classes = useStyles();
-    const characters = story.content.split("");
+    const level = story.levels[0]
+    const characters = story.contents[0].split("");
     const sendCallback =(word)=>{
         parentCallback(word);
     }
 
     return(
         <div className={classes.root}>
-        <Typography style={{textAlign:"center"}} variant="h4" component="h4"> {story.name}</Typography>
+        <Typography style={{textAlign:"center"}} variant="h4" component="h4"> {story.name} level {level}</Typography>
         <Grid className={classes.gridContainer}
              container 
              alignItems="stretch"
@@ -57,7 +58,7 @@ const Story =({story, parentCallback})=>{
             <Grid className={classes.gridItem} item xs={12} sm={6} > 
                 <Paper className={classes.paper} elevation={5} > 
                     <div className={classes.imageDiv}>
-                        <img src={story.image[0].url} alt="crow" />  
+                       {story.image && <img src={story.image[0].url} alt={story.name} style={{width:"30vw", height:"40vh"}}/>  }
                     </div>                
                 </Paper> 
              </Grid>

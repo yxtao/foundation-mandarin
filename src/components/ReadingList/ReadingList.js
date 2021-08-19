@@ -1,3 +1,6 @@
+import React from 'react';
+import {Grid} from "@material-ui/core";
+
 import './ReadingList.css'
 
 import { useHistory } from 'react-router-dom';
@@ -9,10 +12,18 @@ const ReadingList = (props)=>{
        history.push(`/story/${name}`);
        console.log(props.stories)
     }
-    return (<div className="ReadingListDiv">
-               <div>
-                   reading list 
-                  { props.stories.map((story, index)=> <button key={index} onClick={()=>openStory(story.name)}>{story.name} </button>)}
+    return (<div className="ReadingListDiv container">
+               <div className="container">
+                   <Grid container spacing={5} >  
+                  { props.stories.map((story, index)=>
+                   <Grid item >
+                       <button  className="btn btn-info"
+                                key={index} 
+                                onClick={()=>openStory(story.name)}>
+                                    {story.name} 
+                        </button>
+                    </Grid>)}
+                </Grid>
                </div>
           </div>        
     )}

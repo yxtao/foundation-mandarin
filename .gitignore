@@ -24,3 +24,5 @@ yarn-error.log*
 
 #fireStore
 /src/firebase/config.js
+
+/todo.txt
