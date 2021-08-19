@@ -11,7 +11,7 @@ import{
 
 import './NavBar.css';
 
-const navItems = [ {label:"Home 主页", link:"/"},{label:"Word Wall 汉字墙", link:"/wordwall"}, {label:"Reading 阅读", link:"/reading"}]
+const navItems = [  {label:"Teacher", link:"/teacher"},{label:"Home 主页", link:"/"},{label:"Word Wall 汉字墙", link:"/wordwall"}, {label:"Reading 阅读", link:"/reading"}]
 
 const displayDesktop =()=>{
     return(

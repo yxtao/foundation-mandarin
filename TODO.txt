@@ -1,0 +1,2 @@
+1. change the history.push(`/story/${name}`); "name" shoud be id   (ReadingList.js, App.js, Reading.js) 
+2. add auto id generate for story collection in firebase (Teacher.js, firebase)

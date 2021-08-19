@@ -1,8 +1,7 @@
 import React from'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Grid, Typography} from '@material-ui/core';
-//TODO: set up image access firebase 
-import crowImage from '../../../assets/images/reading/crowDrinksWater/crow.jpg'
+
 //TODO : store keywords in firebase, category them to different levels 
 const keywords=["只","水","看"]
 
@@ -58,7 +57,7 @@ const Story =({story, parentCallback})=>{
             <Grid className={classes.gridItem} item xs={12} sm={6} > 
                 <Paper className={classes.paper} elevation={5} > 
                     <div className={classes.imageDiv}>
-                        <img src={crowImage} alt="crow" />  
+                        <img src={story.image[0].url} alt="crow" />  
                     </div>                
                 </Paper> 
              </Grid>
