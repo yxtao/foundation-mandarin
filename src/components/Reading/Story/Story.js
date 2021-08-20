@@ -58,7 +58,7 @@ const Story =({story, parentCallback})=>{
           pagesArray.push(shortCharactersArray)
       }
       setCharactersPages(pagesArray);
-    },[characters])
+    },[bookLevel])
 
     const handleSetNextPage = ()=>{
         if(currentPage < charactersPages.length-1){
@@ -89,12 +89,13 @@ const Story =({story, parentCallback})=>{
         <div className={classes.root}>
              Choose a level
                     <select name="level" id="level" onChange={(e)=> setBookLevel(e.target.value)}>
-                    <option value={bookLevel}>{bookLevel}</option>
+                    {/* <option value={bookLevel}>{bookLevel}</option> */}
                     {story.levels.map((level, index)=> <option key ={index} value={level}> {level} </option>)}
                     </select> 
          {hasContent? 
          <>          
         <Typography style={{textAlign:"center"}} variant="h4" component="h4"> {story.name} level {level}</Typography>
+        {story.voice && <audio src={story.voice[0].url} controls />  }
         <Grid className={classes.gridContainer}
              container 
              alignItems="stretch"
@@ -117,8 +118,8 @@ const Story =({story, parentCallback})=>{
                         :character)}
                     </div>
                </Paper> 
-             <button className= "btn" onClick={handleSetPreviousPage}> previous page</button>
-             <button className="btn" onClick={handleSetNextPage} > next page </button>
+             <button className= "btn" onClick={handleSetPreviousPage}> {"<"} </button>
+             <button className="btn" onClick={handleSetNextPage} >  {">"} </button> 
                 </>
                : null}
             </Grid>
