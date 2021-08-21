@@ -17,8 +17,11 @@ const Teacher=()=>{
    const [level, setLevel] = useState(-1);
    const [contents, setContents] = useState([]);
    const [audios, setAudios] = useState([]);
-   const [audioBlob, setAudioBlob] = useState("");
+   const [audioBlob, setAudioBlob] = useState(null);
    const [moveOn, setMoveOn] = useState(false);
+   const [audioURL, setAudioURL] = useState("");
+   const [audioURLs, setAudioURLs] = useState([]);
+   const [savingToFirebase, setSavingToFireBase] = useState(false);
 
    const history = useHistory();
 
@@ -41,14 +44,15 @@ const Teacher=()=>{
    const onContentLevelAdded =()=>{
        (level!==-1) && setLevels([...levels, level]);
        (content!=="")&& setContents([...contents,content]);
-       let audioArray = [...audios];
-       audioArray.push(audioBlob)
-       setAudios([audioArray]);
+       setAudios([...audios,audioBlob])
+       setAudioURLs([...audioURLs, audioURL])
        console.log("aeed", audioBlob)
        console.log("audios", audios)
        setContent("");
+       setAudioBlob(null);
        setMoveOn(true);
    }
+
   const onDelete =(index)=>{
       const newLevels= [...levels];
       const newContents = [...contents];
@@ -66,38 +70,23 @@ const Teacher=()=>{
       setContent(contents[index]);
       onDelete(index);
   }
-  const handleAudioSave = async (blobObj) =>{
-      console.log("handleAudioSave from ", blobObj)
-      //const blob = await fetch(blobObj).then(r=>r.blob())
-    //  let audioFile= new File(blob, "audio1.wav", {type:'audio/wav'}) 
-      console.log(typeof(blobObj))
+
+  const handleAudioSave = async (blobObj, audioURL) =>{
        setAudioBlob(blobObj);
-       console.log(JSON.stringify(blobObj))
-      console.log("handleAudioSave", audioBlob);
-      
+       setAudioURL(audioURL);
+   
   }
 
    const onStoryCreate = async ()=>{
-       
+
+        setSavingToFireBase(true);
+
         await db.collection("story").doc(name).set({
             name : name,
             levels : levels,
             contents: contents,
         })
 
-    //     const storageRef = storage.ref()
-    //     const audiosRef= storageRef.child(`story/audio/${name}`)
-
-    //     for (let index=0; index<audios.length; index++) {
-    //         await audiosRef.child(`/${index}`).put(audios[index], {contentType:'image/jpeg'})
-    //         const audioRef= audiosRef.child(`/${index}`)
-    //         await db.collection("story").doc(name).update({
-    //             audios: firebase.firestore.FieldValue.arrayUnion({
-    //             name: name,
-    //             url: await audioRef.getDownloadURL()
-    //         })
-    //     })
-    //   }
       
       if (file!==null) {
         const storageRef = storage.ref()
@@ -110,19 +99,19 @@ const Teacher=()=>{
            })
         })
     }
-
-    if(audioBlob !==null) {
+    
         const storageRef = storage.ref()
-          const fileRef = storageRef.child(`story/voice/${name}`)
-          await fileRef.put(audioBlob, {contentType:'audio/webm;codecs=opus'})
-          console.log("voice upload", audioBlob)
-          await db.collection("story").doc(name).update({
-             voice: firebase.firestore.FieldValue.arrayUnion({
-                 name: name,
-                 url: await fileRef.getDownloadURL()
-             })
-          })
-      } else{alert("audioBlob is null ")}
+        const audiosRef= storageRef.child(`story/voice/${name}`)
+        for (let index=0; index<audios.length; index++) {
+            await audiosRef.child(`/${index}`).put(audios[index], {contentType:'audio/webm;codecs=opus'})
+            const audioRef= audiosRef.child(`/${index}`)
+            await db.collection("story").doc(name).update({
+                voice: firebase.firestore.FieldValue.arrayUnion({
+                name: name,
+                url: await audioRef.getDownloadURL()
+            })
+        })
+      }
 
        setFile(null)
        setContents([]);  
@@ -130,14 +119,20 @@ const Teacher=()=>{
        setName([]);
        setAudios([]);
        setMoveOn(false);
+       setSavingToFireBase(false);
    }
 
     return (
+
        <div className="form-group ContainerMain">
-          <div className="alert alert-danger" role="alert">
-                     {name===""? " name ! " : " "}{level=== -1 ? " level !" : " "}{audioBlob===null ? " audio upload !" : " "}
-         </div>
            <Grid container spacing={3} > 
+              <Grid item xs={12} >
+                    <button className="btn btn-success" 
+                    disabled={savingToFirebase} 
+                    onClick={checkStories}>
+                    check current stories
+                    </button>
+              </Grid>
               <Grid item xs={12}  >
               <div className="form-group">
                  <textarea class="form-control" 
@@ -175,24 +170,22 @@ const Teacher=()=>{
             </Grid>
             <Grid  item xs={12} >
                 <div style={{display:"flex", flexDirection:"row"}}>
-                {/* <input type="file" 
-                       className="form-control" 
-                       id="audioFile"
-                       onChange={onAudioChange} />
                 
-                 <button className="btn btn-success" 
-                        onClick={()=>handleAudioUpload}> 
-                        upload audio */}
-                {/* </button>     */}
-                </div>
-                <Audio callbackAudio={handleAudioSave}/> 
-            </Grid>
-            <Grid item xs={12} >
+                { name==="" || level===-1 || content===""? 
+                <div className="alert alert-danger" role="alert">
+                      {name===""? " name ! " : " "}{level === -1 ? " level!" : " "}{content===""?" content! ":""}
+                 </div>
+                : <Audio  callbackAudio={handleAudioSave}/>  }
+
+               { audioBlob===null? <div className="alert alert-danger" role="alert"> audio! </div> :null }
+
                 <button className="btn btn-success" 
                         disabled={name===""|| level==="" || audioBlob===null  }
-                        onClick={onContentLevelAdded}>save and check
+                        onClick={onContentLevelAdded}>save and add
                  </button>
-            </Grid> 
+
+                </div>
+            </Grid>
             { moveOn === true? 
             <> 
             <Grid item xs={12}  >
@@ -203,25 +196,20 @@ const Teacher=()=>{
                                 <p> {name} </p> 
                                 <p> level {level} </p>
                                 <p> {contents[index]} </p> 
-                                <p>AUDIO</p>
+                             <audio src={audioURLs[index]} controls /> 
                                 </CardContent>    
                                 <CardActions>      
-                                    <Button size="small" color ="primary" onClick={()=>onDelete(index)}> x </Button>
-                                    <Button size="small" color ="primary" onClick={()=>onUpdate(index)}>update</Button>
-                                    
+                                    <Button size="small" color ="primary" onClick={()=>onDelete(index)}> x </Button>      
                                 </CardActions>   
                                 </Card>)}
                 </Paper>
             </Grid>
             <Grid item xs={12}  >
-                <button className="btn btn-success"  onClick={onStoryCreate}>Create the story </button> 
+                <button className="btn btn-success" disabled={savingToFirebase} onClick={onStoryCreate}>Create the story </button> 
             </Grid>
             </> 
             : null 
             }
-           <Grid item xs={12} >
-                <button className="btn btn-success" onClick={checkStories}>check current stories</button>
-            </Grid>
         </Grid>
        </div>
     )

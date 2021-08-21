@@ -17,12 +17,13 @@ const Audio = (props)=> {
     }
 
     // Manage recorder state.
-    if (isRecording) {
-      recorder.start();
-    } else {
-      recorder.stop();
-    }
-
+   
+      if (isRecording) {
+        recorder.start();
+      } else {
+        recorder.stop();
+      }
+    
     // Obtain the audio when ready.
     const handleData = e => {
       setAudioURL(URL.createObjectURL(e.data));
@@ -49,18 +50,27 @@ async function requestRecorder() {
 
   return (
     <div className="container">
-      <audio src={audioURL} controls />
-      {audioURL}
-      <button onClick={startRecording} disabled={isRecording}>
-        start recording
-      </button>
-      <button  onClick={stopRecording} disabled={!isRecording}>
-        stop recording 
-      </button>
-      {audioURL !=="" ?
-      <button onClick={()=>props.callbackAudio(blobObj)}>save </button> :null}
+      <div className="row">
+        <div className="col-sm"> 
+             <button  className="btn btn-secondary" onClick={startRecording} disabled={isRecording}> start recording </button>  
+        </div>
+        <div class="col-sm"> 
+             <audio src={audioURL} controls />
+        </div>
+        <div class="col-sm" > 
+            <button  className="btn btn-secondary" onClick={stopRecording} disabled={!isRecording}> stop recording </button>
+        </div>
+        <div class="col-sm">
+        
+         <button className="btn btn-success" 
+                 disabled={audioURL ==="" || blobObj===null} 
+                 onClick={()=>{props.callbackAudio(blobObj, audioURL);setBlobObj(null); setAudioURL(null);}}>
+                 upload
+         </button> 
+        </div> 
+      </div> 
     </div>
-  );
+  )
 }
 
 

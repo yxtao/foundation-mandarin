@@ -38,19 +38,15 @@ const useStyles = makeStyles((theme) => ({
 
   }));
   
-
 const Story =({story, parentCallback})=>{
     const classes = useStyles();
-    const [bookLevel, setBookLevel] = useState(story.levels[0]);
     const [contentIndex, setContentIndex] = useState(0);
-    const [hasContent, setHasContent] = useState(true);
+    const [bookLevel, setBookLevel] = useState(story.levels[contentIndex]);
     const [charactersPages, setCharactersPages] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
 
-    const level = story.levels[0]
-    const characters = story.contents[contentIndex].split("");
-
     useEffect(()=>{
+        const characters = story.contents[contentIndex].split("");
         const pagesArray=[]; 
       for (let index=0; index<characters.length; index=index+100){
           const copyCharacters = [...characters];
@@ -58,7 +54,7 @@ const Story =({story, parentCallback})=>{
           pagesArray.push(shortCharactersArray)
       }
       setCharactersPages(pagesArray);
-    },[bookLevel])
+    },[contentIndex, story.contents])
 
     const handleSetNextPage = ()=>{
         if(currentPage < charactersPages.length-1){
@@ -74,28 +70,22 @@ const Story =({story, parentCallback})=>{
         parentCallback(word);
     }
 
-    useEffect(()=>{
-       const whichLevel = (element)=> element === bookLevel;
-       const levelIndex = story.levels.findIndex(whichLevel);
-       if (levelIndex !==-1) {
-        setContentIndex(levelIndex)
-        setHasContent(true)
-       } else{
-           setHasContent(false);
-       }
-    },[bookLevel, story.levels])
+  const changeBookLevel = (e)=> {
+    const levelIndex = e.target.value;
+    setContentIndex(levelIndex); 
+    setBookLevel(story.levels[levelIndex])
+  }
 
     return(
         <div className={classes.root}>
              Choose a level
-                    <select name="level" id="level" onChange={(e)=> setBookLevel(e.target.value)}>
+                    <select name="level" id="level" onChange={changeBookLevel}>
                     {/* <option value={bookLevel}>{bookLevel}</option> */}
-                    {story.levels.map((level, index)=> <option key ={index} value={level}> {level} </option>)}
+                    {story.levels.map((level, levelIndex)=> <option key ={levelIndex} value={levelIndex}> {level} </option>)}
                     </select> 
-         {hasContent? 
-         <>          
-        <Typography style={{textAlign:"center"}} variant="h4" component="h4"> {story.name} level {level}</Typography>
-        {story.voice && <audio src={story.voice[0].url} controls />  }
+       
+        <Typography style={{textAlign:"center"}} variant="h4" component="h4"> {story.name} level {bookLevel}</Typography>
+        {story.voice && <audio src={story.voice[contentIndex].url} controls />  }
         <Grid className={classes.gridContainer}
              container 
              alignItems="stretch"
@@ -124,7 +114,6 @@ const Story =({story, parentCallback})=>{
                : null}
             </Grid>
         </Grid>
-        </> : <p> no content, suggest go to level {story.levels[0]} </p> }
     </div>
     )
 }
