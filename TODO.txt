@@ -1,7 +1,14 @@
 set up levels and contents arrays （done)
-set up story page add next page if there are too many characters 
-set up audio 
+set up story page add next page if there are too many characters (done)
+set up audio (done)
+set up word uploading page 
+set up backend 
 set up auth 
+refine the teacher page work flow hint, record videos
+refine homepage design
 
-set up an online real time chating (firebase) chating for language exchange
+change word card picuture to chinese character ( talk to fangzi) 
+set up an online real time chating (firebase) chating for language exchange 
 看图聊天
+
+how to deploy firebase project 

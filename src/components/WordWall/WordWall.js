@@ -17,7 +17,7 @@ const WordWall = ()=>{
         //doing nothing  right now
     }
     return(
-        <div style={{marginTop:"15vh"}}>
+        <div style={{marginTop:"20vh"}}>
             <Grid container 
                 direction="row"
                 alignItems="stretch"

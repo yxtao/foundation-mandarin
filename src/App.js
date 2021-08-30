@@ -35,7 +35,7 @@ const App = ()=>{
 
     return(
         <BrowserRouter>
-            <NavBar />
+            <NavBar clasName="NavBar" /> 
             <Switch>
                 <Route path="/" exact component ={ Home } />
                 <Route path="/wordwall"  component={ WordWall } />

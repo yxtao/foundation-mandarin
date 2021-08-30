@@ -24,7 +24,7 @@ const cardList = [
 const useStyles = makeStyles((theme) => ({
     root: {
         width:"90%", 
-        marginTop:"10vh",
+        marginTop:"20vh",
     },
     noteDiv:{
         width:"90%",
