@@ -43,6 +43,7 @@ const WordWall = (props)=>{
       if(wordList.length<rowsPerPage) {
           pagesArray.push(wordList);
           setwordPageArrays(pagesArray);
+          setPagesNum(1);
       } else{
             for(let i = 0; i<wordList.length; i=i+rowsPerPage) {
                 const words =[...wordList];
