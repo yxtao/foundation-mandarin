@@ -33,7 +33,7 @@ const WordCard = ({wordData, parentDeleteCallback, hideDelete})=> {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {wordData.word}
+            {wordData.name}
           </Typography>
          {wordData.phrases.map((phrase,index)=>
               <Typography key={index} variant="body2" color="textSecondary" component="p">

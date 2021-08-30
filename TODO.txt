@@ -1,13 +1,16 @@
 set up levels and contents arrays （done)
 set up story page add next page if there are too many characters (done)
 set up audio (done)
-set up word uploading page 
+set up word uploading page （done)
+refine word wall, add pagination, fetch data from firestore 
+test uploading pages.
+
+
 set up backend 
 set up auth 
-refine the teacher page work flow hint, record videos
+record videos
 refine homepage design
 
-change word card picuture to chinese character ( talk to fangzi) 
 set up an online real time chating (firebase) chating for language exchange 
 看图聊天
 

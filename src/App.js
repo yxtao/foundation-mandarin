@@ -18,19 +18,30 @@ import './app.css';
 
 const App = ()=>{
     const [storyList, setStoryList] = useState([]);
+    const [wordList, setWordList] = useState([]);
 
     useEffect(()=> {
         async function fetchData() {
-        const db = await firebase.firestore().collection("story");
-        db.onSnapshot((querySnapshot)=>{
-            const items=[];
-            querySnapshot.forEach((doc)=>{
-                items.push({...doc.data()});
-            });
-            setStoryList(items);
-            console.log(storyList);
-        })}
-        fetchData() 
+            const db = await firebase.firestore().collection("story");
+            db.onSnapshot((querySnapshot)=>{
+                const items=[];
+                querySnapshot.forEach((doc)=>{
+                    items.push({...doc.data()});
+                });
+                setStoryList(items);
+                console.log(storyList);
+            })
+            const chineseWordsDb = await firebase.firestore().collection("chinesewords")
+            chineseWordsDb.onSnapshot((querySnapshot)=>{
+                const wordsItems=[];
+                querySnapshot.forEach((doc)=>{
+                    wordsItems.push({...doc.data()});
+                });
+                setWordList(wordsItems);
+                console.log("wordListfromfirebase",wordList);
+            })
+       }
+        fetchData()  
     }, [])
 
     return(
@@ -38,7 +49,7 @@ const App = ()=>{
             <NavBar clasName="NavBar" /> 
             <Switch>
                 <Route path="/" exact component ={ Home } />
-                <Route path="/wordwall"  component={ WordWall } />
+                <Route path="/wordwall"  component={()=> < WordWall words={wordList} /> } />
                 <Route path="/reading" component={ ()=> <ReadingList stories={storyList} />  } />
                 <Route path="/teacher" component={Teacher} />
                <Route path="/story/:name"  component={ () => <Reading stories={storyList} /> }/>
