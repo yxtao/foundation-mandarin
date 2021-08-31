@@ -28,8 +28,8 @@ const WordCard = ({wordData, parentDeleteCallback, hideDelete})=> {
           component="img"
           alt={wordData.word}
           height="140"
-          image={test1}
-          title={wordData.word}
+          image={wordData.image ? wordData.image[0].url : test1}
+          title={wordData.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">

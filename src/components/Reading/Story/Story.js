@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Grid, Typography} from '@material-ui/core';
 
 //TODO : store keywords in firebase, category them to different levels 
-const keywords=["只","水","看","很","树"]
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,13 +37,24 @@ const useStyles = makeStyles((theme) => ({
 
   }));
   
-const Story =({story, parentCallback})=>{
+const Story =({story, parentCallback, words})=>{
     const classes = useStyles();
     const [contentIndex, setContentIndex] = useState(0);
     const [bookLevel, setBookLevel] = useState(story.levels[contentIndex]);
     const [charactersPages, setCharactersPages] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
+    const [keywords, setKeywords] = useState([ "只","水","看","很","树"]);
 
+    useEffect(()=>{
+        const wordList = [...keywords];
+    
+        words.forEach(element => {
+            wordList.push(element.name)
+        });
+        setKeywords(wordList)
+        console.log("keywords",words)
+    },[])
+  
     useEffect(()=>{
         const characters = story.contents[contentIndex].split("");
         const pagesArray=[]; 

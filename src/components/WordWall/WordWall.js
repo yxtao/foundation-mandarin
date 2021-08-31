@@ -2,6 +2,7 @@ import React, {useEffect, useState} from'react';
 import {Grid} from "@material-ui/core";
 import WordCard from'./WordCard/WordCard';
 import WordsPagination from './WordCard/WordsPagination/WordsPagnation';
+
 //TODO:store it in firebase
 const cardList = [
     {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
@@ -46,6 +47,7 @@ const WordWall = (props)=>{
           setPagesNum(1);
       } else{
             for(let i = 0; i<wordList.length; i=i+rowsPerPage) {
+                //TODO: Delete static word List
                 const words =[...wordList];
                 let shortArray = words.slice(i,i+rowsPerPage)
                 pagesArray.push(shortArray);

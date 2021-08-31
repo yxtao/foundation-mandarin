@@ -21,7 +21,7 @@ const App = ()=>{
     const [wordList, setWordList] = useState([]);
 
     useEffect(()=> {
-        async function fetchData() {
+       const fetchData= async()=> {
             const db = await firebase.firestore().collection("story");
             db.onSnapshot((querySnapshot)=>{
                 const items=[];
@@ -38,7 +38,7 @@ const App = ()=>{
                     wordsItems.push({...doc.data()});
                 });
                 setWordList(wordsItems);
-                console.log("wordListfromfirebase",wordList);
+                console.log("wordListfromfirebase", wordList);
             })
        }
         fetchData()  
@@ -50,9 +50,9 @@ const App = ()=>{
             <Switch>
                 <Route path="/" exact component ={ Home } />
                 <Route path="/wordwall"  component={()=> < WordWall words={wordList} /> } />
-                <Route path="/reading" component={ ()=> <ReadingList stories={storyList} />  } />
+                <Route path="/reading" component={ ()=> <ReadingList stories={storyList} words={wordList}/>  } />
                 <Route path="/teacher" component={Teacher} />
-               <Route path="/story/:name"  component={ () => <Reading stories={storyList} /> }/>
+               <Route path="/story/:name"  component={ () => <Reading stories={storyList} words={wordList} /> }/>
             </Switch>
         </BrowserRouter>
     )          
