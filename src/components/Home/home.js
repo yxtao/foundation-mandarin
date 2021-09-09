@@ -1,8 +1,10 @@
-
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Card} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+
+import SignUp  from '../SignInUp/SignUp';
+import SignIn from '../SignInUp/SignIn';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +27,8 @@ const Home=()=> {
   const classes = useStyles();
   return (
     <div className={classes.root}>
+      <SignUp /> 
+      <SignIn />
       <Grid container 
              direction="column"
              alignItems="stretch"

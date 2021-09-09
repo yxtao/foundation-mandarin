@@ -2,16 +2,21 @@ set up levels and contents arrays （done)
 set up story page add next page if there are too many characters (done)
 set up audio (done)
 set up word uploading page （done)
-refine word wall, add pagination, fetch data from firestore 
+refine word wall, add pagination, fetch data from firestore (done)
+
+adjust image size, limit it under 50KB
+add engish meaning for the word and each phrase
+add image preview before uploading to firebase 
 test uploading pages.
-
-
 set up backend 
 set up auth 
-record videos
-refine homepage design
 
+
+record videos
+refine word wall,add search by level, search by word
+refine homepage design
+how to deploy firebase project 
+
+// another project 
 set up an online real time chating (firebase) chating for language exchange 
 看图聊天
-
-how to deploy firebase project 

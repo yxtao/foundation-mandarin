@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import {Grid, Paper, Card, CardActions, CardContent, Button} from "@material-ui/core";
+import Compressor from 'compressorjs';
 
 import Audio from '../Audio/Audio'
 import "./Teacher.css"
@@ -38,7 +39,14 @@ const UploadStory=()=>{
    }
    
    const onFileChange =(e)=>{
-       setFile(e.target.files[0])
+       //setFile(e.target.files[0])
+       const image = e.target.files[0];
+       new Compressor(image, {
+           quality:0.2,
+           success:(compressedResult)=>{
+            setFile(compressedResult);
+           }
+       })
    }
 
    const onContentLevelAdded =()=>{
@@ -84,14 +92,12 @@ const UploadStory=()=>{
    const onStoryCreate = async ()=>{
 
         setSavingToFireBase(true);
-
         await db.collection("story").doc(name).set({
-            name : name,
+            name:name,
             levels : levels,
             contents: contents,
         })
-
-      
+  
       if (file!==null) {
         const storageRef = storage.ref()
         const fileRef = storageRef.child(`story/pictures/${name}`)

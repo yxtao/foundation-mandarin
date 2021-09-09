@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import {Grid, Paper, Card, CardActions, CardContent, Button} from "@material-ui/core";
+import Compressor from 'compressorjs';
 
-import Audio from '../Audio/Audio'
-import "./Teacher.css"
+import Audio from '../Audio/Audio';
+import "./Teacher.css";
 import firebase from '../../firebase/firebase';
 
 const db = firebase.firestore();
@@ -52,10 +53,24 @@ const UploadWord=()=>{
        setPinyin(e.target.value);
    }
    const onXiangxingImageChange =(e)=>{
-       setXiangxingImage(e.target.files[0]);
+       const image = e.target.files[0];
+       new Compressor(image, {
+           quality:0.2,
+           success:(compressedResult)=>{
+            setXiangxingImage(compressedResult);
+           }
+       })
+      // setXiangxingImage(e.target.files[0]);
    }
    const onStrokeImageChange =(e)=>{
-       setStrokeImage(e.target.files[0]);
+      // setStrokeImage(e.target.files[0]);
+       const image = e.target.files[0];
+       new Compressor(image, {
+           quality:0.2,
+           success:(compressedResult)=>{
+            setStrokeImage(compressedResult);
+           }
+       })
    }
    const onSentenceChange = (e)=>{
        setSentence(e.target.value);
@@ -70,7 +85,14 @@ const UploadWord=()=>{
    }
   
    const onFileChange =(e)=>{
-       setFile(e.target.files[0])
+       //setFile(e.target.files[0])
+       const image = e.target.files[0];
+       new Compressor(image, {
+           quality:0.2,
+           success:(compressedResult)=>{
+            setFile(compressedResult);
+           }
+       })
    }
 
    const onContentLevelAdded =()=>{
@@ -149,7 +171,7 @@ const UploadWord=()=>{
         if (xiangxingImage!==null) {
             const storageRef = storage.ref()
             const fileRef = storageRef.child(`chinese/word/xiangxingimage/${name}`)
-            await fileRef.put(file, {contentType:'image/jpeg'})
+            await fileRef.put(xiangxingImage, {contentType:'image/jpeg'})
             await db.collection("chinesewords").doc(name).update({
                xiangxingImage: firebase.firestore.FieldValue.arrayUnion({
                 name: name,
@@ -160,7 +182,7 @@ const UploadWord=()=>{
         if (strokeImage!==null) {
             const storageRef = storage.ref()
             const fileRef = storageRef.child(`chinese/word/stokeimage/${name}`)
-            await fileRef.put(file, {contentType:'image/jpeg'})
+            await fileRef.put(strokeImage, {contentType:'image/jpeg'})
             await db.collection("chinesewords").doc(name).update({
                 strokeImage: firebase.firestore.FieldValue.arrayUnion({
                 name: name,
@@ -171,7 +193,7 @@ const UploadWord=()=>{
         if (wordAudio!==null) {
             const storageRef = storage.ref()
             const wordAudioRef= storageRef.child(`chinese/word/wordAudio/${name}`)
-            await wordAudioRef.put(file, {contentType:'audio/webm;codecs=opus'})
+            await wordAudioRef.put(wordAudio, {contentType:'audio/webm;codecs=opus'})
             await db.collection("chinesewords").doc(name).update({
                 wordAudio: firebase.firestore.FieldValue.arrayUnion({
                 name: name,
