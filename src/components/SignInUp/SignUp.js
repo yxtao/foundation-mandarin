@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import firebase from '../../firebase/firebase';
 import {createUserAccount} from "../../api/api";
-import {Paper, TextField, Typography, Button} from '@material-ui/core';
+import {Grid, TextField, Typography, Button} from '@material-ui/core';
 
 const SignUp = (props) =>{
     
@@ -15,69 +15,62 @@ const SignUp = (props) =>{
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-      
-        const res = await createUserAccount({
-                          email,
-                          phoneNumber,
-                          password,
-                          firstName,
-                          lastName,
-                          userName,
-                      });
-        if(res.error){
-          alert(res.error);
-        }
-    
-
+        
+        try{
+           await createUserAccount({ email,password,userName});
+      }catch(error){
+          alert(error.response.data);
+      }
       var currentUser = firebase.auth().currentUser;
         if(currentUser){
            setUser(currentUser);
         }
     }
    
+  const handleParentCallback=()=>{
+    props.parentCallback();
+  }
+  
     return (
         <div>
-          {user.displayName} 
-            <Paper>
+            <Grid container justify="center" wrap="wrap" spacing={2} className="login-form">
                 <form onSubmit = {handleSubmit}>
+                    <Grid item>
                     <TextField 
                         value = {email}
                         onInput = {e => setEmail(e.target.value)}
                         placeholder = "email"
                       />
-                      <TextField 
-                        value = {phoneNumber}
-                        onInput = {e => setPhoneNumber(e.target.value)}
-                        placeholder ="phone number"
-                      />
+                    </Grid>
+                    
+                    <Grid item>
                       <TextField 
                         value = {password}
                         onInput = {e => setPassword(e.target.value)}
                         placeholder="password"
                       />
-                      <TextField 
-                        value = {firstName}
-                        onInput = {e => setFirstName(e.target.value)}
-                        placeholder="first name"
-                      />
-                      <TextField 
-                        value = {lastName}
-                        onInput = {e => setLastName(e.target.value)}
-                        placeholder="last name"
-                      />
+                    </Grid>
+                      <Grid item>
                         <TextField 
                         value = {userName}
                         onInput = {e => setUserName(e.target.value)}
                         placeholder="user name"
                       />
-                      <Button 
+                      </Grid>
+                      <Grid >
+                      <button className="btn btn-primary" 
                        type = "submit"
                       > 
                       Sign Up
-                     </Button>
-
+                     </button>
+                     </Grid>
+                     <Grid >
+                      <button className="btn btn-primary" onClick={handleParentCallback}> 
+                      Sign In
+                     </button>
+                     </Grid>
                 </form>
-            </Paper>
+            </Grid>
         </div>
     )
 }

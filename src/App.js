@@ -15,6 +15,7 @@ import Reading from "./components/Reading/Reading";
 import Teacher from "./components/Teacher/Teacher";
 import ReadingList from "./components/ReadingList/ReadingList"
 import './app.css';
+import SignInUp from './components/SignInUp/SignInUp';
 
 const App = ()=>{
     const [storyList, setStoryList] = useState([]);
@@ -49,6 +50,7 @@ const App = ()=>{
             <NavBar clasName="NavBar" /> 
             <Switch>
                 <Route path="/" exact component ={ Home } />
+                <Route path="/SignInUp" component ={ SignInUp } />
                 <Route path="/wordwall"  component={()=> < WordWall words={wordList} /> } />
                 <Route path="/reading" component={ ()=> <ReadingList stories={storyList} words={wordList}/>  } />
                 <Route path="/teacher" component={Teacher} />
