@@ -9,6 +9,7 @@ const useStyles = makeStyles((theme) => ({
     height:"100vh",
    // border:"1px solid red",
     marginTop:"20vh",
+    padding:"5vw",
   },
   Card: {
     padding: theme.spacing(1),

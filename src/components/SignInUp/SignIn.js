@@ -1,22 +1,25 @@
 import React, {useEffect, useState} from 'react';
-import firebase from '../../firebase/firebase';
 import {loginUser} from "../../api/api";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
+import { checkedAuthState, usernameState, isAdminState, firebaseState } from "../../store/AuthAtoms" 
 import {Grid, TextField, Typography, Button, Paper} from '@material-ui/core';
-
 import "./SignInUp.css";
 
 const SignIn = (props) =>{
-    
+    const firebase = useRecoilValue(firebaseState);
     const [email, setEmail]= useState("");
     const [password, setPassword] = useState("");
-    const [user, setUser] = useState({displayName:"guest"});
-    
+    const [user, setUser] = useRecoilState(usernameState);
+    const [isAdmin, setIsAdmin] = useRecoilState(isAdminState);
+    const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{ 
             await loginUser(email,password);
             var currentUser = firebase.auth().currentUser;
-            setUser(currentUser);
+            setUser(currentUser.displayName);
+            setIsAuthenticated(true);
         }catch(error){
            alert(error);
         }

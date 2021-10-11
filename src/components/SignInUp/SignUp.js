@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import firebase from '../../firebase/firebase';
+import { useHistory } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import {createUserAccount} from "../../api/api";
+import { checkedAuthState, usernameState, isAdminState, firebaseState } from "../../store/AuthAtoms" 
 import {Grid, TextField, Typography, Button} from '@material-ui/core';
 
 const SignUp = (props) =>{
-    
+    const firebase = useRecoilValue(firebaseState);
     const [email, setEmail]= useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
     const [userName, setUserName] = useState("");
-    const [user, setUser] = useState({displayName:"guest"});
+    const [user, setUser] = useRecoilState(usernameState);
+    const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,6 +24,7 @@ const SignUp = (props) =>{
       var currentUser = firebase.auth().currentUser;
         if(currentUser){
            setUser(currentUser);
+           setIsAuthenticated(true);
         }
     }
    
