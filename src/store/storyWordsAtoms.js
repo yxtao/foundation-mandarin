@@ -8,4 +8,13 @@ export const storyliststate = atom({
 export const wordliststate = atom({
     key: "wordliststate",
     default: [],
-  });  
+  });
+  export const firestoreState = atom({
+    key: "firestore", // unique ID (with respect to other atoms/selectors)
+    default: firebase.app().firestore(), // default value (aka initial value)
+  });
+  
+  export const firestoreStorageState = atom({
+    key: "firestoreStorage",
+    default: firebase.storage(),
+  });

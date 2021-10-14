@@ -42,7 +42,7 @@ const UploadStory=()=>{
        //setFile(e.target.files[0])
        const image = e.target.files[0];
        new Compressor(image, {
-           quality:0.2,
+           quality:0.1,
            success:(compressedResult)=>{
             setFile(compressedResult);
            }

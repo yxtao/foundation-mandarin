@@ -7,15 +7,21 @@ import {
     Switch,
     Route,
   } from "react-router-dom";
+
+import './app.css';
+
 import NavBar from "./components/NavBar/NavBar";
 import WordWall from "./components/WordWall/WordWall";
 import Home from "./components/Home/Home";
 import Reading from "./components/Reading/Reading";
 import Teacher from "./components/Teacher/Teacher";
 import ReadingList from "./components/ReadingList/ReadingList"
-import './app.css';
 import SignInUp from './components/SignInUp/SignInUp';
 import SignOut from './components/SignInUp/SignOut';
+import Assessment from './components/Assessment/Assessment';
+import Recommendation from './components/Recommendation/Recommendation';
+import CardDetail from "./components/CardDetail/CardDetail";
+
 const Router = ()=>{
     const [storyList, setStoryList] = useRecoilState(storyliststate);
     const [wordList, setWordList] = useRecoilState(wordliststate);
@@ -54,7 +60,10 @@ const Router = ()=>{
                 <Route path="/wordwall"  component={()=> < WordWall words={wordList} /> } />
                 <Route path="/reading" component={ ()=> <ReadingList stories={storyList} words={wordList}/>  } />
                 <Route path="/teacher" component={Teacher} />
-               <Route path="/story/:name"  component={ () => <Reading stories={storyList} words={wordList} /> }/>
+                <Route path="/story/:name"  component={ () => <Reading stories={storyList} words={wordList} /> }/>
+                <Route path="/assessment" component={Assessment} />
+                <Route path="/recommendation" component = {Recommendation} />
+                <Route path="/carddetail/:word" component={()=> <CardDetail wordList={wordList} /> } />
             </Switch>
         </BrowserRouter>
     )          

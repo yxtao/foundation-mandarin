@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
 import test1 from "../../../assets/images/wordcards/test1.jpg"
 
 const useStyles = makeStyles({
@@ -22,11 +23,12 @@ const WordCard = ({wordData, parentDeleteCallback, hideDelete})=> {
     parentDeleteCallback(word);
   }
   return (
-    <Card className={classes.root}>
-      <CardActionArea href="#">
+    <Card className={classes.root} >
+      <Link to = {`/carddetail/${wordData.name}`}>
+      <CardActionArea>
       <CardMedia
           component="img"
-          alt={wordData.word}
+          alt={wordData.name}
           height="140"
           image={wordData.image ? wordData.image[0].url : test1}
           title={wordData.name}
@@ -54,6 +56,7 @@ const WordCard = ({wordData, parentDeleteCallback, hideDelete})=> {
           Learn More
         </Button>
       </CardActions>
+      </Link>
     </Card>
   );
 }

@@ -363,6 +363,7 @@ const UploadWord=()=>{
                 disabled={name===""|| level==="" || audioBlob===null || pinyin ==="" || wordAudio===null || sentence==="" || sentenceAudio===null}
                 onClick={onContentLevelAdded}>save and add
                 </button>
+                wait for the create the word button 
             </Grid>
             { moveOn === true? 
             <> 

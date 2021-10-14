@@ -6,7 +6,7 @@ import {Paper, Grid, Typography} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width:"90%", 
+        width:"95%", 
         margin:"auto",
     },
     gridContainer:{
@@ -16,10 +16,10 @@ const useStyles = makeStyles((theme) => ({
     gridItem:{
     },
     paper:{
-        height:"60vh"
+        height:"50vh"
     },
     contentDiv:{
-        padding:"10%",
+        padding:"5%",
         fontSize:"2vw"
     },
     //TODO: Adjust the image position in mobile model
@@ -88,13 +88,12 @@ const Story =({story, parentCallback, words})=>{
 
     return(
         <div className={classes.root}>
-             Choose a level
+        <Typography style={{textAlign:"center"}} variant="h4" component="h5"> {story.name} level {bookLevel}</Typography>
+        Choose a level
                     <select name="level" id="level" onChange={changeBookLevel}>
                     {/* <option value={bookLevel}>{bookLevel}</option> */}
                     {story.levels.map((level, levelIndex)=> <option key ={levelIndex} value={levelIndex}> {level} </option>)}
                     </select> 
-       
-        <Typography style={{textAlign:"center"}} variant="h4" component="h4"> {story.name} level {bookLevel}</Typography>
         {story.voice && <audio src={story.voice[contentIndex].url} controls />  }
         <Grid className={classes.gridContainer}
              container 
