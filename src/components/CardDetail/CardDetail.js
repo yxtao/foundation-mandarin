@@ -18,26 +18,49 @@ const CardDetail = (props)=>{
        let sentencesInfo = [];
        if(!wordData) return;
        if(wordData && "phrases" in wordData){
+    
            for(let i=0; i<wordData.phrases.length; i++){
-                const phraseObj = {
-                    phrase:wordData.phrases[i],
-                    phraseAudio:wordData.phraseAudios[i].url,
-                    phraseLevel:wordData.phraseLevels[i],
-                }
+               let phraseObj =null;
+               if("phraseMeanings" in wordData){
+                    phraseObj = {
+                        phrase:wordData.phrases[i],
+                        phraseAudio:wordData.phraseAudios[i].url,
+                        phraseLevel:wordData.phraseLevels[i],
+                        phraseMeaning:wordData.phraseMeanings[i]
+                    }
+                } else{
+                    phraseObj = {
+                        phrase:wordData.phrases[i],
+                        phraseAudio:wordData.phraseAudios[i].url,
+                        phraseLevel:wordData.phraseLevels[i],
+                    }
+               }
             phrasesInfo.push(phraseObj);
            }
            setPhrasesData(phrasesInfo);
-       }
+        }
+       
+    
        if(wordData && "sentences" in wordData){
            for(let k=0; k<wordData.sentences.length; k++){
-                const sentenceObj = {
-                    sentence:wordData.sentences[k],
-                    sentenceAudio:wordData.sentencesAudios[k].url
+                let sentenceObj = null;
+                if("sentenceMeanings" in wordData){
+                        sentenceObj = {
+                        sentence:wordData.sentences[k],
+                        sentenceAudio:wordData.sentencesAudios[k].url,
+                        sentenceMeaning: wordData.sentenceMeanings[k]
+                    }
+                } else{
+                        sentenceObj = {
+                        sentence:wordData.sentences[k],
+                        sentenceAudio:wordData.sentencesAudios[k].url
+                    } 
                 }
-            sentencesInfo.push(sentenceObj);
-          }
-          setSentencesData(sentencesInfo);
+                sentencesInfo.push(sentenceObj);
+            }
+            setSentencesData(sentencesInfo);
         }
+
     },[name, props.wordList, wordData])
 
     if (!wordData) {
@@ -66,6 +89,7 @@ const CardDetail = (props)=>{
                             <div className = "col">
                                 <h1 class="card-title">{wordData && wordData.name? wordData.name: "name has not uploaded"}</h1>
                                 <h2 class="card-title">{wordData && wordData.pinyin? wordData.pinyin: "pinyin has not uploaded"}</h2>
+                                <h7 class="card-title">{wordData && wordData.wordMeaning? wordData.wordMeaning: ""}</h7>
                             </div>
                             <div className = "col">
                             { wordData && wordData.wordAudio ? 
@@ -85,7 +109,9 @@ const CardDetail = (props)=>{
                             <div className = "row">
                                 <div className = "col">
                                     <h2 class="card-title">{obj.phrase}</h2>
-                                    <h7 class="card-title">Level {obj.phraseLevel}</h7>
+                                    <h7 class="card-title"> {"phraseMeaning" in obj?obj.phraseMeaning:""}</h7>
+                                    <br/>
+                                    <h7 class="card-title">{" "}Level {obj.phraseLevel}</h7>
                                 </div>
                                 <div className = "col">
                                     <audio controls class="embed-responsive-item">
@@ -102,6 +128,7 @@ const CardDetail = (props)=>{
                             <div className = "row">
                                 <div className = "col">
                                     <h3 class="card-title">{obj.sentence}</h3>
+                                    <h7 class="card-title">{"sentenceMeaning" in obj?obj.sentenceMeaning:""}</h7>
                                 </div>
                                 <div className = "col">
                                     <audio controls class="embed-responsive-item">

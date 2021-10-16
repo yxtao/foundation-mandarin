@@ -15,6 +15,8 @@ const UploadWord=()=>{
    const [phrase, setPhrase] = useState("");
    const [pinyin, setPinyin] = useState("");
    const [wordMeaning, setWordMeaning] = useState("");
+   const [phraseMeaning, setPhraseMeaning] = useState("");
+   const [sentenceMeaning, setSentenceMeaning] = useState("");
    const [phraseMeanings, setPhraseMeanings] = useState([]);
    const [sentenceMeanings, setSentenceMeanings] = useState([]);
    const [wordLevel,setWordLevel] = useState(-1);
@@ -49,7 +51,15 @@ const UploadWord=()=>{
        setName(e.target.value)
    }
    const onWordMeaningChange = (e) =>{
-       setWordMeaning(e.target.velue);
+       setWordMeaning(e.target.value);
+   }
+
+   const onPharseMeaningChange =(e) =>{
+       setPhraseMeaning(e.target.value);
+   }
+
+   const onSentenceMeaningChange =(e)=>{
+       setSentenceMeaning(e.target.value);
    }
    
    const onPhraseChange =(e)=>{
@@ -133,6 +143,8 @@ const UploadWord=()=>{
    const onContentLevelAdded =()=>{
        (level!==-1) && setLevels([...levels, level]);
        (phrase!=="")&& setPhrases([...phrases,phrase]);
+       (phraseMeaning!=="") && setPhraseMeanings([...phraseMeanings, phraseMeaning]);
+       (sentenceMeaning!=="") && setSentenceMeanings([...sentenceMeanings, sentenceMeaning])
        setAudios([...audios,audioBlob]);
        setSentences([...sentences,sentence]);
        setAudioURLs([...audioURLs, audioURL])
@@ -141,6 +153,8 @@ const UploadWord=()=>{
        
        setPhrase("");
        setSentence("");
+       setPhraseMeaning("");
+       setSentenceMeaning("");
        setAudioBlob(null);
        setAudioURL("");
        setSentenceAudio(null);
@@ -185,10 +199,14 @@ const UploadWord=()=>{
         await db.collection("chinesewords").doc(name).set({
             name : name,
             pinyin: pinyin,
+            wordMeaning: wordMeaning,
+            phraseMeanings:phraseMeanings,
+            sentenceMeanings:sentenceMeanings,
             wordLevel: wordLevel,
             phraseLevels : levels,
             phrases: phrases,
-            sentences: sentences
+            sentences: sentences,
+
         })
 
       
@@ -281,39 +299,42 @@ const UploadWord=()=>{
    }
 
     return (
-
        <div className="form-group StoryUploadDiv">
            <Grid container spacing={3} > 
               <Grid item xs={12} >
                     <button className="btn btn-success" 
                     disabled={savingToFirebase} 
                     onClick={checkWords}>
-                    check current words
+                    查看已有汉字
                     </button>
               </Grid>
-              <Grid item xs={12}  >
-              <div className="form-group">
-                 <textarea  class="form-control" 
-                            rows="1" 
-                            value={name} 
-                            onChange={onNameChange} placeholder="word"
-                            /> 
-              </div>
-             </Grid>
-             <Grid item xs={12}  >
-              <div className="form-group">
-                 <textarea  class="form-control" 
-                            rows="1" 
-                            value={pinyin} 
-                            onChange={onPinyinChange} placeholder="pinyin"
-                            /> 
-              </div>
-             </Grid>
+          
+             <Grid item  
+              container 
+              direction="row"
+              alignItems="stretch"
+              justifyContent="space-around">
+                    <Grid item >       
+                        <textarea  class="form-control" 
+                                value={name} 
+                                onChange={onNameChange} placeholder="汉字"/> 
+                    </Grid>
+                    <Grid item >       
+                        <textarea  class="form-control" 
+                                value={pinyin} 
+                                onChange={onPinyinChange} placeholder="拼音" /> 
+                    </Grid>
+                    <Grid item>  
+                        <textarea  class="form-control"     
+                                    value={wordMeaning} 
+                                    onChange={onWordMeaningChange} placeholder="英语意思" /> 
+                    </Grid>
+            </Grid>
              <Grid  item xs={12} > 
                 <Audio  callbackAudio={handleWordAudioSave}/> 
             </Grid>  
              <Grid item xs={12} >
-                    Choose word level
+                    汉字级别
                     <select name="level" id="level" onChange={(e)=> setWordLevel(e.target.value)}>
                     <option value="-1"> choose </option>
                     <option value="0">0</option>
@@ -322,53 +343,70 @@ const UploadWord=()=>{
                     <option value="3">3</option>
                     </select>
              </Grid>
-             <Grid item xs={12}  >
-                word picture 
-                <input type="file" 
-                        className="form-control" 
-                        id="imageFile" 
-                        onChange={onFileChange}/>
-            </Grid>  
-            <Grid item xs={12}  >
-                stroke picture 
-                <input type="file" 
-                        className="form-control" 
-                        id="imageFile" 
-                        onChange={onStrokeImageChange}/>
-            </Grid>  
-            <Grid item xs={12}  >
-                xiangxing picture 
-                <input type="file" 
-                        className="form-control" 
-                        id="imageFile" 
-                        onChange={onXiangxingImageChange}/>
-            </Grid> 
-             <Grid item xs={12}  >
-                 <div className="form-group">
-                     <textarea className="form-control" 
-                                rows="2" 
-                                value={phrase} 
-                                onChange={onPhraseChange} 
-                                placeholder="phrase" /> 
-                 </div>
+             
+             <Grid item  
+              container 
+              direction="row"
+              alignItems="stretch"
+              justifyContent="space-around">
+                    <Grid item >       
+                        字插图 
+                        <input type="file" 
+                                className="form-control" 
+                                id="imageFile" 
+                                onChange={onFileChange}/>
+                    </Grid>
+                    <Grid item >       
+                        笔顺图
+                        <input type="file" 
+                                className="form-control" 
+                                id="imageFile" 
+                                onChange={onStrokeImageChange}/>
+                    </Grid>
+                    <Grid item>  
+                        象形图
+                        <input type="file" 
+                                className="form-control" 
+                                id="imageFile" 
+                                onChange={onXiangxingImageChange}/>
+                    </Grid>
             </Grid>
-            <Grid item xs={12} >
-                    Choose phrase level
-                    <select name="level" id="level" onChange={(e)=> setLevel(e.target.value)}>
-                    <option value="-1"> choose </option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    </select>
-             </Grid>
-           
+            
+            <Grid item  
+              container 
+              direction="row"
+              alignItems="stretch"
+              justifyContent="space-around">
+                    <Grid item >       
+                        <textarea className="form-control" 
+                                    rows="2" 
+                                    value={phrase} 
+                                    onChange={onPhraseChange} 
+                                    placeholder="词语" />  
+                    </Grid>
+                    <Grid item >       
+                       词语级别
+                        <select name="level" id="level" onChange={(e)=> setLevel(e.target.value)}>
+                        <option value="-1"> choose </option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        </select>
+                    </Grid>
+                    <Grid item>  
+                        <textarea  class="form-control"     
+                                    value={phraseMeaning} 
+                                    onChange={onPharseMeaningChange} placeholder="词语英语意思" /> 
+                    </Grid>
+            </Grid>
+
             <Grid  item xs={12} >
                 <div style={{display:"flex", flexDirection:"row"}}>
                 
                 { name==="" || level===-1 || phrase==="" ? 
                 <div className="alert alert-danger" role="alert">
-                      {name===""? " word ! " : " "}{level === -1 ? " level!" : " "}{phrase===""?" content! ":""}
+                      {name===""? " 汉字 ! " : " "}{level === -1 ? " 级别!" : " "}{phrase===""?" 词语! ":""}
                  </div>
                 : <Audio  callbackAudio={handleAudioSave}/>  }
                 </div>
@@ -378,8 +416,13 @@ const UploadWord=()=>{
                  <textarea  class="form-control" 
                             rows="1" 
                             value={sentence} 
-                            onChange={onSentenceChange} placeholder="sentence"
+                            onChange={onSentenceChange} placeholder="句子"
                             /> 
+                 <textarea  class="form-control" 
+                            rows="1" 
+                            value={sentenceMeaning} 
+                            onChange={onSentenceMeaningChange} placeholder="句子英语意思"
+                            />             
               </div>
              </Grid>
              <Grid  item xs={12} >
@@ -387,18 +430,18 @@ const UploadWord=()=>{
                 
                 { name==="" || level===-1 || phrase==="" ? 
                 <div className="alert alert-danger" role="alert">
-                      {sentence===""? " sentence ! " : " "}
+                      {sentence===""? " 句子 ! " : " "}
                  </div>
                 : <Audio  callbackAudio={handleSentenceAudioSave}/>  }
                 </div>
             </Grid>
             <Grid item xs={12}>
-            { audioBlob===null || sentenceAudio===null? <div className="alert alert-danger" role="alert"> audios! </div> :null }
+            { audioBlob===null || sentenceAudio===null? <div className="alert alert-danger" role="alert"> 录音! </div> :null }
                 <button className="btn btn-success" 
                 disabled={name===""|| level==="" || audioBlob===null || pinyin ==="" || wordAudio===null || sentence==="" || sentenceAudio===null}
-                onClick={onContentLevelAdded}>save and add
+                onClick={onContentLevelAdded}>保留查看
                 </button>
-                wait for the create the word button 
+                 等“添加进数据库”按钮出现
             </Grid>
             { moveOn === true? 
             <> 
@@ -407,22 +450,25 @@ const UploadWord=()=>{
                     {levels.map((level, index)=> 
                                 <Card key={index} raised={true}> 
                                 <CardContent>
-                                <p> {name} -word level {wordLevel} </p> 
+                                <p> {name} -级别-{wordLevel} </p> 
                                 <p>{pinyin} </p>
+                                <p>{wordMeaning} </p>
                                 <audio src={wordAudioURL} controls /> 
-                                <p> {phrases[index]} -phrase level {level} </p> 
+                                <p> {phrases[index]} -词语级别- {level} </p> 
+                                <p>{phraseMeanings[index]}</p>
                                 <audio src={audioURLs[index]} controls /> 
-                                <p> {sentences[index]} </p> 
+                                <p> {sentences[index]} </p>
+                                <p>{sentenceMeanings[index]}</p> 
                                 <audio src={sentencesAudiosURLs[index]} controls /> 
                                 </CardContent>    
                                 <CardActions>      
-                                    <Button size="small" color ="primary" onClick={()=>onDelete(index)}> x </Button>      
+                                    <Button size="small" color ="primary" onClick={()=>onDelete(index)}> x 删除 </Button>      
                                 </CardActions>   
                                 </Card>)}
                 </Paper>
             </Grid>
             <Grid item xs={12}  >
-                <button className="btn btn-success" disabled={savingToFirebase} onClick={onWordCreate}>Create the word </button> 
+                <button className="btn btn-success" disabled={savingToFirebase} onClick={onWordCreate}>添加进数据库 </button> 
             </Grid>
             </> 
             : null 

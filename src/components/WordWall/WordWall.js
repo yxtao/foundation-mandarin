@@ -4,33 +4,10 @@ import WordCard from'./WordCard/WordCard';
 import WordsPagination from './WordCard/WordsPagination/WordsPagnation';
 import "./WordWall.css";
 //TODO:store it in firebase
-const cardList = [
-    // {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
-    // {name:"你", phrases:["你们","你在"],sentences:["你们在家"]},
-    // {name:"在", phrases:["我在"],sentences:["我们在家"]},
-    // {name:"们", phrases:["我们"],sentences:["我们在家"]},
-    // {name:"看", phrases:["看见","看到"],sentences:["我看到一只猫"]},
-    // {name:"水", phrases:["喝水"],sentences:["我喝水"]},
-    // {name:"只", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
-    // {name:"test", phrases:["我们","我在"],sentences:["我们在家"]},
-    // {name:"test1", phrases:["你们","你在"],sentences:["你们在家"]},
-    // {name:"test2", phrases:["我在"],sentences:["我们在家"]},
-    // {name:"们", phrases:["我们"],sentences:["我们在家"]},
-    // {name:"看", phrases:["看见","看到"],sentences:["我看到一只猫"]},
-    // {name:"水", phrases:["喝水"],sentences:["我喝水"]},
-    // {name:"只", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
-    // {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
-    // {name:"你", phrases:["你们","你在"],sentences:["你们在家"]},
-    // {name:"在", phrases:["我在"],sentences:["我们在家"]},
-    // {name:"们", phrases:["我们"],sentences:["我们在家"]},
-    // {name:"看", phrases:["看见","看到"],sentences:["我看到一只猫"]},
-    // {name:"水", phrases:["喝水"],sentences:["我喝水"]},
-    // {name:"只", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
-]
 
 const WordWall = (props)=>{
     
-    const [wordList, setWordList] = useState([...props.words, ...cardList]);
+    const [wordList, setWordList] = useState([...props.words]);
     const [wordPageArrays, setwordPageArrays] = useState([]);
     const [pagesNum, setPagesNum]= useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
