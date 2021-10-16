@@ -54,23 +54,42 @@ const UploadWord=()=>{
    }
    const onXiangxingImageChange =(e)=>{
        const image = e.target.files[0];
-       new Compressor(image, {
-           quality:0.2,
-           success:(compressedResult)=>{
-            setXiangxingImage(compressedResult);
-           }
-       })
-      // setXiangxingImage(e.target.files[0]);
-   }
+       let size = e.target.files[0].size/1024/1024;
+       if(size>1){
+        new Compressor(image, {
+            quality:0.01,
+            success:(compressedResult)=>{
+                setXiangxingImage(compressedResult);
+            }
+         }) 
+       }else{
+        new Compressor(image, {
+            quality:0.1,
+            success:(compressedResult)=>{
+                setXiangxingImage(compressedResult);
+            }
+         }) 
+        }
+    }
+   
    const onStrokeImageChange =(e)=>{
-      // setStrokeImage(e.target.files[0]);
+       let size = e.target.files[0].size/1024/1024;
        const image = e.target.files[0];
-       new Compressor(image, {
-           quality:0.2,
-           success:(compressedResult)=>{
-            setStrokeImage(compressedResult);
-           }
-       })
+       if(size > 1){
+        new Compressor(image, {
+            quality:0.01,
+            success:(compressedResult)=>{
+                setStrokeImage(compressedResult);
+            }
+        })
+     }else{
+        new Compressor(image, {
+            quality:0.1,
+            success:(compressedResult)=>{
+             setStrokeImage(compressedResult);
+            }
+        })
+     }
    }
    const onSentenceChange = (e)=>{
        setSentence(e.target.value);
@@ -85,14 +104,24 @@ const UploadWord=()=>{
    }
   
    const onFileChange =(e)=>{
-       //setFile(e.target.files[0])
+       let size = e.target.files[0].size/1024/1024;
        const image = e.target.files[0];
-       new Compressor(image, {
-           quality:0.2,
-           success:(compressedResult)=>{
-            setFile(compressedResult);
-           }
-       })
+       if(size >1) {
+            new Compressor(image, {
+                quality:0.01,
+                success:(compressedResult)=>{
+                    setFile(compressedResult);
+                }
+            })
+       }else{
+            new Compressor(image, {
+                quality:0.1,
+                success:(compressedResult)=>{
+                    setFile(compressedResult);
+                }
+            })
+        }
+
    }
 
    const onContentLevelAdded =()=>{
@@ -173,7 +202,7 @@ const UploadWord=()=>{
             const fileRef = storageRef.child(`chinese/word/xiangxingimage/${name}`)
             await fileRef.put(xiangxingImage, {contentType:'image/jpeg'})
             await db.collection("chinesewords").doc(name).update({
-               xiangxingImage: firebase.firestore.FieldValue.arrayUnion({
+                xiangxingImage: firebase.firestore.FieldValue.arrayUnion({
                 name: name,
                 url: await fileRef.getDownloadURL()
                 })

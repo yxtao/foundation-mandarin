@@ -10,15 +10,15 @@ import WordCard from '../WordWall/WordCard/WordCard'
 // TODO: save it to firebase
 //TODO: Delete staticCardList
 const staticCardList = [
-    {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
-    {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
-    {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
-    {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
-    {name:"看", phrases:["看见","看到"],sentences:["我看到一只猫"]},
-    {name:"水", phrases:["喝水"],sentences:["我喝水"]},
-    {name:"只", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
-    {name:"很", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
-    {name:"树", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
+    // {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
+    // {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
+    // {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
+    // {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
+    // {name:"看", phrases:["看见","看到"],sentences:["我看到一只猫"]},
+    // {name:"水", phrases:["喝水"],sentences:["我喝水"]},
+    // {name:"只", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
+    // {name:"很", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
+    // {name:"树", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
 ]
 
 const useStyles = makeStyles((theme) => ({
@@ -75,7 +75,7 @@ const Reading = (props)=>{
                >
                 {cardList.filter(item=> notes.includes(item.name)).map((item,index)=> 
                         <Grid key={index} item xs={6} sm={4} md={3} > 
-                           <WordCard wordData={item} parentDeleteCallback = {handleDeleteCallback}/>
+                           <WordCard wordData={item} parentDeleteCallback = {handleDeleteCallback} hideDelete={true}/>
                          </Grid>)} 
             </Grid>
             </div>

@@ -39,14 +39,23 @@ const UploadStory=()=>{
    }
    
    const onFileChange =(e)=>{
-       //setFile(e.target.files[0])
        const image = e.target.files[0];
-       new Compressor(image, {
-           quality:0.1,
-           success:(compressedResult)=>{
-            setFile(compressedResult);
-           }
-       })
+       let size = e.target.files[0].size/1024/1024; 
+       if(size>1){
+            new Compressor(image, {
+                quality:0.1,
+                success:(compressedResult)=>{
+                    setFile(compressedResult);
+                }
+            })
+        }else{
+            new Compressor(image, {
+                quality:0.1,
+                success:(compressedResult)=>{
+                    setFile(compressedResult);
+                }
+            })
+        }
    }
 
    const onContentLevelAdded =()=>{

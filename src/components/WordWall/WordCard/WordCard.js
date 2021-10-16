@@ -12,8 +12,8 @@ import test1 from "../../../assets/images/wordcards/test1.jpg"
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
-    border:"3px solid grey"
+    maxWidth: 280,
+    border:"4px solid lightblue"
   },
 });
 
@@ -29,7 +29,7 @@ const WordCard = ({wordData, parentDeleteCallback, hideDelete})=> {
       <CardMedia
           component="img"
           alt={wordData.name}
-          height="140"
+          height="120"
           image={wordData.image ? wordData.image[0].url : test1}
           title={wordData.name}
         />

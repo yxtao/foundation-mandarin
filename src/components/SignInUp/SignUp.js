@@ -14,6 +14,7 @@ const SignUp = (props) =>{
     const [userName, setUserName] = useState("");
     const [user, setUser] = useRecoilState(usernameState);
     const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
+    const [isClicked, setIsClicked] = useState(false);
 
     const checkUsernameExist = async (username) =>{
       const userRef = db.collection("users").doc(username);
@@ -27,6 +28,7 @@ const SignUp = (props) =>{
         }
       }catch(error){
         alert(error);
+        setIsClicked(false);
       }
     }
 
@@ -41,6 +43,7 @@ const SignUp = (props) =>{
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+      setIsClicked(true);
       let alreadyTaken = true;
       try{
         alreadyTaken = await checkUsernameExist(userName);
@@ -63,6 +66,7 @@ const SignUp = (props) =>{
         setIsAuthenticated(true); 
         }
       }
+      setIsClicked(false);
     } 
   const handleParentCallback=()=>{
     props.parentCallback();
@@ -95,14 +99,12 @@ const SignUp = (props) =>{
                       />
                       </Grid>
                       <Grid >
-                      <button className="btn btn-primary" 
-                       type = "submit"
-                      > 
+                      <button className="btn btn-primary" disabled={isClicked}type = "submit"> 
                       Sign Up
                      </button>
                      </Grid>
                      <Grid >
-                      <button className="btn btn-primary" onClick={handleParentCallback}> 
+                      <button className="btn btn-primary" disabled={isClicked} onClick={handleParentCallback}> 
                       Sign In
                      </button>
                      </Grid>

@@ -29,10 +29,10 @@ const useStyles = makeStyles((theme) => ({
         padding:"10%"
     },
     buttonAdd:{
-      backgroundColor:"#BFF3C4",
+      backgroundColor:"#CCFCF6",
       color: "black",
       border:"none",
-      borderRadius:"50%"
+      borderRadius:"20%"
     }
 
   }));
@@ -43,7 +43,7 @@ const Story =({story, parentCallback, words})=>{
     const [bookLevel, setBookLevel] = useState(story.levels[contentIndex]);
     const [charactersPages, setCharactersPages] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [keywords, setKeywords] = useState([ "只","水","看","很","树"]);
+    const [keywords, setKeywords] = useState([]);
 
     useEffect(()=>{
         const wordList = [...keywords];
@@ -91,7 +91,6 @@ const Story =({story, parentCallback, words})=>{
         <Typography style={{textAlign:"center"}} variant="h4" component="h5"> {story.name} level {bookLevel}</Typography>
         Choose a level
                     <select name="level" id="level" onChange={changeBookLevel}>
-                    {/* <option value={bookLevel}>{bookLevel}</option> */}
                     {story.levels.map((level, levelIndex)=> <option key ={levelIndex} value={levelIndex}> {level} </option>)}
                     </select> 
         {story.voice && <audio src={story.voice[contentIndex].url} controls />  }
