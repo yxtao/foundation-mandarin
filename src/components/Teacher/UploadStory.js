@@ -86,11 +86,11 @@ const UploadStory=()=>{
 
   }
 
-  const onUpdate = (index) =>{
-      setLevel(levels[index]);
-      setContent(contents[index]);
-      onDelete(index);
-  }
+//   const onUpdate = (index) =>{
+//       setLevel(levels[index]);
+//       setContent(contents[index]);
+//       onDelete(index);
+//   }
 
   const handleAudioSave = async (blobObj, audioURL) =>{
        setAudioBlob(blobObj);
@@ -161,13 +161,13 @@ const UploadStory=()=>{
                             /> 
               </div>
              </Grid>
-             <Grid item xs={12}  >
+             {/* <Grid item xs={12}  >
                 picture 
                 <input type="file" 
                         className="form-control" 
                         id="imageFile" 
                         onChange={onFileChange}/>
-            </Grid>   
+            </Grid>    */}
              <Grid item xs={12} >
                     Choose a level
                     <select name="level" id="level" onChange={(e)=> setLevel(e.target.value)}>

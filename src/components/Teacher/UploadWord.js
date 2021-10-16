@@ -14,6 +14,9 @@ const UploadWord=()=>{
    const [name, setName] = useState("");
    const [phrase, setPhrase] = useState("");
    const [pinyin, setPinyin] = useState("");
+   const [wordMeaning, setWordMeaning] = useState("");
+   const [phraseMeanings, setPhraseMeanings] = useState([]);
+   const [sentenceMeanings, setSentenceMeanings] = useState([]);
    const [wordLevel,setWordLevel] = useState(-1);
    const [wordAudio, setwordAudio] = useState("");
    const [wordAudioURL, setwordAudioURL] = useState("");
@@ -45,7 +48,10 @@ const UploadWord=()=>{
    const onNameChange = (e)=>{
        setName(e.target.value)
    }
-
+   const onWordMeaningChange = (e) =>{
+       setWordMeaning(e.target.velue);
+   }
+   
    const onPhraseChange =(e)=>{
        setPhrase(e.target.value)
    }

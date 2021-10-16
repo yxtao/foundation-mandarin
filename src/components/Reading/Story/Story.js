@@ -99,14 +99,14 @@ const Story =({story, parentCallback, words})=>{
              alignItems="stretch"
              justifyContent="center"
         >
-            <Grid className={classes.gridItem} item xs={12} sm={6} > 
+            {/* <Grid className={classes.gridItem} item xs={12} sm={6} > 
                 <Paper className={classes.paper} elevation={5} > 
                     <div className={classes.imageDiv}>
                        {story.image && <img src={story.image[0].url} alt={story.name} style={{width:"30vw", height:"40vh"}}/>  }
                     </div>                
                 </Paper> 
-             </Grid>
-            <Grid className={classes.gridItem} item xs={12} sm={6} > 
+             </Grid> */}
+            <Grid className={classes.gridItem} item xs={6} sm={6} > 
              {charactersPages.length>0 ? 
              <> 
               <Paper className={classes.paper} elevation={5} > 
