@@ -44,6 +44,23 @@ const WordWall = (props)=>{
 
     return(
         <div className="wall-wrap-div">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="col-xs-2 active-cyan">
+                        <input class="form-control" id="ex1" type="text" placeholder="search by chinese character"/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="col-xs-2 active-cyan">
+                        <input class="form-control" id="ex1" type="text" placeholder="search by english meaning"/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="col-xs-2 active-cyan">
+                        <input class="form-control" id="ex1" type="text" placeholder="search by level"/>
+                    </div>
+                </div>
+            </div>
             <WordsPagination wordsNum={wordList.length} callbackRowsPerPage={handleCallbackRowsPerPage} callbackCurrentPage={handleCallbackCurrentPage }/>
             <Grid container 
                 direction="row"
