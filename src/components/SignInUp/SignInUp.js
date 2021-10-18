@@ -32,7 +32,6 @@ const SignInUp = ()=>{
        try{  
           const data = await getUserDataByName(name);  
           setIsAdmin(data.isAdmin);
-          alert(isAdmin);
           setUserLevelState(data.readingLevel);
           setWordSetState(data.notes); 
        }catch(error){

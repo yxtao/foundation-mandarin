@@ -29,8 +29,12 @@ const SignIn = (props) =>{
     return (
         <div>
             <div className="login-background">
-            <Grid container justify="center" wrap="wrap" spacing={2} className="login-form">
+            <button className="btn text-primary" onClick={handleParentCallback}> Sign up </button>
+            <hr/>
+            <br />   
+            <Grid container justify="center" wrap="wrap" spacing={3} className="login-form">
                 <form onSubmit = {handleSubmit}>
+                    <br/>
                     <Grid item>
                     <TextField 
                         value = {email}
@@ -38,6 +42,7 @@ const SignIn = (props) =>{
                         placeholder = "email"
                       />
                     </Grid>
+                    <br/>
                     <Grid item>
                       <TextField 
                         value = {password}
@@ -45,14 +50,10 @@ const SignIn = (props) =>{
                         placeholder="password"
                       />
                     </Grid>
+                    <br/>
                     <Grid item>
-                        <button className="btn btn-primary" type = "submit"> 
-                        Sign In
-                        </button>
-                     </Grid>
-                     <Grid item>  
-                        <button className="btn btn-primary" onClick={handleParentCallback}> 
-                        Sign up
+                        <button className="btn btn-outline-success" type = "submit"> 
+                         log in 
                         </button>
                      </Grid>
                 </form>

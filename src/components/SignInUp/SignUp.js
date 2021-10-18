@@ -4,7 +4,6 @@ import {createUserAccount, loginUser} from "../../api/api";
 import { checkedAuthState, usernameState, firebaseState } from "../../store/AuthAtoms" 
 import {Grid, TextField} from '@material-ui/core';
 
-import firebase from '../../firebase/firebase';
 
 const SignUp = (props) =>{
     const firebase = useRecoilValue(firebaseState);
@@ -77,23 +76,29 @@ const SignUp = (props) =>{
    }
   
     return (
-        <div>
-            <Grid container justify="center" wrap="wrap" spacing={2} className="login-form">
+        <div className="login-background">       
+            <button className="btn text-success" disabled={isClicked} onClick={handleParentCallback}> Sign In</button>  
+            <hr/>
+            <br />       
+            <Grid container justify="center"spacing={3} className="login-form">
                 <form onSubmit ={handleSubmit}>
                     <Grid item>
+                    <br/>
                     <TextField 
                         value = {email}
                         onInput = {e => setEmail(e.target.value)}
-                        placeholder = "email"
+                        placeholder = "email" 
                       />
                     </Grid>
-                    
+                    <br/>
                     <Grid item>
                       <TextField 
                         value = {password}
                         onInput = {e => setPassword(e.target.value)}
                         placeholder="password"
                       />
+                    <br/>
+                    <br/>
                     </Grid>
                       <Grid item>
                         <TextField 
@@ -102,15 +107,11 @@ const SignUp = (props) =>{
                         placeholder="user name"
                       />
                       </Grid>
-                      <Grid >
-                      <button className="btn btn-primary" disabled={isClicked}type = "submit"> 
-                      Sign Up
-                     </button>
-                     </Grid>
-                     <Grid >
-                      <button className="btn btn-primary" disabled={isClicked} onClick={handleParentCallback}> 
-                      Sign In
-                     </button>
+                      <br/>
+                      <Grid item>
+                        <button className="btn btn-outline-primary" disabled={isClicked}type = "submit"> 
+                        Sign up
+                       </button>
                      </Grid>
                 </form>
             </Grid>

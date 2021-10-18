@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import { Link} from 'react-router-dom'
+import { Link} from 'react-router-dom';
 import { useRecoilValue , useRecoilState} from "recoil";
 import { checkedAuthState, usernameState, isAdminState, firebaseState } from "../../store/AuthAtoms" 
 import{
@@ -9,6 +9,8 @@ import{
     Box,
     IconButton
 }from '@material-ui/core';
+
+import Mobile from "./Mobile";
 
 import './NavBar.css';
 
@@ -32,15 +34,28 @@ const displayDesktop =(navItems, user)=>{
 
 const NavBar = ()=>{
     const user = useRecoilValue(usernameState);
-    const firebase = useRecoilValue(firebaseState);
+    const isAdmin = useRecoilValue(isAdminState);
     const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
-
+    const [mobileView, setMobileView] = useState(false)
+    
     const [navItems, setNavItems] = useState([
         {label:"Sign in", link:"/SignInUp"},
         {label:"Home 主页", link:"/"},
         {label:"Word Wall 汉字墙", link:"/wordwall"}, 
         {label:"Reading 阅读", link:"/reading"}]);
+
+    useEffect(() => {
+        const setResponsiveness = () => {
+            return window.innerWidth < 900
+            ? setMobileView(true)
+            : setMobileView(false);
+        };
     
+        setResponsiveness();
+    
+        window.addEventListener("resize", () => setResponsiveness());
+     },[]);
+             
     useEffect(()=>{
       if(isAuthticated){
           setNavItems( [
@@ -51,8 +66,8 @@ const NavBar = ()=>{
               {label:"Reading 阅读", link:"/reading"},
               {label:"Sign out", link:"/signout"}]);
       } 
-      if(isAuthticated&& user==="natasha" ){
-        setNavItems((pre)=>[...pre,{label:"Teacher", link:"/teacher"}]) 
+      if(isAuthticated&& isAdmin ){
+        setNavItems((pre)=>[{label:"Admin", link:"/teacher"},...pre]) 
       }
       if(!isAuthticated){
         setNavItems([
@@ -61,11 +76,11 @@ const NavBar = ()=>{
             {label:"Word Wall 汉字墙", link:"/wordwall"}, 
             {label:"Reading 阅读", link:"/reading"}]);  
       }
-    }, [isAuthticated])
+    }, [isAuthticated, isAdmin])
     
     return (
-        <AppBar position="fixed"  style={{ background: '#CBF3F3', opacity:"0.9",boxShadow: 'none', height:"auto"}}  >
-            {displayDesktop(navItems, user)}
+        <AppBar position={mobileView?"fixed":"sticky" }   style={{ background: '#CBF3F3', opacity:"0.9",boxShadow: 'none', height:"auto"}}  >
+            {mobileView? <Mobile /> : displayDesktop(navItems, user)}
         </AppBar>
     )
 }
