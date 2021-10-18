@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { useHistory } from 'react-router';
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
-import { checkedAuthState, usernameState, isAdminState, firebaseState } from "../../store/AuthAtoms" 
+import { checkedAuthState, usernameState, isAdminState, firebaseState } from "../../store/AuthAtoms"
+import {userlevelstate, wordsetstate} from "../../store/storyWordsAtoms";
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 
@@ -16,6 +17,8 @@ const SignInUp = ()=>{
 
   useEffect(()=>{
     if(isAuthticated){
+      // TODO get user readingLevel and notes from db 
+      // TODO set Rcoil state for userlevelstate, wordsetstate
       history.push("/");
     }
   },[isAuthticated])

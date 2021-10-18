@@ -33,6 +33,7 @@ const SignUp = (props) =>{
     }
 
     const addAdultUser = async(username,password,email)=>{
+      // TODO : add readingLevel and notes
       await db.collection("users").doc(username).set({
         username,
         password,

@@ -1,25 +1,11 @@
 import React,{useEffect, useState} from'react';
 import { useParams } from 'react-router-dom';
-
 import { makeStyles } from '@material-ui/core/styles';
 import {Grid} from'@material-ui/core';
-
+import { useSetRecoilState} from "recoil";
+import {wordsetstate } from "../../store/storyWordsAtoms" ;
 import Story from './Story/Story';
 import WordCard from '../WordWall/WordCard/WordCard'
-
-// TODO: save it to firebase
-//TODO: Delete staticCardList
-const staticCardList = [
-    // {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
-    // {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
-    // {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
-    // {name:"我", phrases:["我们","我在"],sentences:["我们在家"]},
-    // {name:"看", phrases:["看见","看到"],sentences:["我看到一只猫"]},
-    // {name:"水", phrases:["喝水"],sentences:["我喝水"]},
-    // {name:"只", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
-    // {name:"很", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
-    // {name:"树", phrases:["一只鸟","一只猫"],sentences:["这是一只猫"]},
-]
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,23 +23,20 @@ const Reading = (props)=>{
     const [notes,setNotes] = useState([])
     const [story, setStory] = useState(null)
     const [words, setWords] = useState(props.words);
-    const [cardList, setCardList] = useState([]);
+    const [cardList, setCardList] = useState(props.words);
+    const setWordSet = useSetRecoilState(wordsetstate);
     const name = useParams().name
 
     useEffect(()=> {
-        setStory(props.stories.find(element=> element.name === name))
-        console.log(props)
+        setStory(props.stories.find(element=> element.name === name))   
     },[name, props])
-
-    useEffect(()=>{
-        //TODO: Delete staticCardList
-        const tempCardList =[...staticCardList]
-        words.forEach(element => {
-            tempCardList.push(element)
-        });
-         setCardList(tempCardList);
-         console.log("cardList", cardList)
-    },[words])
+   
+    useEffect(() =>{
+        setWordSet((currentState)=>[
+            ...currentState,
+            ...notes
+        ])
+    }, [notes])
 
     const handleDeleteCallback=(name)=>{
       setNotes((preNotes)=>preNotes.filter(note=>note !== name))
@@ -61,7 +44,7 @@ const Reading = (props)=>{
     const handleAddCallback =(name) =>{
       setNotes([...notes,name])
     }
-
+  
     if (!story) return <h1>loading</h1>
     return(
         <div className={classes.root}>

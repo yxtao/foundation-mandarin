@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from'react';
+import { useRecoilValue , useRecoilState} from "recoil";
+import {userlevelstate } from "../../../store/storyWordsAtoms";
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Grid, Typography} from '@material-ui/core';
 
@@ -44,7 +46,9 @@ const Story =({story, parentCallback, words})=>{
     const [charactersPages, setCharactersPages] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [keywords, setKeywords] = useState([]);
-
+    const userLevelState = useRecoilValue(userlevelstate);
+    const [userLevelIndex, setUserLevelIndex] = useState(0);
+    
     useEffect(()=>{
         const wordList = [...keywords];
     
@@ -52,7 +56,10 @@ const Story =({story, parentCallback, words})=>{
             wordList.push(element.name)
         });
         setKeywords(wordList)
-        console.log("keywords",words)
+        const foundIndex= story.levels.findIndex(element => element===userLevelState);
+        if(foundIndex!==-1){
+            setUserLevelIndex(foundIndex);
+        }
     },[])
   
     useEffect(()=>{
@@ -91,6 +98,7 @@ const Story =({story, parentCallback, words})=>{
         <Typography style={{textAlign:"center"}} variant="h4" component="h5"> {story.name} level {bookLevel}</Typography>
         Choose a level
                     <select name="level" id="level" onChange={changeBookLevel}>
+                    <option key ={userLevelState} value={userLevelIndex}> {userLevelState} </option>
                     {story.levels.map((level, levelIndex)=> <option key ={levelIndex} value={levelIndex}> {level} </option>)}
                     </select> 
         {story.voice && <audio src={story.voice[contentIndex].url} controls />  }
@@ -99,13 +107,7 @@ const Story =({story, parentCallback, words})=>{
              alignItems="stretch"
              justifyContent="center"
         >
-            {/* <Grid className={classes.gridItem} item xs={12} sm={6} > 
-                <Paper className={classes.paper} elevation={5} > 
-                    <div className={classes.imageDiv}>
-                       {story.image && <img src={story.image[0].url} alt={story.name} style={{width:"30vw", height:"40vh"}}/>  }
-                    </div>                
-                </Paper> 
-             </Grid> */}
+
             <Grid className={classes.gridItem} item xs={6} sm={6} > 
              {charactersPages.length>0 ? 
              <> 

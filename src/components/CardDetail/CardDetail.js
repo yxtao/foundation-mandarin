@@ -1,7 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import { useRecoilValue , useRecoilState} from "recoil";
 import { useParams } from 'react-router-dom';
-import { checkedAuthState, usernameState, isAdminState, firebaseState } from "../../store/AuthAtoms" ;
 
 import test1 from "../../assets/images/wordcards/test1.jpg";
 import "./CardDetail.css"
@@ -9,13 +8,14 @@ import "./CardDetail.css"
 const CardDetail = (props)=>{
     const name = useParams().word; 
     const [wordData, setWordData] = useState(null);
-    const [ phrasesData, setPhrasesData] = useState([]);
-    const [ sentencesData, setSentencesData] = useState([]);
+    const [phrasesData, setPhrasesData] = useState([]);
+    const [sentencesData, setSentencesData] = useState([]);
     
     useEffect(()=>{
        setWordData(props.wordList.find(element => element.name===name));
        let phrasesInfo = [];
        let sentencesInfo = [];
+       
        if(!wordData) return;
        if(wordData && "phrases" in wordData){
     
@@ -68,6 +68,7 @@ const CardDetail = (props)=>{
     }
     return (
         <div className="container-wrapper-detail">
+           
             <div class="card">
                 <div className="container">
                     <div className = "row">
@@ -89,7 +90,7 @@ const CardDetail = (props)=>{
                             <div className = "col">
                                 <h1 class="card-title">{wordData && wordData.name? wordData.name: "name has not uploaded"}</h1>
                                 <h2 class="card-title">{wordData && wordData.pinyin? wordData.pinyin: "pinyin has not uploaded"}</h2>
-                                <h7 class="card-title">{wordData && wordData.wordMeaning? wordData.wordMeaning: ""}</h7>
+                                <h6 class="card-title">{wordData && wordData.wordMeaning? wordData.wordMeaning: ""}</h6>
                             </div>
                             <div className = "col">
                             { wordData && wordData.wordAudio ? 
@@ -109,9 +110,9 @@ const CardDetail = (props)=>{
                             <div className = "row">
                                 <div className = "col">
                                     <h2 class="card-title">{obj.phrase}</h2>
-                                    <h7 class="card-title"> {"phraseMeaning" in obj?obj.phraseMeaning:""}</h7>
+                                    <h6 class="card-title"> {"phraseMeaning" in obj?obj.phraseMeaning:""}</h6>
                                     <br/>
-                                    <h7 class="card-title">{" "}Level {obj.phraseLevel}</h7>
+                                    <h6 class="card-title">{" "}Level {obj.phraseLevel}</h6>
                                 </div>
                                 <div className = "col">
                                     <audio controls class="embed-responsive-item">
@@ -140,7 +141,7 @@ const CardDetail = (props)=>{
                         </div>
                     </li>
                 </ul>
-                <div class="card-body">
+                <div className="card-body">
                 {wordData && "xiangxingImage" in wordData && wordData.xiangxingImage[0].url ?
                             <div> 
                                 <img src={ wordData && wordData.strokeImage ? wordData.xiangxingImage[0].url : test1} className="img-responsive xiangxing-image" alt="..." />

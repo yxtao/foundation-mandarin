@@ -15,6 +15,16 @@ export const wordliststate = atom({
   });
   
   export const firestoreStorageState = atom({
-    key: "firestoreStorage",
+    key: "firestorestorage",
     default: firebase.storage(),
+  });
+
+  export const wordsetstate = atom({
+    key: "wordsetstate",
+    default: [],
+  });
+
+  export const userlevelstate = atom({
+    key: "userlevelstate",
+    default: 0,
   });

@@ -24,8 +24,9 @@ const WordCard = ({wordData, parentDeleteCallback, hideDelete})=> {
   }
   return (
     <Card className={classes.root} >
-      <Link to = {`/carddetail/${wordData.name}`}>
+     
       <CardActionArea>
+      <Link to = {`/carddetail/${wordData.name}`}>
       <CardMedia
           component="img"
           alt={wordData.name}
@@ -46,17 +47,17 @@ const WordCard = ({wordData, parentDeleteCallback, hideDelete})=> {
                   {phrase}
               </Typography>)}
         </CardContent>
+        </Link>
       </CardActionArea>
       <CardActions>
         {hideDelete===true? null : 
-        <Button size="small" color="primary" onClick={()=>sendDeleteCallback(wordData.word)}>
+        <Button size="small" color="primary" onClick={()=>sendDeleteCallback(wordData.name)}>
           delete 
         </Button> }
         <Button size="small" color="primary">
           Learn More
         </Button>
       </CardActions>
-      </Link>
     </Card>
   );
 }

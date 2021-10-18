@@ -1,4 +1,4 @@
-import React, {useEffect} from'react';
+import React, {useEffect, useState} from'react';
 import firebase from './firebase/firebase';
 import { useRecoilState } from "recoil";
 import { storyliststate, wordliststate} from "./store/storyWordsAtoms" 
@@ -25,7 +25,7 @@ import CardDetail from "./components/CardDetail/CardDetail";
 const Router = ()=>{
     const [storyList, setStoryList] = useRecoilState(storyliststate);
     const [wordList, setWordList] = useRecoilState(wordliststate);
-
+    const [wordSet, setWordSet] = useState([]);
     useEffect(()=> {
        const fetchData= async()=> {
             const db = await firebase.firestore().collection("story");
@@ -49,7 +49,7 @@ const Router = ()=>{
        }
         fetchData()  
     }, [])
-
+   
     return(
         <BrowserRouter>
             <NavBar clasName="NavBar" /> 
@@ -62,7 +62,7 @@ const Router = ()=>{
                 <Route path="/teacher" component={Teacher} />
                 <Route path="/story/:name"  component={ () => <Reading stories={storyList} words={wordList} /> }/>
                 <Route path="/assessment" component={Assessment} />
-                <Route path="/recommendation" component = {Recommendation} />
+                <Route path="/recommendation"  component={()=> <Recommendation words={wordList} /> }/>
                 <Route path="/carddetail/:word" component={()=> <CardDetail wordList={wordList} /> } />
             </Switch>
         </BrowserRouter>

@@ -46,7 +46,7 @@ const NavBar = ()=>{
           setNavItems( [
               {label:"Home 主页", link:"/"},
               {label:"Assessment 测试", link:"/assessment"},
-              {label:"Recommendation 推荐", link:"/recommendation"},
+              {label:"Notes 笔记", link:"/recommendation"},
               {label:"Word Wall 汉字墙", link:"/wordwall"}, 
               {label:"Reading 阅读", link:"/reading"},
               {label:"Sign out", link:"/signout"}]);

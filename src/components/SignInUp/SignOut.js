@@ -1,19 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import { useHistory } from 'react-router';
-import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
-import { checkedAuthState, usernameState, isAdminState, firebaseState } from "../../store/AuthAtoms" 
+import React, {useEffect} from 'react';
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { checkedAuthState, usernameState, firebaseState } from "../../store/AuthAtoms" 
+import {userlevelstate, wordsetstate} from "../../store/storyWordsAtoms";
 
 import './SignInUp.css';
 
 const SignOut = ()=>{
-  const history = useHistory();
   const firebase = useRecoilValue(firebaseState);
-  const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
-  const [user, setUser] = useRecoilState(usernameState);
+  const setIsAuthenticated = useSetRecoilState(checkedAuthState);
+  const setUser = useSetRecoilState(usernameState);
+  const setUserLevel = useSetRecoilState(userlevelstate);
+  const setWordSet = useSetRecoilState(wordsetstate);
   useEffect(()=>{
     firebase.auth().signOut();
     setIsAuthenticated(false);
     setUser("");
+    setUserLevel(0);
+    setWordSet([]);
   }, [])
 
     return (
