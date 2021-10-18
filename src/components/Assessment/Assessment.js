@@ -2,13 +2,15 @@ import React,{useState, useEffect} from 'react';
 import { useRecoilValue , useRecoilState} from "recoil";
 import {userlevelstate } from "../../store/storyWordsAtoms";
 import { useHistory } from 'react-router-dom';
-import { checkedAuthState, usernameState, isAdminState, firebaseState } from "../../store/AuthAtoms" ;
+import { usernameState, firebaseState } from "../../store/AuthAtoms" ;
+
 
 
 import "./Assessment.css"
 
 const Assessment= (props)=>{
     const history = useHistory();
+    const firebase = useRecoilValue(firebaseState);
     const user = useRecoilValue(usernameState);
     const [levelState,setLevelState] = useRecoilState(userlevelstate);
     // TODO get all levels words from db
@@ -20,12 +22,36 @@ const Assessment= (props)=>{
     const [completed, setCompleted] = useState(false);
     const [knowList, setKnowList] = useState([]);
     const [unknowList, setUnknowList] = useState([]);
+    const [userLevelState, setUserLevelState] = useRecoilState(userlevelstate);
+   
 
     useEffect(()=>{
        setReadingLevel(1);
        setLevelState(readingLevel);
-       // TODO update readingLevel in db
-    },[completed])
+       const updateRecoilUserInfo = async (name, level) =>{
+            try{  
+                await updateUserDataByName(name, level); 
+            
+            }catch(error){
+                alert(error);
+            } 
+        }
+       updateRecoilUserInfo(user,readingLevel);
+       
+    },[completed, readingLevel, user])
+
+    const updateUserDataByName = async(name, level)=>{
+        try {
+            const query = await firebase.firestore().collection("users").where("username", "==",name).get();
+             if(!query.empty){
+                 await firebase.firestore().collection("users").doc(name).update({
+                    readingLevel:level
+                 })
+             }
+          }catch(error){
+            alert(error);
+          }
+      }
 
     const addKnow = ()=>{
         setKnowList(pre=>[...pre,word]);  
@@ -52,7 +78,7 @@ const Assessment= (props)=>{
     const vistLoginUp = () =>{
         history.push("/SignInUp")
     }
-
+    
      if(!user){
         return(
             <div class ="justify-content-center row">

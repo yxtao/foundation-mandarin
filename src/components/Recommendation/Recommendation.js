@@ -1,14 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import { useSetRecoilState, useRecoilState} from "recoil";
+import { useSetRecoilState, useRecoilState, useRecoilValue} from "recoil";
+import { checkedAuthState, usernameState,firebaseState } from "../../store/AuthAtoms";
+import {wordsetstate } from "../../store/storyWordsAtoms";
 import {Grid} from'@material-ui/core';
-import {wordsetstate } from "../../store/storyWordsAtoms"
 
 import WordCard from '../WordWall/WordCard/WordCard';
 import "./Recommendation.css"
 
 const Recommendation =(props)=>{
+  const firebase = useRecoilValue(firebaseState);
+  const user = useRecoilValue(usernameState);
   const [wordSets,setWordSets] = useRecoilState(wordsetstate);
   const [wordDataList, setWordDataList] = useState([]);
+
   useEffect(()=>{
       let array = wordSets;
       let set = [...new Set(array)];
@@ -24,12 +28,32 @@ const Recommendation =(props)=>{
 
   const handleDeleteCallback =(wordName)=>{
     setWordDataList((preList)=> preList.filter(data=> data.name!==wordName));
+    setWordSets((preSet) => preSet.filter(word=> word!==wordName));
   }
-    
+  
+  const updateUserDataByName = async()=>{
+    try {
+        const query = await firebase.firestore().collection("users").where("username", "==", user).get();
+         if(!query.empty){
+             await firebase.firestore().collection("users").doc(user).update({
+                notes:wordSets
+             })
+         }
+      }catch(error){
+        alert(error);
+      }
+  }
+
     return(
         <div className="recommendation-div">
+          <div className="p-2">
+            {user!==""?<button 
+                       type="button"
+                       className="btn btn-outline-primary"
+                       onClick = {()=>updateUserDataByName(user, wordDataList)}> save </button> : null}
+          </div>
+         
           <div class="row">
-        
              <Grid container 
                 direction="row"
                 alignItems="stretch"

@@ -49,20 +49,20 @@ async function requestRecorder() {
 }
 
   return (
-    <div className="container">
+    <div className="d-block  p-4">
       <div className="row">
-        <div className="col-sm"> 
-             <button  className="btn btn-secondary" onClick={startRecording} disabled={isRecording}> start recording </button>  
+        <div className="col"> 
+             <button  className="btn btn-outline-primary" onClick={startRecording} disabled={isRecording}> start recording </button>  
         </div>
-        <div class="col-sm"> 
+        <div className="col "> 
              <audio src={audioURL} controls />
         </div>
-        <div class="col-sm" > 
-            <button  className="btn btn-secondary" onClick={stopRecording} disabled={!isRecording}> stop recording </button>
+        <div className="col " > 
+            <button  className="btn btn-outline-success" onClick={stopRecording} disabled={!isRecording}> stop recording </button>
         </div>
-        <div class="col-sm">
+        <div className="col">
         
-         <button className="btn btn-success" 
+         <button className="btn btn-outline-warning" 
                  disabled={audioURL ==="" || blobObj===null} 
                  onClick={()=>{props.callbackAudio(blobObj, audioURL);setBlobObj(null); setAudioURL(null);}}>
                  upload

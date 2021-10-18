@@ -9,9 +9,9 @@ import UploadWord from './UploadWord';
 const Teacher=()=>{
   const[uploadContent, setUploadContent] = useState("");
   return(
-      <div className="TeacherDiv">
-          <button className="btn-lg" onClick={()=>setUploadContent("story")}>create stories</button>
-          <button className="btn-lg" onClick={()=>setUploadContent("word")}>create words</button>
+      <div className="container m-5">
+          <button className="btn-lg m-lg-3 btn btn-outline-success " onClick={()=>setUploadContent("story")}>create stories</button>
+          <button className="btn-lg m-lg-3 btn btn-outline-info" onClick={()=>setUploadContent("word")}>create words</button>
           {uploadContent==="story"? <UploadStory/> : 
            uploadContent==="word"?
            <UploadWord /> :

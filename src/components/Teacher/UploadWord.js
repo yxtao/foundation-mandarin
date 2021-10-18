@@ -300,7 +300,7 @@ const UploadWord=()=>{
 
     return (
        <div className="form-group StoryUploadDiv">
-           <Grid container spacing={3} > 
+           <Grid container spacing={3} style={{ border: "1px solid grey" }}> 
               <Grid item xs={12} >
                     <button className="btn btn-success" 
                     disabled={savingToFirebase} 
@@ -308,12 +308,11 @@ const UploadWord=()=>{
                     查看已有汉字
                     </button>
               </Grid>
-          
              <Grid item  
               container 
+              spacing={3}
               direction="row"
-              alignItems="stretch"
-              justifyContent="space-around">
+              alignItems="stretch">
                     <Grid item >       
                         <textarea  class="form-control" 
                                 value={name} 
@@ -331,10 +330,13 @@ const UploadWord=()=>{
                     </Grid>
             </Grid>
              <Grid  item xs={12} > 
+                <hr/>
                 <Audio  callbackAudio={handleWordAudioSave}/> 
+                <hr/>
             </Grid>  
              <Grid item xs={12} >
-                    汉字级别
+                    <div className="h4 border p-2">
+                    汉字级别    
                     <select name="level" id="level" onChange={(e)=> setWordLevel(e.target.value)}>
                     <option value="-1"> choose </option>
                     <option value="0">0</option>
@@ -342,11 +344,13 @@ const UploadWord=()=>{
                     <option value="2">2</option>
                     <option value="3">3</option>
                     </select>
+                </div>
              </Grid>
-             
+             <hr/>
              <Grid item  
               container 
-              direction="row"
+              spacing={3}
+              direction="column"
               alignItems="stretch"
               justifyContent="space-around">
                     <Grid item >       
@@ -370,14 +374,15 @@ const UploadWord=()=>{
                                 id="imageFile" 
                                 onChange={onXiangxingImageChange}/>
                     </Grid>
+                    <hr/>
             </Grid>
-            
+           
             <Grid item  
               container 
               direction="row"
               alignItems="stretch"
-              justifyContent="space-around">
-                    <Grid item >       
+              spacing ={3}>
+                <Grid item >       
                         <textarea className="form-control" 
                                     rows="2" 
                                     value={phrase} 
@@ -385,14 +390,16 @@ const UploadWord=()=>{
                                     placeholder="词语" />  
                     </Grid>
                     <Grid item >       
-                       词语级别
-                        <select name="level" id="level" onChange={(e)=> setLevel(e.target.value)}>
-                        <option value="-1"> choose </option>
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        </select>
+                       <div className="h4 border p-2">
+                            词语级别
+                            <select name="level" id="level" onChange={(e)=> setLevel(e.target.value)}>
+                            <option value="-1"> choose </option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            </select>
+                        </div>
                     </Grid>
                     <Grid item>  
                         <textarea  class="form-control"     
@@ -412,12 +419,14 @@ const UploadWord=()=>{
                 </div>
             </Grid>
             <Grid item xs={12}  >
+            <hr/>
               <div className="form-group">
                  <textarea  class="form-control" 
                             rows="1" 
                             value={sentence} 
                             onChange={onSentenceChange} placeholder="句子"
                             /> 
+                  <hr/>
                  <textarea  class="form-control" 
                             rows="1" 
                             value={sentenceMeaning} 

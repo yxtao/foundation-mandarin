@@ -10,7 +10,6 @@ const SignIn = (props) =>{
     const [email, setEmail]= useState("");
     const [password, setPassword] = useState("");
     const [user, setUser] = useRecoilState(usernameState);
-    const [isAdmin, setIsAdmin] = useRecoilState(isAdminState);
     const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
 
     const handleSubmit = async (e) => {
@@ -18,7 +17,7 @@ const SignIn = (props) =>{
         try{ 
             await loginUser(email,password);
             var currentUser = firebase.auth().currentUser;
-            setUser(currentUser.displayName);
+            setUser(currentUser.displayName); 
             setIsAuthenticated(true);
         }catch(error){
            alert(error);
@@ -28,7 +27,7 @@ const SignIn = (props) =>{
        props.parentCallback()
    }
     return (
-        <div> {user.displayName}
+        <div>
             <div className="login-background">
             <Grid container justify="center" wrap="wrap" spacing={2} className="login-form">
                 <form onSubmit = {handleSubmit}>

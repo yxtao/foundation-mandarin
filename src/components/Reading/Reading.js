@@ -2,8 +2,9 @@ import React,{useEffect, useState} from'react';
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {Grid} from'@material-ui/core';
-import { useSetRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {wordsetstate } from "../../store/storyWordsAtoms" ;
+import {usernameState} from "../../store/AuthAtoms";
 import Story from './Story/Story';
 import WordCard from '../WordWall/WordCard/WordCard'
 
@@ -20,22 +21,29 @@ const useStyles = makeStyles((theme) => ({
   
 const Reading = (props)=>{
     const classes = useStyles();
+    const user = useRecoilValue(usernameState);
     const [notes,setNotes] = useState([])
     const [story, setStory] = useState(null)
     const [words, setWords] = useState(props.words);
     const [cardList, setCardList] = useState(props.words);
-    const setWordSet = useSetRecoilState(wordsetstate);
-    const name = useParams().name
+    const [wordSet,setWordSet] = useRecoilState(wordsetstate);
+    const name = useParams().name;
 
     useEffect(()=> {
         setStory(props.stories.find(element=> element.name === name))   
     },[name, props])
    
     useEffect(() =>{
-        setWordSet((currentState)=>[
-            ...currentState,
-            ...notes
-        ])
+        if(user!=="") {
+            if(wordSet.length !==0) {
+                setWordSet((currentState)=>[
+                    ...currentState,
+                    ...notes
+                ])
+            }else{
+                setWordSet(notes);
+            }
+        }
     }, [notes])
 
     const handleDeleteCallback=(name)=>{

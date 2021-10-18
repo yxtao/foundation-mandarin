@@ -38,7 +38,10 @@ const SignUp = (props) =>{
         username,
         password,
         email,
-        isadult:true
+        isadult:true,
+        readingLevel:0,
+        notes:[],
+        isAdmin: false,
       })
     }
 
