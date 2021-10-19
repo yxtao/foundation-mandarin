@@ -11,21 +11,27 @@ const Story =({story, parentCallback, words})=>{
     const [charactersPages, setCharactersPages] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [keywords, setKeywords] = useState([]);
-    const userLevelState = useRecoilValue(userlevelstate);
+    const  userLevelState = useRecoilValue(userlevelstate);
     const [userLevelIndex, setUserLevelIndex] = useState(0);
     
     useEffect(()=>{
+        let foundIndex= story.levels.findIndex((e)=> Number(e)===userLevelState);
+        console.log(foundIndex, story.levels,userLevelState)
+        if(foundIndex!==-1){
+            setUserLevelIndex(foundIndex);
+            setContentIndex(foundIndex);
+            setBookLevel(userLevelState);
+        }
+        console.log(userLevelIndex)
+
         const wordList = [...keywords];
     
         words.forEach(element => {
             wordList.push(element.name)
         });
         setKeywords(wordList)
-        const foundIndex= story.levels.findIndex(element => element===userLevelState);
-        if(foundIndex!==-1){
-            setUserLevelIndex(foundIndex);
-        }
-    },[])
+
+    },[userLevelState, story.levels])
   
     useEffect(()=>{
         const characters = story.contents[contentIndex].split("");
@@ -90,11 +96,11 @@ const Story =({story, parentCallback, words})=>{
                     </div>
                </Paper> 
                 <div class="row align-items-center justify-content-center">
-                    <div className="col-4">
-                        <button className= "btn" onClick={handleSetPreviousPage}> <span class="h2 text-white"> {"<"} </span>  </button>
+                    <div className="col-4 ">
+                        <button className= "btn" onClick={handleSetPreviousPage}> <span className="nextpage"> pre page {"<"} </span>  </button>
                     </div>
                     <div className="col-4">
-                        <button className="btn" onClick={handleSetNextPage} > <span class="h2 text-white"> {">"} </span>  </button> 
+                        <button className="btn" onClick={handleSetNextPage} > <span className="nextpage"> {">"} next page</span>  </button> 
                     </div>
                 </div> 
                 </div>

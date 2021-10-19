@@ -67,11 +67,10 @@ const CardDetail = (props)=>{
         return <div className="container-wrapper-detail"> loading... </div>
     }
     return (
-        <div className="container-wrapper-detail">
-           
-            <div class="card">
+        <div className="container-wrapper-detail p-3 p-lg-5"> 
+            <div class="card cardDiv">
                 <div className="container">
-                    <div className = "row">
+                    <div className = "row p-2 p-lg-3">
                         {wordData && "image" in wordData ?
                         <div className = "col">
                         <img src={ wordData && wordData.image ? wordData.image[0].url : test1} className="img-responsive detail-image" alt="..." />

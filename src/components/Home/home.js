@@ -40,8 +40,8 @@ const Home=()=> {
               style={{height:"30vh"}}
              >
                     {books.map((item,index)=>
-                                <Grid key={index} item style={{border:"", width:`${98/books.length}%`}}> 
-                                    <Card key={index} style={{height:"30vh"}}>{item}</Card>
+                                <Grid key={index} item style={{border:"", width:`${98/books.length}%`}}>
+                                      <div key={index} className="bookDiv">{item}</div>
                                 </Grid>
                         )}
             </Grid>

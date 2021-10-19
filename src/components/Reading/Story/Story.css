@@ -9,6 +9,8 @@
 .storyContent{
     height: 40vh;
     line-height:3;
+    box-shadow: 5px 15px 15px 0 rgb(4, 153, 252);
+    transition: 0.3s;   
 }
 @media only screen and (max-width: 768px) {
     .storyContent{
@@ -16,3 +18,9 @@
       line-height:2;
     }
   }
+
+  .nextpage{
+    font-size: x-large;
+    color:rgb(255, 0, 234);
+  }
+ 

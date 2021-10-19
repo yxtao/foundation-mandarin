@@ -72,7 +72,7 @@ const WordWall = (props)=>{
                 wordPageArrays[currentPage] &&
                 wordPageArrays[currentPage].length!==0 && 
                 wordPageArrays[currentPage].map((item,index)=> 
-                        <Grid key={index} item xs={6} sm={4} md={3} > 
+                        <Grid key={index} item xs={12} sm={4} md={3} > 
                         <WordCard wordData={item} parentDeleteCallback={handleDeleteCallback} hideDelete={true}/> 
                         </Grid>) 
                 } 

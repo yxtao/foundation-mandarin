@@ -13,7 +13,7 @@ import test1 from "../../../assets/images/wordcards/test1.jpg"
 const useStyles = makeStyles({
   root: {
     maxWidth: 280,
-    border:"4px solid lightblue"
+    boxShadow: "5px 10px 10px 0 rgb(4, 200, 200)", 
   },
 });
 

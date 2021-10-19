@@ -79,7 +79,7 @@ const NavBar = ()=>{
     }, [isAuthticated, isAdmin])
     
     return (
-        <AppBar position={mobileView?"fixed":"sticky" }   style={{ background:mobileView? 'transparent':"#97f2f8",boxShadow: 'none', height:"auto", opacity:0.8}} >
+        <AppBar position={mobileView?"fixed":"sticky" }   style={{ background:mobileView? 'transparent':"#97f2f8",boxShadow: 'none', height:"auto", opacity:0.7}} >
             {mobileView? <Mobile /> : displayDesktop(navItems, user)}
         </AppBar>
     )

@@ -13,3 +13,12 @@
       height:100vh;
     }
   }
+  .bookDiv{
+    box-shadow: 5px 10px 10px 0  rgba(44, 250, 233, 0.541);
+    height:30vh;
+    background-color:whitesmoke;
+}
+/* On mouse-over, add a deeper shadow */
+ .bookDiv:hover {
+    box-shadow: 0 10px 10px 0 rgb(2, 250, 105);
+  }
