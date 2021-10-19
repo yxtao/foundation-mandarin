@@ -43,7 +43,7 @@ const WordWall = (props)=>{
     }
 
     return(
-        <div className="wall-wrap-div">
+        <div className="wallMain p-5">
             <div class="row">
                 <div class="col-sm-4">
                     <div class="col-xs-2 active-cyan">

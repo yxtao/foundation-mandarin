@@ -3,7 +3,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 
 const WordsPagination = (props) => {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(8);
+  const [rowsPerPage, setRowsPerPage] = React.useState(4);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

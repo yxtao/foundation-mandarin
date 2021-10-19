@@ -16,7 +16,7 @@ import './NavBar.css';
 
 const displayDesktop =(navItems, user)=>{
     return(
-            <Toolbar>
+            <Toolbar  >
                 <Box  display='flex' flexGrow={1} style={{color: "black"}}>
                     Logo
                 </Box>
@@ -79,7 +79,7 @@ const NavBar = ()=>{
     }, [isAuthticated, isAdmin])
     
     return (
-        <AppBar position={mobileView?"fixed":"sticky" }   style={{ background: '#CBF3F3', opacity:"0.9",boxShadow: 'none', height:"auto"}}  >
+        <AppBar position={mobileView?"fixed":"sticky" }   style={{ background:mobileView? 'transparent':"#97f2f8",boxShadow: 'none', height:"auto", opacity:0.8}} >
             {mobileView? <Mobile /> : displayDesktop(navItems, user)}
         </AppBar>
     )

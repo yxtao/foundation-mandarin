@@ -51,16 +51,30 @@ const SignInUp = ()=>{
       }
   }
 
-  const handleCallback = () =>{
+  const setSignUp = () =>{
     setIsSignUp(true);
   }
-  const handleSignUpCallback = ()=>{
+  const setSignIn = ()=>{
     setIsSignUp(false);
   }
 
     return (
-     <div className="container wrapperDiv">
-       {isSignUp? <SignUp parentCallback = {handleSignUpCallback}/> : <SignIn parentCallback = {handleCallback} /> }
+     <div className="wrapperDiv">
+       <div className="bg-light p-1 input ">
+        <div class = "row justify-content-around">
+          <div class="col-2 ">
+            <button className="btn text-success btn-bg"  
+                    style={{borderBottom:!isSignUp? "2px solid black": "white"}}
+                    onClick={setSignIn}> Sign In</button> 
+          </div>
+          <div class="col-2 ">
+          <button className="btn text-success btn-bg "
+                  style={{borderBottom:isSignUp? "2px solid black": "white"}}
+                  onClick={setSignUp}> Sign Up</button> 
+          </div>
+        </div>
+        {isSignUp? <SignUp/> : <SignIn /> }
+       </div>
     </div>
     )
 }

@@ -76,11 +76,8 @@ const SignUp = (props) =>{
    }
   
     return (
-        <div className="login-background">       
-            <button className="btn text-success" disabled={isClicked} onClick={handleParentCallback}> Sign In</button>  
-            <hr/>
-            <br />       
-            <Grid container justify="center"spacing={3} className="login-form">
+        <div className="container">           
+            <Grid container justify="center"spacing={3}>
                 <form onSubmit ={handleSubmit}>
                     <Grid item>
                     <br/>

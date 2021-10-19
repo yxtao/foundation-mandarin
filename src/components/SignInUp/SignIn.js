@@ -28,10 +28,7 @@ const SignIn = (props) =>{
    }
     return (
         <div>
-            <div className="login-background">
-            <button className="btn text-primary" onClick={handleParentCallback}> Sign up </button>
-            <hr/>
-            <br />   
+            <div className="container">   
             <Grid container justify="center" wrap="wrap" spacing={3} className="login-form">
                 <form onSubmit = {handleSubmit}>
                     <br/>

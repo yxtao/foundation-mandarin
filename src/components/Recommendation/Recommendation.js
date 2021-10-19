@@ -49,7 +49,7 @@ const Recommendation =(props)=>{
           <div className="p-2">
             {user!==""?<button 
                        type="button"
-                       className="btn btn-outline-primary"
+                       className="btn btn-outline-danger"
                        onClick = {()=>updateUserDataByName(user, wordDataList)}> save </button> : null}
           </div>
          

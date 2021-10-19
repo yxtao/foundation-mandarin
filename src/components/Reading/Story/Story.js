@@ -1,46 +1,11 @@
 import React, {useEffect, useState} from'react';
 import { useRecoilValue , useRecoilState} from "recoil";
 import {userlevelstate } from "../../../store/storyWordsAtoms";
-import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Grid, Typography} from '@material-ui/core';
+import "./Story.css"
 
-//TODO : store keywords in firebase, category them to different levels 
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width:"95%", 
-        margin:"auto",
-    },
-    gridContainer:{
-        width:"100%", 
-        margin:"auto"
-    },
-    gridItem:{
-    },
-    paper:{
-        height:"50vh"
-    },
-    contentDiv:{
-        padding:"5%",
-        fontSize:"2vw"
-    },
-    //TODO: Adjust the image position in mobile model
-    imageDiv:{
-        width:"40vw",
-        height:"40vh",
-        padding:"10%"
-    },
-    buttonAdd:{
-      backgroundColor:"#CCFCF6",
-      color: "black",
-      border:"none",
-      borderRadius:"20%"
-    }
-
-  }));
   
 const Story =({story, parentCallback, words})=>{
-    const classes = useStyles();
     const [contentIndex, setContentIndex] = useState(0);
     const [bookLevel, setBookLevel] = useState(story.levels[contentIndex]);
     const [charactersPages, setCharactersPages] = useState([]);
@@ -94,33 +59,45 @@ const Story =({story, parentCallback, words})=>{
   }
 
     return(
-        <div className={classes.root}>
-        <Typography style={{textAlign:"center"}} variant="h4" component="h5"> {story.name} level {bookLevel}</Typography>
-        Choose a level
-                    <select name="level" id="level" onChange={changeBookLevel}>
-                    <option key ={userLevelState} value={userLevelIndex}> {userLevelState} </option>
-                    {story.levels.map((level, levelIndex)=> <option key ={levelIndex} value={levelIndex}> {level} </option>)}
-                    </select> 
-        {story.voice && <audio src={story.voice[contentIndex].url} controls />  }
-        <Grid className={classes.gridContainer}
-             container 
-             alignItems="stretch"
-             justifyContent="center"
-        >
+        <div className="storyMain">
+            <Typography style={{textAlign:"center"}} variant="h4" component="h5"> {story.name} level {bookLevel}</Typography>
+                    <div class="h4">
+                        <select name="level" id="level" onChange={changeBookLevel}>
+                        <option key ={userLevelState} value={userLevelIndex}> Level {userLevelState} </option>
+                        {story.levels.map((level, levelIndex)=> <option key ={levelIndex} value={levelIndex}>Level {level} </option>)}
+                        </select> 
+                    </div>
+            {story.voice && <audio src={story.voice[contentIndex].url} controls />  }
+            <Grid 
+                container 
+                alignItems="stretch"
+                justifyContent="center"
+            >
 
-            <Grid className={classes.gridItem} item xs={6} sm={6} > 
+            <Grid  item xs={12} sm={12} > 
              {charactersPages.length>0 ? 
-             <> 
-              <Paper className={classes.paper} elevation={5} > 
-                    <div className={classes.contentDiv}>
+             <div> 
+              <Paper elevation={5} > 
+                    <div className="h4 container p-4 storyContent">
                         {charactersPages[currentPage].map((character, index)=> keywords.includes(character)?
-                        <button key={index}  className={classes.buttonAdd} onClick={()=>sendCallback(character)}>{character}</button>
+                        <button key={index}  
+                               type="button" 
+                               className="btn btn-outline-light"
+                               onClick={()=>sendCallback(character)}>
+                                <span class="h4 text-warning"> {character} </span>
+                        </button>
                         :character)}
                     </div>
                </Paper> 
-             <button className= "btn" onClick={handleSetPreviousPage}> {"<"} </button>
-             <button className="btn" onClick={handleSetNextPage} >  {">"} </button> 
-                </>
+                <div class="row align-items-center justify-content-center">
+                    <div className="col-4">
+                        <button className= "btn" onClick={handleSetPreviousPage}> <span class="h2 text-white"> {"<"} </span>  </button>
+                    </div>
+                    <div className="col-4">
+                        <button className="btn" onClick={handleSetNextPage} > <span class="h2 text-white"> {">"} </span>  </button> 
+                    </div>
+                </div> 
+                </div>
                : null}
             </Grid>
         </Grid>

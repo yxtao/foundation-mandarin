@@ -80,9 +80,8 @@ const Mobile = (props) => {
     }
   }, [isAuthticated, isAdmin])
 
-  return (
-     
-    <Toolbar>
+  return (    
+    <Toolbar style={{ background: 'transparent',boxShadow: 'none'}} >
         {user}
         <IconButton
             {...{
@@ -106,8 +105,7 @@ const Mobile = (props) => {
         >
         {getDrawerChoices()}
         </Drawer>
-    </Toolbar>
-    
+    </Toolbar> 
   )
 };
 

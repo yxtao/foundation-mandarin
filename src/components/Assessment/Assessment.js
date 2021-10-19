@@ -94,14 +94,14 @@ const Assessment= (props)=>{
     
     if(completed){
         return(
-            <div class ="justify-content-center row">
-                <div class="jumbotron bg-light w-50 ">
-                    <h1 class="display-4">Hello {user}</h1>
-                    <p class="lead">We recommend you read level {levelState} books.</p>
-                    <hr class="my-4" />
+            <div class ="container-wrapper justify-content-center row p-4">
+                <div class="jumbotron bg-light w-60 h-50 m-3">
+                    <h1 class="display-6">Hello {user}</h1>
+                    <p class="lead">We recommend you to read level {levelState} books.</p>
+                    <hr class="my-6" />
                     <p> Please feel free to check recommendation pages to study the words, and vist the reading page.</p>
                     <p class="lead">
-                       <button type="button" class="btn btn-outline-secondary" onClick={vistReading}>reading page</button>  
+                       <button type="button" class="btn btn-outline-success" onClick={vistReading}>reading page</button>  
                     </p>
                 </div>
             </div>

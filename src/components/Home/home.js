@@ -2,29 +2,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Card} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    height:"100vh",
-   // border:"1px solid red",
-    marginTop:"20vh",
-    padding:"5vw",
-  },
-  Card: {
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-}));
-
-
+import "./home.css";
 const items =["hello","test"]
-const books =["book","book","book"]
+const books =["This is a sample book","This is a sample book","This is a sample book"]
 const Home=()=> {
-  const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <div className="CenterMain pt-5 ">
       <Grid container 
              direction="column"
              alignItems="stretch"
@@ -40,12 +23,12 @@ const Home=()=> {
               style={{height:"30vh"}}
              >
                     <Grid item 
-                        style={{border:"1px solid purple", width:`${96/items.length}%`}}>
+                        style={{border:"", width:`${96/items.length}%`}}>
                         <div>this is a message div</div>
                     </Grid>
                     <Grid item
-                    style={{border:"1px solid purple", width:`${96/items.length}%`}}>
-                        <div>this is a picture div</div>
+                    style={{border:"", width:`${96/items.length}%`}}>
+                        <div>this is an about div</div>
                     </Grid>
             </Grid>
 
@@ -57,10 +40,13 @@ const Home=()=> {
               style={{height:"30vh"}}
              >
                     {books.map((item,index)=>
-                                <Grid key={index} item style={{border:"1px solid purple", width:`${98/books.length}%`}}> 
-                                    <Card key={index} className={classes.paper}>{item}</Card>
+                                <Grid key={index} item style={{border:"", width:`${98/books.length}%`}}> 
+                                    <Card key={index} style={{height:"30vh"}}>{item}</Card>
                                 </Grid>
                         )}
+            </Grid>
+            <Grid item style={{margin:"5vh"}}>
+              <div> This is contact div  </div>
             </Grid>
       </Grid>
     </div>

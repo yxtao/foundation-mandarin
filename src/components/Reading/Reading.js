@@ -7,22 +7,11 @@ import {wordsetstate } from "../../store/storyWordsAtoms" ;
 import {usernameState, isAdminState} from "../../store/AuthAtoms";
 import Story from './Story/Story';
 import WordCard from '../WordWall/WordCard/WordCard'
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width:"90%", 
-        marginTop:"20vh",
-    },
-    noteDiv:{
-        width:"90%",
-        margin:"auto"
-    }
-  }));
+import "./Reading.css";
   
 const Reading = (props)=>{
-    const classes = useStyles();
     const user = useRecoilValue(usernameState);
-    const isAdmin = useRecoilState(isAdminState);
+    const isAdmin = useRecoilValue(isAdminState);
     const [notes,setNotes] = useState([])
     const [story, setStory] = useState(null)
     const [words, setWords] = useState(props.words);
@@ -33,32 +22,31 @@ const Reading = (props)=>{
     useEffect(()=> {
         setStory(props.stories.find(element=> element.name === name))   
     },[name, props])
-   
-    useEffect(() =>{
-        if(user!=="" && !isAdmin) {
-            if(wordSet.length !==0) {
-                setWordSet((currentState)=>[
-                    ...currentState,
-                    ...notes
-                ])
-            }else{
-                setWordSet(notes);
-            }
-        }
-    }, [notes])
 
     const handleDeleteCallback=(name)=>{
       setNotes((preNotes)=>preNotes.filter(note=>note !== name))
     }
     const handleAddCallback =(name) =>{
       setNotes([...notes,name])
+
+      if(user!=="" && !isAdmin) {
+        if(wordSet.length !==0) {
+            setWordSet((currentState)=>[
+                ...currentState,
+                ...notes
+            ])
+        }else{
+            setWordSet(notes);
+        }
+    }
+      
     }
   
     if (!story) return <h1>loading</h1>
     return(
-        <div className={classes.root}>
+        <div className="readingMain">
             <Story story= {story}  parentCallback = {handleAddCallback} words={words}/>
-            <div className={classes.noteDiv}>
+            <div className="p-5">
             <Grid container 
                 direction="row"
                 alignItems="stretch"
