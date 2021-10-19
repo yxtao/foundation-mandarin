@@ -1,6 +1,6 @@
 .readingListMain {
     background-color: transparent;
-    background-image: linear-gradient(0deg,rgb(38, 15, 247),#96acf5, rgb(211, 218, 250),#97f2f8 );
+    background-image: linear-gradient(0deg,rgba(218, 215, 243, 0.454),#4f76f55f, rgba(149, 165, 238, 0.529),#97f2f8 );
     opacity:0.8;
     height:100vh;
     overflow-y:auto;

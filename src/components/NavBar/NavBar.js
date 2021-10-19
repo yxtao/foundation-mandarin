@@ -25,7 +25,7 @@ const displayDesktop =(navItems, user)=>{
                 </div>
                 <div>
                     {navItems.map((item, index)=>
-                        <Button component ={Link} to={item.link} style={{border:"solid 1px black ",margin:"2px"}} key={index}>{item.label}</Button>
+                        <Button component ={Link} to={item.link} style={{border:"",margin:"2px"}} key={index}>{item.label}</Button>
                     )}
                 </div>    
             </Toolbar>     
