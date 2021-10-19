@@ -28,20 +28,16 @@ const Reading = (props)=>{
     }
     const handleAddCallback =(name) =>{
       setNotes([...notes,name])
-
-      if(user!=="" && !isAdmin) {
-        if(wordSet.length !==0) {
-            setWordSet((currentState)=>[
-                ...currentState,
-                ...notes
-            ])
+    }
+    
+    useEffect(()=>{
+        if(user!=="" && !isAdmin) {
+            setWordSet([...wordSet,...notes ]);
         }else{
             setWordSet(notes);
         }
-    }
-      
-    }
-  
+    }, [notes, user, isAdmin])
+
     if (!story) return <h1>loading</h1>
     return(
         <div className="readingMain">
