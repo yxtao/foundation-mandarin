@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import "./home.css";
 const items =["hello","test"]
 const books =["This is a sample book","This is a sample book","This is a sample book"]
-const Home=()=> {
+const HomePage=()=> {
   return (
     <div className="CenterMain pt-5 ">
       <Grid container 
@@ -54,4 +54,4 @@ const Home=()=> {
 }
 
 
-export default Home
+export default HomePage
