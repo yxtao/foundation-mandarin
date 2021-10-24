@@ -8,11 +8,9 @@ import {
     Route,
   } from "react-router-dom";
 
-
-
 import NavBar from "./components/NavBar/NavBar";
 import WordWall from "./components/WordWall/WordWall";
-import Home from "./components/Home/Home";
+import Home from "./components/Home/Home.js";
 import Reading from "./components/Reading/Reading";
 import Teacher from "./components/Teacher/Teacher";
 import ReadingList from "./components/ReadingList/ReadingList"
