@@ -23,13 +23,10 @@ const SignIn = (props) =>{
            alert(error);
         }
     }
-   const handleParentCallback =()=>{
-       props.parentCallback()
-   }
     return (
         <div>
             <div className="container">   
-            <Grid container justify="center" wrap="wrap" spacing={3} className="login-form">
+            <Grid container justifyContent="center" wrap="wrap" spacing={3} className="login-form">
                 <form onSubmit = {handleSubmit}>
                     <br/>
                     <Grid item>

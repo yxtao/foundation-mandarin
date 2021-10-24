@@ -44,7 +44,9 @@ const Assessment= (props)=>{
         try {
             const query = await firebase.firestore().collection("users").where("username", "==",name).get();
              if(!query.empty){
-                 await firebase.firestore().collection("users").doc(name).update({
+                 const snapshot = query.docs[0];
+                 const data = snapshot.data();
+                 await firebase.firestore().collection("users").doc(data.uid).update({
                     readingLevel:level
                  })
              }

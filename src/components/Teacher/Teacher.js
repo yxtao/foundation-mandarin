@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Grid, Paper, Card, CardActions, CardContent, Button} from "@material-ui/core";
-
+import { useRecoilValue , useRecoilState} from "recoil";
+import { isAdminState, firebaseState } from "../../store/AuthAtoms" 
 
 import "./Teacher.css"
 import UploadStory from './UploadStory'; 
@@ -8,6 +8,12 @@ import UploadWord from './UploadWord';
 
 const Teacher=()=>{
   const[uploadContent, setUploadContent] = useState("");
+  const isAdmin = useRecoilValue(isAdminState);
+  if(!isAdmin) return (
+    <div className = "container m-5">
+      You are not the Admin
+    </div>
+  )
   return(
       <div className="container m-5">
           <button className="btn-lg m-lg-3 btn btn-outline-success " onClick={()=>setUploadContent("story")}>create stories</button>

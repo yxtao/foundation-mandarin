@@ -30,7 +30,9 @@ const SignInUp = ()=>{
 
   const updateRecoilUserInfo = async (name) =>{
        try{  
-          const data = await getUserDataByName(name);  
+          console.log("before")
+          const data = await getUserDataByName(name); 
+          console.log("after", data) 
           setIsAdmin(data.isAdmin);
           setUserLevelState(data.readingLevel);
           setWordSetState(data.notes); 
@@ -44,6 +46,7 @@ const SignInUp = ()=>{
          if(!query.empty){
              const snapshot = query.docs[0];
              const data = snapshot.data();
+             console.log("data",data)
              return data;
          }
       }catch(error){
@@ -61,13 +64,13 @@ const SignInUp = ()=>{
     return (
      <div className="wrapperDiv">
        <div className="bg-light p-1 input ">
-        <div class = "row justify-content-around">
-          <div class="col-2 ">
+        <div className = "row justify-content-around">
+          <div className="col-2 ">
             <button className="btn text-success btn-bg"  
                     style={{borderBottom:!isSignUp? "2px solid black": "white"}}
                     onClick={setSignIn}> Sign In</button> 
           </div>
-          <div class="col-2 ">
+          <div className="col-2 ">
           <button className="btn text-success btn-bg "
                   style={{borderBottom:isSignUp? "2px solid black": "white"}}
                   onClick={setSignUp}> Sign Up</button> 

@@ -31,9 +31,9 @@ const SignUp = (props) =>{
       }
     }
 
-    const addAdultUser = async(username,password,email)=>{
+    const addAdultUser = async(username,password,email, uid)=>{
       // TODO : add readingLevel and notes
-      await db.collection("users").doc(username).set({
+      await db.collection("users").doc(uid).set({
         username,
         password,
         email,
@@ -41,9 +41,9 @@ const SignUp = (props) =>{
         readingLevel:0,
         notes:[],
         isAdmin: false,
+        uid
       })
     }
-
     const handleSubmit = async (e) => {
       e.preventDefault();
       setIsClicked(true);
@@ -55,11 +55,9 @@ const SignUp = (props) =>{
       }
       if(!alreadyTaken){  
         try{
-          await addAdultUser(userName,password,email);
           await createUserAccount({ email,password,userName});
           alert("sucess");
         }catch(error){
-          // alert(error.response.data);
           alert(error);
         }
         await loginUser(email,password);
@@ -67,17 +65,15 @@ const SignUp = (props) =>{
         if(currentUser){
         setUser(currentUser.displayName);
         setIsAuthenticated(true); 
+        await addAdultUser(userName,password,email, currentUser.uid);
         }
       }
       setIsClicked(false);
     } 
-  const handleParentCallback=()=>{
-    props.parentCallback();
-   }
   
     return (
         <div className="container">           
-            <Grid container justify="center"spacing={3}>
+            <Grid container justifyContent="center"spacing={3}>
                 <form onSubmit ={handleSubmit}>
                     <Grid item>
                     <br/>
