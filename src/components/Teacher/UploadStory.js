@@ -78,24 +78,16 @@ const UploadStory=()=>{
       newLevels.splice(index, 1);
       newContents.splice(index,1);
       newAudios.splice(index,1);
-      newAudioURLs(index,1);
+      newAudioURLs.splice(index,1);
       setLevels(newLevels);
       setContents(newContents);
       setAudios(newAudios);
       setAudioURLs(newAudioURLs);
-
   }
-
-//   const onUpdate = (index) =>{
-//       setLevel(levels[index]);
-//       setContent(contents[index]);
-//       onDelete(index);
-//   }
 
   const handleAudioSave = async (blobObj, audioURL) =>{
        setAudioBlob(blobObj);
        setAudioURL(audioURL);
-   
   }
 
    const onStoryCreate = async ()=>{

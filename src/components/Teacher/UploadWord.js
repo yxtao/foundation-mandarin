@@ -69,6 +69,7 @@ const UploadWord=()=>{
        setPinyin(e.target.value);
    }
    const onXiangxingImageChange =(e)=>{
+    if(e.target.files[0]==null) return;
        const image = e.target.files[0];
        let size = e.target.files[0].size/1024/1024;
        if(size>1){
@@ -80,7 +81,7 @@ const UploadWord=()=>{
          }) 
        }else{
         new Compressor(image, {
-            quality:0.1,
+            quality:0.3,
             success:(compressedResult)=>{
                 setXiangxingImage(compressedResult);
             }
@@ -89,6 +90,7 @@ const UploadWord=()=>{
     }
    
    const onStrokeImageChange =(e)=>{
+    if(e.target.files[0]==null) return;
        let size = e.target.files[0].size/1024/1024;
        const image = e.target.files[0];
        if(size > 1){
@@ -100,7 +102,7 @@ const UploadWord=()=>{
         })
      }else{
         new Compressor(image, {
-            quality:0.1,
+            quality:0.3,
             success:(compressedResult)=>{
              setStrokeImage(compressedResult);
             }
@@ -120,6 +122,7 @@ const UploadWord=()=>{
    }
   
    const onFileChange =(e)=>{
+       if(e.target.files[0]==null) return;
        let size = e.target.files[0].size/1024/1024;
        const image = e.target.files[0];
        if(size >1) {
@@ -131,7 +134,7 @@ const UploadWord=()=>{
             })
        }else{
             new Compressor(image, {
-                quality:0.1,
+                quality:0.3,
                 success:(compressedResult)=>{
                     setFile(compressedResult);
                 }

@@ -22,7 +22,7 @@ const SignOut = ()=>{
   }, [])
 
     return (
-     <div className="container wrapperDiv">
+     <div className="wrapperDiv">
        You have signed out 
     </div>
     )
