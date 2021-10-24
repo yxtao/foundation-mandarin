@@ -1,13 +1,12 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import env from "react-dotenv";
 
 var firebaseConfigInfo = {
-    apiKey: process.env.apiKey,
-    authDomain: process.env.authDomain,
-    projectId: process.env.projectId,
-    storageBucket:process.env.storageBucket,
-    messagingSenderId: process.env.messagingSenderId,
-    appId: process.env.appId
+    apiKey: env.REACT_APP_KEY,
+    authDomain: env.REACT_APP_DOMAIN,
+    projectId: env.REACT_APP_PROJECTID,
+    storageBucket:env.REACT_APP_BUCKET,
+    messagingSenderId: env.REACT_APP_SENDER,
+    appId:env.REACT_APP_APPID
   };
 
   export default firebaseConfigInfo;
