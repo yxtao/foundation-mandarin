@@ -10,7 +10,7 @@ import {
 
 import NavBar from "./components/NavBar/NavBar";
 import WordWall from "./components/WordWall/WordWall";
-//import Home from "./components/Home/Home.js";
+import Home from "./components/Home/Home.js";
 import Reading from "./components/Reading/Reading";
 import Teacher from "./components/Teacher/Teacher";
 import ReadingList from "./components/ReadingList/ReadingList"
@@ -52,7 +52,7 @@ const Router = ()=>{
         <BrowserRouter>
             <NavBar clasName="NavBar" /> 
             <Switch>
-                <Route path="/" exact component ={ WordWall } />
+                <Route path="/" exact component ={ Home } />
                 <Route path="/SignInUp" component ={ ()=> <SignInUp />  } />
                 <Route path="/SignOut" component ={ ()=> <SignOut/>  }  />
                 <Route path="/wordwall"  component={()=> < WordWall words={wordList} /> } />

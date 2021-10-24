@@ -6,7 +6,7 @@ var firebaseConfigInfo = {
     authDomain: process.env.authDomain,
     projectId: process.env.projectId,
     storageBucket:process.env.storageBucket,
-    messagingSenderId: process.eventNames.messagingSenderId,
+    messagingSenderId: process.env.messagingSenderId,
     appId: process.env.appId
   };
 
