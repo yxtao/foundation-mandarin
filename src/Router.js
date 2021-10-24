@@ -8,7 +8,7 @@ import {
     Route,
   } from "react-router-dom";
 
-import './app.css';
+
 
 import NavBar from "./components/NavBar/NavBar";
 import WordWall from "./components/WordWall/WordWall";

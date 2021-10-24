@@ -4,7 +4,6 @@ import 'firebase/storage';
 import 'firebase/auth';
 import firebaseConfigInfo from "./config";
 
-
 const firebaseConfig = firebaseConfigInfo;
 firebase.initializeApp(firebaseConfig);
 
