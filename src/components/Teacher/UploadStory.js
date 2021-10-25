@@ -114,7 +114,7 @@ const UploadStory=()=>{
         const storageRef = storage.ref()
         const audiosRef= storageRef.child(`story/voice/${name}`)
         for (let index=0; index<audios.length; index++) {
-            await audiosRef.child(`/${index}`).put(audios[index], {contentType:'audio/webm;codecs=opus'})
+            await audiosRef.child(`/${index}`).put(audios[index], {contentType:'audio/mp3;codecs=opus'})
             const audioRef= audiosRef.child(`/${index}`)
             await db.collection("story").doc(name).update({
                 voice: firebase.firestore.FieldValue.arrayUnion({
