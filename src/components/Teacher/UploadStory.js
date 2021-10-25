@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import {Grid, Paper, Card, CardActions, CardContent, Button} from "@material-ui/core";
 import Compressor from 'compressorjs';
-
 import Audio from '../Audio/Audio'
 import "./Teacher.css"
 import firebase from '../../firebase/firebase';
@@ -114,7 +113,8 @@ const UploadStory=()=>{
         const storageRef = storage.ref()
         const audiosRef= storageRef.child(`story/voice/${name}`)
         for (let index=0; index<audios.length; index++) {
-            await audiosRef.child(`/${index}`).put(audios[index], {contentType:'audio/mpeg'})
+            await audiosRef.child(`/${index}`).put(audios[index], {contentType:'audio/webm;codecs=opus'})
+            console.log(audios[index]);
             const audioRef= audiosRef.child(`/${index}`)
             await db.collection("story").doc(name).update({
                 voice: firebase.firestore.FieldValue.arrayUnion({

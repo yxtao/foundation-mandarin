@@ -15,9 +15,7 @@ const Audio = (props)=> {
       }
       return;
     }
-
     // Manage recorder state.
-   
       if (isRecording) {
         recorder.start();
       } else {
@@ -27,7 +25,7 @@ const Audio = (props)=> {
     // Obtain the audio when ready.
     const handleData = e => {
       setAudioURL(URL.createObjectURL(e.data));
-      setBlobObj(e.data)
+      setBlobObj(e.data);
     };
 
     recorder.addEventListener("dataavailable", handleData);
@@ -42,10 +40,10 @@ const Audio = (props)=> {
     setIsRecording(false);
   };
 
-
 async function requestRecorder() {
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  return new MediaRecorder(stream);
+  let options = { mimeType: 'audio/webm' };
+  return new MediaRecorder(stream, options);
 }
 
   return (
