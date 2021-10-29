@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import {Grid, Paper, Card, CardActions, CardContent, Button} from "@material-ui/core";
+import { useRecoilState } from "recoil";
+import { usernameState } from "../../store/AuthAtoms"
 import Compressor from 'compressorjs';
 import Audio from '../Audio/Audio'
 import "./Teacher.css"
@@ -10,6 +12,7 @@ const db = firebase.firestore();
 const storage = firebase.storage();
 
 const UploadStory=()=>{
+   const [user, setUser] = useRecoilState(usernameState);
    const [name, setName] = useState("");
    const [content, setContent] = useState("");
    const [file, setFile] = useState(null);
@@ -93,6 +96,7 @@ const UploadStory=()=>{
 
         setSavingToFireBase(true);
         await db.collection("story").doc(name).set({
+            creator: user,
             name:name,
             levels : levels,
             contents: contents,

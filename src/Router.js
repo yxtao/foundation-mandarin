@@ -59,8 +59,8 @@ const Router = ()=>{
                 <Route path="/reading" component={ ()=> <ReadingList stories={storyList} words={wordList}/>  } />
                 <Route path="/teacher" component={Teacher} />
                 <Route path="/story/:name"  component={ () => <Reading stories={storyList} words={wordList} /> }/>
-                <Route path="/assessment" component={Assessment} />
-                <Route path="/recommendation"  component={()=> <Recommendation words={wordList} /> }/>
+                {/* <Route path="/assessment" component={Assessment} />
+                <Route path="/recommendation"  component={()=> <Recommendation words={wordList} /> }/> */}
                 <Route path="/carddetail/:word" component={()=> <CardDetail wordList={wordList} /> } />
             </Switch>
         </BrowserRouter>

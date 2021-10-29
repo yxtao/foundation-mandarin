@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
+import { useRecoilState } from "recoil";
+import { usernameState } from "../../store/AuthAtoms"
 import {Grid, Paper, Card, CardActions, CardContent, Button} from "@material-ui/core";
 import Compressor from 'compressorjs';
 
@@ -11,6 +13,7 @@ const db = firebase.firestore();
 const storage = firebase.storage();
 
 const UploadWord=()=>{
+   const [user, setUser] = useRecoilState(usernameState);
    const [name, setName] = useState("");
    const [phrase, setPhrase] = useState("");
    const [pinyin, setPinyin] = useState("");
@@ -200,6 +203,7 @@ const UploadWord=()=>{
         setSavingToFireBase(true);
 
         await db.collection("chinesewords").doc(name).set({
+            creator: user,
             name : name,
             pinyin: pinyin,
             wordMeaning: wordMeaning,
@@ -209,7 +213,6 @@ const UploadWord=()=>{
             phraseLevels : levels,
             phrases: phrases,
             sentences: sentences,
-
         })
 
       

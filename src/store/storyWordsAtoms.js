@@ -28,3 +28,8 @@ export const wordliststate = atom({
     key: "userlevelstate",
     default: 0,
   });
+
+  export const teachernamestate = atom({
+    key:"teachernamestate",
+    default:""
+  })
