@@ -22,3 +22,8 @@ export const usernameState = atom({
     key: "isAdminState",
     default: false,
   });
+
+  export const isTeacherState = atom({
+    key: "isAdminState",
+    default: false,
+  });

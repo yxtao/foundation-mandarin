@@ -14,51 +14,79 @@ const SignUp = (props) =>{
     const [user, setUser] = useRecoilState(usernameState);
     const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
     const [isClicked, setIsClicked] = useState(false);
+    const [error, setError] = useState("");
 
     const checkUsernameExist = async (username) =>{
-      const userRef = db.collection("users").doc(username);
       try {
-        const doc = await userRef.get();
-        if(doc.exists){ 
-          alert("username has taken");
-          return true;
+        const query = await firebase.firestore().collection("users").where("username", "==", username).get();
+         if(!query.empty){
+             return true;
          }else{
-          return false;
-        }
+            return false;
+         }
       }catch(error){
         alert(error);
+        setError(JSON.stringify(error));
         setIsClicked(false);
       }
     }
 
+    const isEmailExist = async (email) =>{
+      try {
+        const query = await firebase.firestore().collection("users").where("email", "==", email).get();
+         if(query.empty){     
+            return false;
+         }else{
+            return true;
+         }
+      }catch(error){
+        setError(JSON.stringify(error.message));
+        setIsClicked(false);
+      }
+    }
+  
     const addAdultUser = async(username,password,email, uid)=>{
-      // TODO : add readingLevel and notes
       await db.collection("users").doc(uid).set({
+        uid,
         username,
         password,
         email,
-        isadult:true,
-        readingLevel:0,
-        notes:[],
-        isAdmin: false,
-        uid
+        likedWordCards:[],
+        likedPassages:[],
+        accessCode:username,
+        isTeacher: true,
+        isAdmin: false
       })
+    }
+    const isNameValid = (name) =>{
+      return /^[0-9a-zA-Z]+$/.test(name);
     }
     const handleSubmit = async (e) => {
       e.preventDefault();
-      setIsClicked(true);
-      let alreadyTaken = true;
-      try{
-        alreadyTaken = await checkUsernameExist(userName);
-      }catch(error){
-        alert(error);
+      if(!isNameValid(userName)){
+        setError("User name is not valid, can only contain numbers and letters.")
+        return;
       }
-      if(!alreadyTaken){  
+      let alreadyTaken = true;
+      let emailExist = true;
+      try{
+        alreadyTaken = await checkUsernameExist(userName)
+        if(alreadyTaken){
+          setError("The username has taken 已经有此用户名，请另取");
+        }
+        emailExist = await isEmailExist(email);
+        if(emailExist){
+          setError("The email already exist");
+        }
+      }catch(error){
+        setError(JSON.stringify(error.message));
+      }
+      setIsClicked(true);
+      if(!alreadyTaken && !emailExist){  
         try{
           await createUserAccount({ email,password,userName});
-          alert("sucess");
         }catch(error){
-          alert(error);
+          setError(JSON.stringify(error.message.name));
         }
         await loginUser(email,password);
         var currentUser = firebase.auth().currentUser;
@@ -108,6 +136,7 @@ const SignUp = (props) =>{
                      </Grid>
                 </form>
             </Grid>
+            <div className="text-danger p-lg-3">{error}</div>             
         </div>
     )
  }

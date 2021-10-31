@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useHistory } from 'react-router';
 import { useRecoilValue, useRecoilState } from "recoil";
-import { checkedAuthState, usernameState, isAdminState, firebaseState } from "../../store/AuthAtoms"
+import { checkedAuthState, usernameState, isAdminState, firebaseState , isTeacherState} from "../../store/AuthAtoms"
 import {userlevelstate, wordsetstate} from "../../store/storyWordsAtoms";
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -12,11 +12,13 @@ const SignInUp = ()=>{
   const history = useHistory();
   const firebase = useRecoilValue(firebaseState);
   const [isAdmin, setIsAdmin] = useRecoilState(isAdminState);
+  const [isTeacher, setIsTeacher] = useRecoilState(isTeacherState);
   const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
   const [userLevelState, setUserLevelState] = useRecoilState(userlevelstate);
   const [wordSetState, setWordSetState] = useRecoilState(wordsetstate);
   const [user, setUser] = useRecoilState(usernameState);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(()=>{
     if(isAuthticated && user){
@@ -30,14 +32,13 @@ const SignInUp = ()=>{
 
   const updateRecoilUserInfo = async (name) =>{
        try{  
-          console.log("before")
           const data = await getUserDataByName(name); 
-          console.log("after", data) 
           setIsAdmin(data.isAdmin);
+          setIsTeacher(data.isTeacher);
           setUserLevelState(data.readingLevel);
           setWordSetState(data.notes); 
        }catch(error){
-         alert(error);
+         setError(error.message);
        }
   }
   const getUserDataByName = async(name)=>{
@@ -46,11 +47,12 @@ const SignInUp = ()=>{
          if(!query.empty){
              const snapshot = query.docs[0];
              const data = snapshot.data();
-             console.log("data",data)
              return data;
+         }else{
+           setError("user not found");
          }
       }catch(error){
-        alert(error);
+        setError(error.message);
       }
   }
 

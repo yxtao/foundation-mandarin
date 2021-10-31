@@ -11,6 +11,7 @@ const SignIn = (props) =>{
     const [password, setPassword] = useState("");
     const [user, setUser] = useRecoilState(usernameState);
     const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
+    const [error, setError] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,7 +21,7 @@ const SignIn = (props) =>{
             setUser(currentUser.displayName); 
             setIsAuthenticated(true);
         }catch(error){
-           alert(error);
+            setError(JSON.stringify(error.message));
         }
     }
     return (
@@ -52,6 +53,7 @@ const SignIn = (props) =>{
                      </Grid>
                 </form>
             </Grid>
+              <div className="text-danger p-lg-3">{error}</div>   
             </div>
         </div>
     )

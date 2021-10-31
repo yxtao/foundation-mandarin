@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Grid} from'@material-ui/core';
 import {useRecoilState, useRecoilValue} from "recoil";
 import {wordsetstate } from "../../store/storyWordsAtoms" ;
-import {usernameState, isAdminState} from "../../store/AuthAtoms";
+import {usernameState, isAdminState, isTeacherState} from "../../store/AuthAtoms";
 import Story from './Story/Story';
 import WordCard from '../WordWall/WordCard/WordCard'
 import "./Reading.css";
@@ -12,6 +12,7 @@ import "./Reading.css";
 const Reading = (props)=>{
     const user = useRecoilValue(usernameState);
     const isAdmin = useRecoilValue(isAdminState);
+    const isTeacher = useRecoilValue(isTeacherState);
     const [notes,setNotes] = useState([])
     const [story, setStory] = useState(null)
     const [words, setWords] = useState(props.words);
@@ -31,12 +32,12 @@ const Reading = (props)=>{
     }
     
     useEffect(()=>{
-        if(user!=="" && !isAdmin) {
+        if(user!=="" && !isAdmin &&!isTeacher) {
             setWordSet([...wordSet,...notes ]);
         }else{
             setWordSet(notes);
         }
-    }, [notes, user, isAdmin])
+    }, [notes, user, isAdmin, isTeacher])
 
     if (!story) return <h1>loading</h1>
     return(
