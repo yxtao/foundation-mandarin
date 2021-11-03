@@ -1,5 +1,5 @@
 import React, { useState} from 'react';
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, waitForAllSettled } from "recoil";
 import {createUserAccount, loginUser} from "../../api/api";
 import { checkedAuthState, usernameState, firebaseState } from "../../store/AuthAtoms" 
 import {Grid, TextField} from '@material-ui/core';
@@ -16,36 +16,7 @@ const SignUp = (props) =>{
     const [isClicked, setIsClicked] = useState(false);
     const [error, setError] = useState("");
 
-    const checkUsernameExist = async (username) =>{
-      try {
-        const query = await firebase.firestore().collection("users").where("username", "==", username).get();
-         if(!query.empty){
-             return true;
-         }else{
-            return false;
-         }
-      }catch(error){
-        alert(error);
-        setError(JSON.stringify(error));
-        setIsClicked(false);
-      }
-    }
-
-    const isEmailExist = async (email) =>{
-      try {
-        const query = await firebase.firestore().collection("users").where("email", "==", email).get();
-         if(query.empty){     
-            return false;
-         }else{
-            return true;
-         }
-      }catch(error){
-        setError(JSON.stringify(error.message));
-        setIsClicked(false);
-      }
-    }
-  
-    const addAdultUser = async(username,password,email, uid)=>{
+    const addUser = async(username,password,email, uid)=>{
       await db.collection("users").doc(uid).set({
         uid,
         username,
@@ -65,36 +36,32 @@ const SignUp = (props) =>{
       e.preventDefault();
       if(!isNameValid(userName)){
         setError("User name is not valid, can only contain numbers and letters.")
+        setIsClicked(false);
         return;
       }
-      let alreadyTaken = true;
-      let emailExist = true;
-      try{
-        alreadyTaken = await checkUsernameExist(userName)
-        if(alreadyTaken){
-          setError("The username has taken 已经有此用户名，请另取");
-        }
-        emailExist = await isEmailExist(email);
-        if(emailExist){
-          setError("The email already exist");
-        }
-      }catch(error){
-        setError(JSON.stringify(error.message));
-      }
       setIsClicked(true);
-      if(!alreadyTaken && !emailExist){  
-        try{
-          await createUserAccount({ email,password,userName});
-        }catch(error){
-          setError(JSON.stringify(error.message.name));
-        }
+      try{
+        await createUserAccount({ email,password,userName});
+      }catch(error){
+        setError("User name or email exist, please choose a different one");
+        setIsClicked(false);
+        return;
+      }
+      
+      try{
         await loginUser(email,password);
-        var currentUser = firebase.auth().currentUser;
-        if(currentUser){
+      }catch(error){
+        setError(error.message)
+        setIsClicked(false);
+        return;
+      }
+      var currentUser = firebase.auth().currentUser;
+      if(currentUser){
         setUser(currentUser.displayName);
         setIsAuthenticated(true); 
-        await addAdultUser(userName,password,email, currentUser.uid);
-        }
+        await addUser(userName,password,email, currentUser.uid);
+      }else{
+        setError("failed sign in up, please retry")
       }
       setIsClicked(false);
     } 

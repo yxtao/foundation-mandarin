@@ -16,8 +16,7 @@ import Teacher from "./components/Teacher/Teacher";
 import ReadingList from "./components/ReadingList/ReadingList"
 import SignInUp from './components/SignInUp/SignInUp';
 import SignOut from './components/SignInUp/SignOut';
-import Assessment from './components/Assessment/Assessment';
-import Recommendation from './components/Recommendation/Recommendation';
+import TeacherDashboard from './components/TeacherDashboard/TeacherDashboard';
 import CardDetail from "./components/CardDetail/CardDetail";
 
 const Router = ()=>{
@@ -53,14 +52,13 @@ const Router = ()=>{
             <NavBar clasName="NavBar" /> 
             <Switch>
                 <Route path="/" exact component ={ Home } />
+                <Route path="/teacherDashboard" component = {()=> <TeacherDashboard/> } />
                 <Route path="/SignInUp" component ={ ()=> <SignInUp />  } />
                 <Route path="/SignOut" component ={ ()=> <SignOut/>  }  />
                 <Route path="/wordwall"  component={()=> < WordWall words={wordList} /> } />
                 <Route path="/reading" component={ ()=> <ReadingList stories={storyList} words={wordList}/>  } />
                 <Route path="/teacher" component={Teacher} />
                 <Route path="/story/:name"  component={ () => <Reading stories={storyList} words={wordList} /> }/>
-                {/* <Route path="/assessment" component={Assessment} />
-                <Route path="/recommendation"  component={()=> <Recommendation words={wordList} /> }/> */}
                 <Route path="/carddetail/:word" component={()=> <CardDetail wordList={wordList} /> } />
             </Switch>
         </BrowserRouter>

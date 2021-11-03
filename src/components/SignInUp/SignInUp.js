@@ -26,7 +26,7 @@ const SignInUp = ()=>{
         await updateRecoilUserInfo(user);
      }
       fetchData(user);
-      history.push("/");
+      history.push("/teacherDashboard");
     }
   },[isAuthticated, user])
 

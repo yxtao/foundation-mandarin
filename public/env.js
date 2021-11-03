@@ -45,7 +45,7 @@ window.env = {
   "LOGNAME": "yinxiatao",
   "CONDA_PYTHON_EXE": "/Users/yinxiatao/opt/anaconda3/bin/python",
   "npm_lifecycle_script": " react-dotenv && react-scripts start",
-  "VSCODE_GIT_IPC_HANDLE": "/var/folders/2w/6nv1pq4s1p171m1y_9fkckm40000gn/T/vscode-git-3e574cd800.sock",
+  "VSCODE_GIT_IPC_HANDLE": "/var/folders/2w/6nv1pq4s1p171m1y_9fkckm40000gn/T/vscode-git-dd626d6abe.sock",
   "CONDA_DEFAULT_ENV": "base",
   "npm_config_user_agent": "npm/7.19.0 node/v15.3.0 darwin x64 workspaces/false",
   "GIT_ASKPASS": "/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh",
