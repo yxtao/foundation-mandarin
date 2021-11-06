@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from'react';
+import { useRecoilState, useRecoilValue } from "recoil";
+import {usernameState,isTeacherState, userIdState } from "../../store/AuthAtoms"
 import {Grid} from "@material-ui/core";
 import WordCard from'./WordCard/WordCard';
 import WordsPagination from './WordCard/WordsPagination/WordsPagnation';
@@ -6,16 +8,24 @@ import "./WordWall.css";
 //TODO:store it in firebase
 
 const WordWall = (props)=>{
-    
+    const isTeacher = useRecoilValue(isTeacherState);
+    const [userName, setUserName] = useRecoilState(usernameState);
+    const [userId, setUserId] = useRecoilState(userIdState);
     const [wordList, setWordList] = useState([...props.words]);
     const [wordPageArrays, setwordPageArrays] = useState([]);
     const [pagesNum, setPagesNum]= useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [currentPage, setCurrentPage] = useState(0);
     
-    const handleDeleteCallback = (word) =>{
-        //doing nothing  right now
+    const handleDeleteCallback = (wordId) =>{
+        // TODO change to creator in database to "none!" 
     }
+    const handleLikeCallback = (wordId) =>{
+     // Add it to users' liked list 
+    }
+    const handleRemoveLikeCallback = (wordId) =>{
+        // if exist , remove it from users' liked list 
+     }
     useEffect(()=>{
       const pagesArray=[]; 
       if(wordList.length<rowsPerPage) {
@@ -61,7 +71,9 @@ const WordWall = (props)=>{
                     </div>
                 </div>
             </div>
-            <WordsPagination wordsNum={wordList.length} callbackRowsPerPage={handleCallbackRowsPerPage} callbackCurrentPage={handleCallbackCurrentPage }/>
+            <WordsPagination wordsNum={wordList.length} 
+                callbackRowsPerPage={handleCallbackRowsPerPage} 
+                callbackCurrentPage={handleCallbackCurrentPage }/>
             <Grid container 
                 direction="row"
                 alignItems="stretch"
@@ -73,7 +85,13 @@ const WordWall = (props)=>{
                 wordPageArrays[currentPage].length!==0 && 
                 wordPageArrays[currentPage].map((item,index)=> 
                         <Grid key={index} item xs={12} sm={4} md={3} > 
-                        <WordCard wordData={item} parentDeleteCallback={handleDeleteCallback} hideDelete={true}/> 
+                        <WordCard wordData={item} 
+                            parentDeleteCallback={handleDeleteCallback} 
+                            parentLikeCallback = {handleLikeCallback}
+                            parentRemoveLikeCallback = {handleRemoveLikeCallback }
+                            hideDelete={item.creator !== userName}
+                            hideLike = {isTeacher && item.creator === userName}
+                            hideRemoveLike = {isTeacher && item.creator === userName}/> 
                         </Grid>) 
                 } 
             </Grid>

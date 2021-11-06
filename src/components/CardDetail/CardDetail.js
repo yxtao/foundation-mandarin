@@ -67,8 +67,8 @@ const CardDetail = (props)=>{
         return <div className="container-wrapper-detail"> loading... </div>
     }
     return (
-        <div className="container-wrapper-detail p-3 p-lg-5"> 
-            <div class="card cardDiv">
+        <div className="container-wrapper-detail p-lg-5"> 
+            <div class="card cardDiv p-5">
                 <div className="container">
                     <div className = "row p-2 p-lg-3">
                         {wordData && "image" in wordData ?
@@ -92,12 +92,12 @@ const CardDetail = (props)=>{
                                 <h6 class="card-title">{wordData && wordData.wordMeaning? wordData.wordMeaning: ""}</h6>
                             </div>
                             <div className = "col">
-                            { wordData && wordData.wordAudio ? 
+                            {/* { wordData && wordData.wordAudio ? 
                                 <audio controls class="embed-responsive-item">
                                     <source src= {wordData.wordAudio[0].url} />
                                 </audio>
                                 :null
-                             }
+                             } */}
                             </div>
                         </div>
                     </div>
@@ -113,11 +113,11 @@ const CardDetail = (props)=>{
                                     <br/>
                                     <h6 class="card-title">{" "}Level {obj.phraseLevel}</h6>
                                 </div>
-                                <div className = "col">
+                                {/* <div className = "col">
                                     <audio controls class="embed-responsive-item">
                                         <source src={ obj.phraseAudio} />
                                     </audio>
-                                </div>
+                                </div> */}
                             </div>
                             )}
                         </div>
@@ -130,11 +130,11 @@ const CardDetail = (props)=>{
                                     <h3 class="card-title">{obj.sentence}</h3>
                                     <h7 class="card-title">{"sentenceMeaning" in obj?obj.sentenceMeaning:""}</h7>
                                 </div>
-                                <div className = "col">
+                                {/* <div className = "col">
                                     <audio controls class="embed-responsive-item">
                                         <source src={ obj.sentenceAudio} />
                                     </audio>
-                                </div>
+                                </div> */}
                             </div>
                             )}
                         </div>

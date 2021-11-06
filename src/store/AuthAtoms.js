@@ -17,6 +17,11 @@ export const usernameState = atom({
     key: "usernameState",
     default: "",
   });
+  
+  export const userIdState = atom({
+    key: "userIdState",
+    default: "",
+  });
 
   export const isAdminState = atom({
     key: "isAdminState",

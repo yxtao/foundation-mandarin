@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 import { useRecoilValue, useRecoilState, waitForAllSettled } from "recoil";
 import {createUserAccount, loginUser} from "../../api/api";
-import { checkedAuthState, usernameState, firebaseState } from "../../store/AuthAtoms" 
+import { checkedAuthState, usernameState, firebaseState, userIdState } from "../../store/AuthAtoms" 
 import {Grid, TextField} from '@material-ui/core';
 
 
@@ -11,6 +11,7 @@ const SignUp = (props) =>{
     const [email, setEmail]= useState("");
     const [password, setPassword] = useState("");
     const [userName, setUserName] = useState("");
+    const [userId, setUserId] = useRecoilState(userIdState);
     const [user, setUser] = useRecoilState(usernameState);
     const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
     const [isClicked, setIsClicked] = useState(false);
@@ -58,6 +59,7 @@ const SignUp = (props) =>{
       var currentUser = firebase.auth().currentUser;
       if(currentUser){
         setUser(currentUser.displayName);
+        setUserId(currentUser.uid);
         setIsAuthenticated(true); 
         await addUser(userName,password,email, currentUser.uid);
       }else{

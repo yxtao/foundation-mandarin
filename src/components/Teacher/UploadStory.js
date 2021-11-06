@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import {Grid, Paper, Card, CardActions, CardContent, Button} from "@material-ui/core";
-import { useRecoilState } from "recoil";
-import { usernameState } from "../../store/AuthAtoms"
+import { useRecoilState, useRecoilValue } from "recoil";
+import { usernameState ,isAdminState, firebaseState, isTeacherState} from "../../store/AuthAtoms"
 import Compressor from 'compressorjs';
 import Audio from '../Audio/Audio'
 import "./Teacher.css"
@@ -12,6 +12,8 @@ const db = firebase.firestore();
 const storage = firebase.storage();
 
 const UploadStory=()=>{
+   const isAdmin = useRecoilValue(isAdminState);
+   const isTeacher = useRecoilValue(isTeacherState);
    const [user, setUser] = useRecoilState(usernameState);
    const [name, setName] = useState("");
    const [content, setContent] = useState("");
@@ -40,33 +42,11 @@ const UploadStory=()=>{
        setContent(e.target.value)
    }
    
-   const onFileChange =(e)=>{
-       const image = e.target.files[0];
-       let size = e.target.files[0].size/1024/1024; 
-       if(size>1){
-            new Compressor(image, {
-                quality:0.1,
-                success:(compressedResult)=>{
-                    setFile(compressedResult);
-                }
-            })
-        }else{
-            new Compressor(image, {
-                quality:0.1,
-                success:(compressedResult)=>{
-                    setFile(compressedResult);
-                }
-            })
-        }
-   }
-
    const onContentLevelAdded =()=>{
-       (level!==-1) && setLevels([...levels, level]);
-       (content!=="")&& setContents([...contents,content]);
+       setLevels([...levels, level]);
+       setContents([...contents,content]);
        setAudios([...audios,audioBlob])
        setAudioURLs([...audioURLs, audioURL])
-       console.log("audioBlob ", audioBlob)
-       console.log("audios ", audios)
        setContent("");
        setAudioBlob(null);
        setMoveOn(true);
@@ -95,83 +75,64 @@ const UploadStory=()=>{
    const onStoryCreate = async ()=>{
 
         setSavingToFireBase(true);
-        await db.collection("story").doc(name).set({
+        try{
+        await db.collection("story").add({
             creator: user,
             name:name,
             levels : levels,
             contents: contents,
         })
+        }catch(error){
+            alert(error);
+        }
   
-      if (file!==null) {
-        const storageRef = storage.ref()
-        const fileRef = storageRef.child(`story/pictures/${name}`)
-        await fileRef.put(file, {contentType:'image/jpeg'})
-        await db.collection("story").doc(name).update({
-           image: firebase.firestore.FieldValue.arrayUnion({
-               name: name,
-               url: await fileRef.getDownloadURL()
-           })
-        })
-    }
-    
-        const storageRef = storage.ref()
-        const audiosRef= storageRef.child(`story/voice/${name}`)
-        for (let index=0; index<audios.length; index++) {
-            await audiosRef.child(`/${index}`).put(audios[index], {contentType:'audio/webm;codecs=opus'})
-            console.log(audios[index]);
-            const audioRef= audiosRef.child(`/${index}`)
-            await db.collection("story").doc(name).update({
-                voice: firebase.firestore.FieldValue.arrayUnion({
-                name: name,
-                url: await audioRef.getDownloadURL()
-            })
-        })
-      }
-
-       setFile(null)
+    //     const storageRef = storage.ref()
+    //     const audiosRef= storageRef.child(`story/voice/${name}`)
+    //     for (let index=0; index<audios.length; index++) {
+    //         await audiosRef.child(`/${index}`).put(audios[index], {contentType:'audio/webm;codecs=opus'})
+    //         console.log(audios[index]);
+    //         const audioRef= audiosRef.child(`/${index}`)
+    //         await db.collection("story").doc(name).update({
+    //             voice: firebase.firestore.FieldValue.arrayUnion({
+    //             name: name,
+    //             url: await audioRef.getDownloadURL()
+    //         })
+    //     })
+    //   }
+      // setFile(null)
        setContents([]);  
        setLevels([]) ;
        setName("");
-       setAudios([]);
+    //    setAudios([]);
        setMoveOn(false);
        setSavingToFireBase(false);
    }
-
+   if(!isAdmin && !isTeacher) return (
+    <div className = "container m-5">
+      You are not the admin or a teacher
+    </div>
+  )
     return (
-
        <div className="form-group StoryUploadDiv">
            <Grid container spacing={3} > 
-              <Grid item xs={12} >
-                    <button className="btn btn-success" 
-                    disabled={savingToFirebase} 
-                    onClick={checkStories}>
-                    check current stories
-                    </button>
-              </Grid>
               <Grid item xs={12}  >
               <div className="form-group">
                  <textarea class="form-control" 
                             rows="2" 
                             value={name} 
                             onChange={onNameChange} placeholder="story name"
+                            style={{width:"20vw",margin:"auto"}}
                             /> 
               </div>
              </Grid>
-             {/* <Grid item xs={12}  >
-                picture 
-                <input type="file" 
-                        className="form-control" 
-                        id="imageFile" 
-                        onChange={onFileChange}/>
-            </Grid>    */}
+             
              <Grid item xs={12} >
-                    Choose a level
-                    <select name="level" id="level" onChange={(e)=> setLevel(e.target.value)}>
-                    <option value="-1"> choose </option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
+                    Choose
+                    <select className="h5" name="level" id="level" onChange={(e)=> setLevel(e.target.value)}>
+                    <option value="0"> level 0</option>
+                    <option value="1"> level 1</option>
+                    <option value="2">level 2</option>
+                    <option value="3">levle 3</option>
                     </select>
              </Grid>
              <Grid item xs={12}  >
@@ -180,27 +141,22 @@ const UploadStory=()=>{
                                 rows="6" 
                                 value={content} 
                                 onChange={onContentChange} 
+                                style={{overflowY:"auto",overflowX:"auto"}}
                                 placeholder="story content" /> 
                  </div>
             </Grid>
-            <Grid  item xs={12} >
+            {/* <Grid  item xs={12} >
                 <div style={{display:"flex", flexDirection:"row"}}>
-                
-                { name==="" || level===-1 || content===""? 
-                <div className="alert alert-danger" role="alert">
-                      {name===""? " name ! " : " "}{level === -1 ? " level!" : " "}{content===""?" content! ":""}
-                 </div>
-                : <Audio  callbackAudio={handleAudioSave}/>  }
 
-               { audioBlob===null? <div className="alert alert-danger" role="alert"> audio! </div> :null }
-
-                <button className="btn btn-success" 
-                        disabled={name===""|| level==="" || audioBlob===null  }
+                 <Audio  callbackAudio={handleAudioSave}/>  
+                </div>
+            </Grid> */}
+            <Grid  item xs={12}>
+            </Grid >
+            <button className="btn btn-success" 
+                        disabled={name===""}
                         onClick={onContentLevelAdded}>save and add
                  </button>
-
-                </div>
-            </Grid>
             { moveOn === true? 
             <> 
             <Grid item xs={12}  >
@@ -211,10 +167,10 @@ const UploadStory=()=>{
                                 <p> {name} </p> 
                                 <p> level {level} </p>
                                 <p> {contents[index]} </p> 
-                             <audio src={audioURLs[index]} controls /> 
+                             {/* <audio src={audioURLs[index]} controls />  */}
                                 </CardContent>    
                                 <CardActions>      
-                                    <Button size="small" color ="primary" onClick={()=>onDelete(index)}> x </Button>      
+                                    <Button size="small" color ="primary" onClick={()=>onDelete(index)}> delete x </Button>      
                                 </CardActions>   
                                 </Card>)}
                 </Paper>

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useHistory } from 'react-router-dom';
-import { useRecoilState } from "recoil";
-import { usernameState } from "../../store/AuthAtoms"
+import { useRecoilState, useRecoilValue } from "recoil";
+import { usernameState,isAdminState,isTeacherState } from "../../store/AuthAtoms"
 import {Grid, Paper, Card, CardActions, CardContent, Button} from "@material-ui/core";
 import Compressor from 'compressorjs';
 
@@ -13,6 +13,8 @@ const db = firebase.firestore();
 const storage = firebase.storage();
 
 const UploadWord=()=>{
+   const isAdmin = useRecoilValue(isAdminState);
+   const isTeacher = useRecoilValue(isTeacherState);
    const [user, setUser] = useRecoilState(usernameState);
    const [name, setName] = useState("");
    const [phrase, setPhrase] = useState("");
@@ -201,26 +203,30 @@ const UploadWord=()=>{
    const onWordCreate = async ()=>{
 
         setSavingToFireBase(true);
-
-        await db.collection("chinesewords").doc(name).set({
-            creator: user,
-            name : name,
-            pinyin: pinyin,
-            wordMeaning: wordMeaning,
-            phraseMeanings:phraseMeanings,
-            sentenceMeanings:sentenceMeanings,
-            wordLevel: wordLevel,
-            phraseLevels : levels,
-            phrases: phrases,
-            sentences: sentences,
-        })
+        try{
+            await db.collection("chinesewords").doc(user+name).set({
+                creator: user,
+                name : name,
+                pinyin: pinyin,
+                wordMeaning: wordMeaning,
+                phraseMeanings:phraseMeanings,
+                sentenceMeanings:sentenceMeanings,
+                wordLevel: wordLevel,
+                phraseLevels : levels,
+                phrases: phrases,
+                sentences: sentences,
+                wordId:user+name
+            })
+        }catch(error){
+            alert(error.message);
+        }
 
       
       if (file!==null) {
             const storageRef = storage.ref()
-            const fileRef = storageRef.child(`chinese/word/pictures/${name}`)
+            const fileRef = storageRef.child(`chinese/word/pictures/${user+name}`)
             await fileRef.put(file, {contentType:'image/jpeg'})
-            await db.collection("chinesewords").doc(name).update({
+            await db.collection("chinesewords").doc(user+name).update({
             image: firebase.firestore.FieldValue.arrayUnion({
                 name: name,
                 url: await fileRef.getDownloadURL()
@@ -229,9 +235,9 @@ const UploadWord=()=>{
        }
         if (xiangxingImage!==null) {
             const storageRef = storage.ref()
-            const fileRef = storageRef.child(`chinese/word/xiangxingimage/${name}`)
+            const fileRef = storageRef.child(`chinese/word/xiangxingimage/${user+name}`)
             await fileRef.put(xiangxingImage, {contentType:'image/jpeg'})
-            await db.collection("chinesewords").doc(name).update({
+            await db.collection("chinesewords").doc(user+name).update({
                 xiangxingImage: firebase.firestore.FieldValue.arrayUnion({
                 name: name,
                 url: await fileRef.getDownloadURL()
@@ -240,9 +246,9 @@ const UploadWord=()=>{
         }
         if (strokeImage!==null) {
             const storageRef = storage.ref()
-            const fileRef = storageRef.child(`chinese/word/stokeimage/${name}`)
+            const fileRef = storageRef.child(`chinese/word/stokeimage/${user+name}`)
             await fileRef.put(strokeImage, {contentType:'image/jpeg'})
-            await db.collection("chinesewords").doc(name).update({
+            await db.collection("chinesewords").doc(user+name).update({
                 strokeImage: firebase.firestore.FieldValue.arrayUnion({
                 name: name,
                 url: await fileRef.getDownloadURL()
@@ -251,9 +257,9 @@ const UploadWord=()=>{
         }
         if (wordAudio!==null) {
             const storageRef = storage.ref()
-            const wordAudioRef= storageRef.child(`chinese/word/wordAudio/${name}`)
+            const wordAudioRef= storageRef.child(`chinese/word/wordAudio/${user+name}`)
             await wordAudioRef.put(wordAudio, {contentType:'audio/webm;codecs=opus'})
-            await db.collection("chinesewords").doc(name).update({
+            await db.collection("chinesewords").doc(user+name).update({
                 wordAudio: firebase.firestore.FieldValue.arrayUnion({
                 name: name,
                 url: await wordAudioRef.getDownloadURL()
@@ -262,22 +268,22 @@ const UploadWord=()=>{
         }
 
         const storageRef = storage.ref()
-        const phraseAudiosRef= storageRef.child(`chinese/word/phrasesAudios/${name}`)
+        const phraseAudiosRef= storageRef.child(`chinese/word/phrasesAudios/${user+name}`)
         for (let index=0; index<audios.length; index++) {
                 await phraseAudiosRef.child(`/${index}`).put(audios[index], {contentType:'audio/webm;codecs=opus'})
                 const audioRef= phraseAudiosRef.child(`/${index}`)
-                await db.collection("chinesewords").doc(name).update({
+                await db.collection("chinesewords").doc(user+name).update({
                     phraseAudios: firebase.firestore.FieldValue.arrayUnion({
                     name: name,
                     url: await audioRef.getDownloadURL()
                 })
             })
         }
-        const sentencesAudiosRef= storageRef.child(`chinese/word/sentencesAudios/${name}`)
+        const sentencesAudiosRef= storageRef.child(`chinese/word/sentencesAudios/${user+name}`)
         for (let index=0; index<sentencesAudios.length; index++) {
                 await sentencesAudiosRef.child(`/${index}`).put(sentencesAudios[index], {contentType:'audio/webm;codecs=opus'})
                 const audioRef= sentencesAudiosRef.child(`/${index}`)
-                await db.collection("chinesewords").doc(name).update({
+                await db.collection("chinesewords").doc(user+name).update({
                     sentencesAudios: firebase.firestore.FieldValue.arrayUnion({
                     name: name,
                     url: await audioRef.getDownloadURL()
@@ -303,17 +309,14 @@ const UploadWord=()=>{
        setSentencesAudiosURLs([]);
        setMoveOn(false);
    }
-
+   if(!isAdmin && !isTeacher) return (
+    <div className = "container m-5">
+      You are not the admin or a teacher
+    </div>
+  )
     return (
        <div className="form-group StoryUploadDiv">
            <Grid container spacing={3} style={{ border: "1px solid grey" }}> 
-              <Grid item xs={12} >
-                    <button className="btn btn-success" 
-                    disabled={savingToFirebase} 
-                    onClick={checkWords}>
-                    查看已有汉字
-                    </button>
-              </Grid>
              <Grid item  
               container 
               spacing={3}
@@ -334,37 +337,17 @@ const UploadWord=()=>{
                                     value={wordMeaning} 
                                     onChange={onWordMeaningChange} placeholder="英语意思" /> 
                     </Grid>
-            </Grid>
-             <Grid  item xs={12} > 
-                <hr/>
-                <Audio  callbackAudio={handleWordAudioSave}/> 
-                <hr/>
-            </Grid>  
-             <Grid item xs={12} >
-                    <div className="h4 border p-2">
-                    汉字级别    
-                    <select name="level" id="level" onChange={(e)=> setWordLevel(e.target.value)}>
-                    <option value="-1"> choose </option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    </select>
-                </div>
-             </Grid>
-             <hr/>
-             <Grid item  
-              container 
-              spacing={3}
-              direction="column"
-              alignItems="stretch"
-              justifyContent="space-around">
-                    <Grid item >       
-                        字插图 
-                        <input type="file" 
-                                className="form-control" 
-                                id="imageFile" 
-                                onChange={onFileChange}/>
+                    <Grid item>
+                        <div className="h4 border p-2">
+                        汉字级别    
+                        <select name="level" id="level" onChange={(e)=> setWordLevel(e.target.value)}>
+                        <option value="-1"> choose </option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        </select>
+                        </div>
                     </Grid>
                     <Grid item >       
                         笔顺图
@@ -373,16 +356,7 @@ const UploadWord=()=>{
                                 id="imageFile" 
                                 onChange={onStrokeImageChange}/>
                     </Grid>
-                    <Grid item>  
-                        象形图
-                        <input type="file" 
-                                className="form-control" 
-                                id="imageFile" 
-                                onChange={onXiangxingImageChange}/>
-                    </Grid>
-                    <hr/>
             </Grid>
-           
             <Grid item  
               container 
               direction="row"
@@ -395,6 +369,11 @@ const UploadWord=()=>{
                                     onChange={onPhraseChange} 
                                     placeholder="词语" />  
                     </Grid>
+                    <Grid item>  
+                        <textarea  className="form-control"     
+                                    value={phraseMeaning} 
+                                    onChange={onPharseMeaningChange} placeholder="词语英语意思" /> 
+                    </Grid>
                     <Grid item >       
                        <div className="h4 border p-2">
                             词语级别
@@ -406,54 +385,28 @@ const UploadWord=()=>{
                             <option value="3">3</option>
                             </select>
                         </div>
-                    </Grid>
-                    <Grid item>  
-                        <textarea  class="form-control"     
-                                    value={phraseMeaning} 
-                                    onChange={onPharseMeaningChange} placeholder="词语英语意思" /> 
-                    </Grid>
+                    </Grid>           
             </Grid>
 
-            <Grid  item xs={12} >
-                <div style={{display:"flex", flexDirection:"row"}}>
-                
-                { name==="" || level===-1 || phrase==="" ? 
-                <div className="alert alert-danger" role="alert">
-                      {name===""? " 汉字 ! " : " "}{level === -1 ? " 级别!" : " "}{phrase===""?" 词语! ":""}
-                 </div>
-                : <Audio  callbackAudio={handleAudioSave}/>  }
-                </div>
-            </Grid>
             <Grid item xs={12}  >
-            <hr/>
+            
               <div className="form-group">
-                 <textarea  class="form-control" 
+                 <textarea  className="form-control m-2" 
                             rows="1" 
                             value={sentence} 
                             onChange={onSentenceChange} placeholder="句子"
-                            /> 
-                  <hr/>
-                 <textarea  class="form-control" 
+                            />
+                 <textarea  className="form-control m-2" 
                             rows="1" 
                             value={sentenceMeaning} 
                             onChange={onSentenceMeaningChange} placeholder="句子英语意思"
                             />             
               </div>
              </Grid>
-             <Grid  item xs={12} >
-                <div style={{display:"flex", flexDirection:"row"}}>
-                
-                { name==="" || level===-1 || phrase==="" ? 
-                <div className="alert alert-danger" role="alert">
-                      {sentence===""? " 句子 ! " : " "}
-                 </div>
-                : <Audio  callbackAudio={handleSentenceAudioSave}/>  }
-                </div>
-            </Grid>
+             
             <Grid item xs={12}>
-            { audioBlob===null || sentenceAudio===null? <div className="alert alert-danger" role="alert"> 录音! </div> :null }
                 <button className="btn btn-success" 
-                disabled={name===""|| level==="" || audioBlob===null || pinyin ==="" || wordAudio===null || sentence==="" || sentenceAudio===null}
+                disabled={name===""|| pinyin ==="" || sentence==="" || phrase===""}
                 onClick={onContentLevelAdded}>保留查看
                 </button>
                  等“添加进数据库”按钮出现
@@ -468,13 +421,11 @@ const UploadWord=()=>{
                                 <p> {name} -级别-{wordLevel} </p> 
                                 <p>{pinyin} </p>
                                 <p>{wordMeaning} </p>
-                                <audio src={wordAudioURL} controls /> 
                                 <p> {phrases[index]} -词语级别- {level} </p> 
                                 <p>{phraseMeanings[index]}</p>
-                                <audio src={audioURLs[index]} controls /> 
                                 <p> {sentences[index]} </p>
                                 <p>{sentenceMeanings[index]}</p> 
-                                <audio src={sentencesAudiosURLs[index]} controls /> 
+                              
                                 </CardContent>    
                                 <CardActions>      
                                     <Button size="small" color ="primary" onClick={()=>onDelete(index)}> x 删除 </Button>      
