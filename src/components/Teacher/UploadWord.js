@@ -206,6 +206,7 @@ const UploadWord=()=>{
         try{
             await db.collection("chinesewords").doc(user+name).set({
                 creator: user,
+                wordId:user+name,
                 name : name,
                 pinyin: pinyin,
                 wordMeaning: wordMeaning,
@@ -214,82 +215,84 @@ const UploadWord=()=>{
                 wordLevel: wordLevel,
                 phraseLevels : levels,
                 phrases: phrases,
-                sentences: sentences,
-                wordId:user+name
+                sentences: sentences, 
             })
+            if (strokeImage!==null) {
+                const storageRef = storage.ref()
+                const fileRef = storageRef.child(`chinese/word/stokeimage/${user+name}`)
+                await fileRef.put(strokeImage, {contentType:'image/jpeg'})
+                await db.collection("chinesewords").doc(user+name).update({
+                    strokeImage: firebase.firestore.FieldValue.arrayUnion({
+                    name: name,
+                    url: await fileRef.getDownloadURL()
+                    })
+                })
+            }
         }catch(error){
             alert(error.message);
         }
 
-      
-      if (file!==null) {
-            const storageRef = storage.ref()
-            const fileRef = storageRef.child(`chinese/word/pictures/${user+name}`)
-            await fileRef.put(file, {contentType:'image/jpeg'})
-            await db.collection("chinesewords").doc(user+name).update({
-            image: firebase.firestore.FieldValue.arrayUnion({
-                name: name,
-                url: await fileRef.getDownloadURL()
-            })
-            })
-       }
-        if (xiangxingImage!==null) {
-            const storageRef = storage.ref()
-            const fileRef = storageRef.child(`chinese/word/xiangxingimage/${user+name}`)
-            await fileRef.put(xiangxingImage, {contentType:'image/jpeg'})
-            await db.collection("chinesewords").doc(user+name).update({
-                xiangxingImage: firebase.firestore.FieldValue.arrayUnion({
-                name: name,
-                url: await fileRef.getDownloadURL()
-                })
-            })
-        }
-        if (strokeImage!==null) {
-            const storageRef = storage.ref()
-            const fileRef = storageRef.child(`chinese/word/stokeimage/${user+name}`)
-            await fileRef.put(strokeImage, {contentType:'image/jpeg'})
-            await db.collection("chinesewords").doc(user+name).update({
-                strokeImage: firebase.firestore.FieldValue.arrayUnion({
-                name: name,
-                url: await fileRef.getDownloadURL()
-                })
-            })
-        }
-        if (wordAudio!==null) {
-            const storageRef = storage.ref()
-            const wordAudioRef= storageRef.child(`chinese/word/wordAudio/${user+name}`)
-            await wordAudioRef.put(wordAudio, {contentType:'audio/webm;codecs=opus'})
-            await db.collection("chinesewords").doc(user+name).update({
-                wordAudio: firebase.firestore.FieldValue.arrayUnion({
-                name: name,
-                url: await wordAudioRef.getDownloadURL()
-                })
-            })
-        }
+   
 
-        const storageRef = storage.ref()
-        const phraseAudiosRef= storageRef.child(`chinese/word/phrasesAudios/${user+name}`)
-        for (let index=0; index<audios.length; index++) {
-                await phraseAudiosRef.child(`/${index}`).put(audios[index], {contentType:'audio/webm;codecs=opus'})
-                const audioRef= phraseAudiosRef.child(`/${index}`)
-                await db.collection("chinesewords").doc(user+name).update({
-                    phraseAudios: firebase.firestore.FieldValue.arrayUnion({
-                    name: name,
-                    url: await audioRef.getDownloadURL()
-                })
-            })
-        }
-        const sentencesAudiosRef= storageRef.child(`chinese/word/sentencesAudios/${user+name}`)
-        for (let index=0; index<sentencesAudios.length; index++) {
-                await sentencesAudiosRef.child(`/${index}`).put(sentencesAudios[index], {contentType:'audio/webm;codecs=opus'})
-                const audioRef= sentencesAudiosRef.child(`/${index}`)
-                await db.collection("chinesewords").doc(user+name).update({
-                    sentencesAudios: firebase.firestore.FieldValue.arrayUnion({
-                    name: name,
-                    url: await audioRef.getDownloadURL()
-                })
-            })
-        }
+      
+    //   if (file!==null) {
+    //         const storageRef = storage.ref()
+    //         const fileRef = storageRef.child(`chinese/word/pictures/${user+name}`)
+    //         await fileRef.put(file, {contentType:'image/jpeg'})
+    //         await db.collection("chinesewords").doc(user+name).update({
+    //         image: firebase.firestore.FieldValue.arrayUnion({
+    //             name: name,
+    //             url: await fileRef.getDownloadURL()
+    //         })
+    //         })
+    //    }
+        // if (xiangxingImage!==null) {
+        //     const storageRef = storage.ref()
+        //     const fileRef = storageRef.child(`chinese/word/xiangxingimage/${user+name}`)
+        //     await fileRef.put(xiangxingImage, {contentType:'image/jpeg'})
+        //     await db.collection("chinesewords").doc(user+name).update({
+        //         xiangxingImage: firebase.firestore.FieldValue.arrayUnion({
+        //         name: name,
+        //         url: await fileRef.getDownloadURL()
+        //         })
+        //     })
+        // }
+       
+        // if (wordAudio!==null) {
+        //     const storageRef = storage.ref()
+        //     const wordAudioRef= storageRef.child(`chinese/word/wordAudio/${user+name}`)
+        //     await wordAudioRef.put(wordAudio, {contentType:'audio/webm;codecs=opus'})
+        //     await db.collection("chinesewords").doc(user+name).update({
+        //         wordAudio: firebase.firestore.FieldValue.arrayUnion({
+        //         name: name,
+        //         url: await wordAudioRef.getDownloadURL()
+        //         })
+        //     })
+        // }
+       
+        // const storageRef = storage.ref()
+        // const phraseAudiosRef= storageRef.child(`chinese/word/phrasesAudios/${user+name}`)
+        // for (let index=0; index<audios.length; index++) {
+        //         await phraseAudiosRef.child(`/${index}`).put(audios[index], {contentType:'audio/webm;codecs=opus'})
+        //         const audioRef= phraseAudiosRef.child(`/${index}`)
+        //         await db.collection("chinesewords").doc(user+name).update({
+        //             phraseAudios: firebase.firestore.FieldValue.arrayUnion({
+        //             name: name,
+        //             url: await audioRef.getDownloadURL()
+        //         })
+        //     })
+        // }
+        // const sentencesAudiosRef= storageRef.child(`chinese/word/sentencesAudios/${user+name}`)
+        // for (let index=0; index<sentencesAudios.length; index++) {
+        //         await sentencesAudiosRef.child(`/${index}`).put(sentencesAudios[index], {contentType:'audio/webm;codecs=opus'})
+        //         const audioRef= sentencesAudiosRef.child(`/${index}`)
+        //         await db.collection("chinesewords").doc(user+name).update({
+        //             sentencesAudios: firebase.firestore.FieldValue.arrayUnion({
+        //             name: name,
+        //             url: await audioRef.getDownloadURL()
+        //         })
+        //     })
+        // }
        setName("");
        setPinyin("");
        setFile(null);

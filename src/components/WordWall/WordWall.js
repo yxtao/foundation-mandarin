@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from'react';
 import { useRecoilState, useRecoilValue } from "recoil";
-import {usernameState,isTeacherState, userIdState } from "../../store/AuthAtoms"
+import {checkedAuthState, 
+    usernameState, 
+    firebaseState,
+    isTeacherState, 
+    userIdState,
+    likedWordList,
+    likedStoryList } from "../../store/AuthAtoms"
 import {Grid} from "@material-ui/core";
 import WordCard from'./WordCard/WordCard';
 import WordsPagination from './WordCard/WordsPagination/WordsPagnation';
@@ -9,23 +15,55 @@ import "./WordWall.css";
 
 const WordWall = (props)=>{
     const isTeacher = useRecoilValue(isTeacherState);
-    const [userName, setUserName] = useRecoilState(usernameState);
+    const firebase = useRecoilValue(firebaseState);
+    const [likedWords, setLikedWords] = useRecoilState(likedWordList);
+    const [likedStories, setLikedStories] = useRecoilState(likedStoryList);
     const [userId, setUserId] = useRecoilState(userIdState);
+    const [userName, setUserName] = useRecoilState(usernameState);
     const [wordList, setWordList] = useState([...props.words]);
     const [wordPageArrays, setwordPageArrays] = useState([]);
     const [pagesNum, setPagesNum]= useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [currentPage, setCurrentPage] = useState(0);
+    const [error,setError] = useState("");
     
     const handleDeleteCallback = (wordId) =>{
         // TODO change to creator in database to "none!" 
     }
-    const handleLikeCallback = (wordId) =>{
-     // Add it to users' liked list 
+    const handleLikeCallback = async (wordId) =>{ 
+        try {
+            await updatelikedWordCards(userId, [...likedWords,wordId]);
+        }catch(err){
+            setError(err.message)
+        }
+        setLikedWords((pre) => [...pre,wordId]);
     }
-    const handleRemoveLikeCallback = (wordId) =>{
-        // if exist , remove it from users' liked list 
+    const handleRemoveLikeCallback = async (wordId) =>{
+        let words = [...likedWords];
+            words= words.filter(word=> word!==wordId);
+        try {
+            await updatelikedWordCards(userId, words);
+        }catch(err){
+            setError(err.message)
+        }
+        setLikedWords(words);
      }
+     const updatelikedWordCards = async(uid, words)=>{
+        try {
+            const docRef = firebase.firestore().collection("users").doc(uid);
+            const doc = await docRef.get(); 
+            if(!doc.exists) { 
+                 setError("NOT FOUND"); 
+                 return;
+             }
+            await docRef.update({
+                likedWordCards:words
+            })
+          }catch(err){    
+            setError(err.message);
+          }
+      }
+    
     useEffect(()=>{
       const pagesArray=[]; 
       if(wordList.length<rowsPerPage) {
@@ -42,7 +80,6 @@ const WordWall = (props)=>{
             setwordPageArrays(pagesArray);
             setPagesNum(wordPageArrays.length);
         }
-      console.log("wordPageArrays", wordPageArrays);
     },[rowsPerPage, wordList, pagesNum])
 
     const handleCallbackRowsPerPage = (e)=>{
@@ -57,19 +94,9 @@ const WordWall = (props)=>{
             <div class="row">
                 <div class="col-sm-4">
                     <div class="col-xs-2 active-cyan">
-                        <input class="form-control" id="ex1" type="text" placeholder="search by chinese character"/>
+                        <input class="form-control" id="ex1" type="text" placeholder="search by chinese character"/> {error}
                     </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="col-xs-2 active-cyan">
-                        <input class="form-control" id="ex1" type="text" placeholder="search by english meaning"/>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="col-xs-2 active-cyan">
-                        <input class="form-control" id="ex1" type="text" placeholder="search by level"/>
-                    </div>
-                </div>
+                </div>   
             </div>
             <WordsPagination wordsNum={wordList.length} 
                 callbackRowsPerPage={handleCallbackRowsPerPage} 
@@ -89,9 +116,9 @@ const WordWall = (props)=>{
                             parentDeleteCallback={handleDeleteCallback} 
                             parentLikeCallback = {handleLikeCallback}
                             parentRemoveLikeCallback = {handleRemoveLikeCallback }
-                            hideDelete={item.creator !== userName}
-                            hideLike = {isTeacher && item.creator === userName}
-                            hideRemoveLike = {isTeacher && item.creator === userName}/> 
+                            hideDelete={item.creator !== userName  }
+                            hideLike = {!isTeacher || item.creator === userName || likedWords.includes(item.wordId)}
+                            hideRemoveLike = {!isTeacher || item.creator === userName || !likedWords.includes(item.wordId) }/> 
                         </Grid>) 
                 } 
             </Grid>

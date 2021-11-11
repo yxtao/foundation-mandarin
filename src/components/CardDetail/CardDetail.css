@@ -9,7 +9,7 @@
 .cardDiv{ 
     /* Add shadows to create the "card" effect */
     box-shadow: 5px 15px 15px 0 rgb(4, 153, 252);
-    transition: 0.3s;   
+    transition: 0.3s;
 }
 
 .detail-image{

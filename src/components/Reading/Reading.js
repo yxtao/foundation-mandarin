@@ -52,7 +52,11 @@ const Reading = (props)=>{
                >
                 {cardList.filter(item=> notes.includes(item.name)).map((item,index)=> 
                         <Grid key={index} item xs={6} sm={2} md={2} > 
-                           <WordCard wordData={item} parentDeleteCallback = {handleDeleteCallback} hideDelete={true}/>
+                           <WordCard wordData={item} 
+                                parentDeleteCallback = {handleDeleteCallback} 
+                                hideDelete={true}
+                                hideLike = {true}
+                                hideRemoveLike = {true}/>
                          </Grid>)} 
             </Grid>
             </div>

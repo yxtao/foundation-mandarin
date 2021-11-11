@@ -69,7 +69,7 @@ const Story =({story, parentCallback, words})=>{
             <Typography style={{textAlign:"center"}} variant="h5" component="h5"> {story.name} level {bookLevel}</Typography>
                     <div class="h5">
                         <select name="level" id="level" onChange={changeBookLevel}>
-                        <option key ={userLevelState} value={userLevelIndex}> Level {userLevelState} </option>
+                        {/* <option key ={userLevelState} value={userLevelIndex}> Level {userLevelState} </option> */}
                         {story.levels.map((level, levelIndex)=> <option key ={levelIndex} value={levelIndex}>Level {level} </option>)}
                         </select> 
                     </div>

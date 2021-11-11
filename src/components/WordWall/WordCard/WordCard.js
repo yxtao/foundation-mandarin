@@ -20,14 +20,14 @@ const useStyles = makeStyles({
 
 const WordCard = ({wordData, parentDeleteCallback, parentLikeCallback, parentRemoveLikeCallback,hideDelete, hideLike, hideRemoveLike})=> {
   const classes = useStyles();
-  const sendDeleteCallback=(word)=>{
-    parentDeleteCallback(word);
+  const sendDeleteCallback=()=>{
+    parentDeleteCallback(wordData.wordId);
   }
-  const sendLikeCallback =(word) =>{
-    parentLikeCallback(word);
+  const sendLikeCallback =() =>{
+    parentLikeCallback(wordData.wordId);
   }
-  const sendRemoveCallback = (word)=>{
-    parentRemoveLikeCallback(word);
+  const sendRemoveCallback = ()=>{
+    parentRemoveLikeCallback(wordData.wordId);
   }
   return (
     <Card className={classes.root} style={{height:"35vh"}}> 
@@ -56,11 +56,11 @@ const WordCard = ({wordData, parentDeleteCallback, parentLikeCallback, parentRem
           delete 
         </Button> }
         {hideLike === true? null : 
-        <Button size="small" color="primary" onClick={()=>sendLikeCallback(wordData.wordId)}>
+        <Button size="small" color="primary" onClick={sendLikeCallback}>
           like
         </Button> }
         {hideRemoveLike === true? null : 
-        <Button size="small" color="primary" onClick={()=>sendRemoveCallback(wordData.wordId)}>
+        <Button size="small" color="primary" onClick={sendRemoveCallback}>
           Unlike
         </Button> }
       </CardActions>

@@ -72,7 +72,7 @@ const HomePage=()=> {
                     </Grid>
             </Grid>
 
-            <Grid item  
+            {/* <Grid item  
               container 
               direction="row"
               alignItems="stretch"
@@ -87,7 +87,7 @@ const HomePage=()=> {
             </Grid>
             <Grid item style={{margin:"5vh"}}>
               <div> This is contact div  </div>
-            </Grid>
+            </Grid> */}
       </Grid>
     </div>
   );

@@ -68,7 +68,7 @@ const CardDetail = (props)=>{
     }
     return (
         <div className="container-wrapper-detail p-lg-5"> 
-            <div class="card cardDiv p-5">
+            <div class="card cardDiv m-5">
                 <div className="container">
                     <div className = "row p-2 p-lg-3">
                         {wordData && "image" in wordData ?
@@ -87,9 +87,9 @@ const CardDetail = (props)=>{
                     <div className="container">
                         <div className = "row">
                             <div className = "col">
-                                <h1 class="card-title">{wordData && wordData.name? wordData.name: "name has not uploaded"}</h1>
-                                <h2 class="card-title">{wordData && wordData.pinyin? wordData.pinyin: "pinyin has not uploaded"}</h2>
-                                <h6 class="card-title">{wordData && wordData.wordMeaning? wordData.wordMeaning: ""}</h6>
+                                <h3 class="card-title">{wordData && wordData.name? wordData.name: "name has not uploaded"}</h3>
+                                <h3 class="card-title">{wordData && wordData.pinyin? wordData.pinyin: "pinyin has not uploaded"}</h3>
+                                <h3 class="card-title">{wordData && wordData.wordMeaning? wordData.wordMeaning: ""}</h3>
                             </div>
                             <div className = "col">
                             {/* { wordData && wordData.wordAudio ? 
@@ -108,10 +108,11 @@ const CardDetail = (props)=>{
                             {phrasesData.map(obj=> 
                             <div className = "row">
                                 <div className = "col">
-                                    <h2 class="card-title">{obj.phrase}</h2>
-                                    <h6 class="card-title"> {"phraseMeaning" in obj?obj.phraseMeaning:""}</h6>
-                                    <br/>
+                                    <h3 class="card-title">{obj.phrase}</h3>
                                     <h6 class="card-title">{" "}Level {obj.phraseLevel}</h6>
+                                </div>
+                                <div className = "col">
+                                    <h6 class="card-title"> {"phraseMeaning" in obj?obj.phraseMeaning:""}</h6>
                                 </div>
                                 {/* <div className = "col">
                                     <audio controls class="embed-responsive-item">
@@ -127,7 +128,9 @@ const CardDetail = (props)=>{
                             {sentencesData.map(obj=> 
                             <div className = "row">
                                 <div className = "col">
-                                    <h3 class="card-title">{obj.sentence}</h3>
+                                    <h6 class="card-title">{obj.sentence}</h6>
+                                </div>
+                                <div className = "col">
                                     <h7 class="card-title">{"sentenceMeaning" in obj?obj.sentenceMeaning:""}</h7>
                                 </div>
                                 {/* <div className = "col">

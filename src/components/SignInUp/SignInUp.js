@@ -1,7 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import { useHistory } from 'react-router';
 import { useRecoilValue, useRecoilState } from "recoil";
-import { checkedAuthState, usernameState, isAdminState, firebaseState , isTeacherState, userIdState} from "../../store/AuthAtoms"
+import { checkedAuthState, 
+          usernameState, 
+          isAdminState, 
+          firebaseState,
+          isTeacherState, 
+          userIdState,
+          likedWordList,
+          likedStoryList
+         } from "../../store/AuthAtoms"
 import {userlevelstate, wordsetstate} from "../../store/storyWordsAtoms";
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -12,6 +20,8 @@ import { DialogContent } from '@material-ui/core';
 const SignInUp = ()=>{
   const history = useHistory();
   const firebase = useRecoilValue(firebaseState);
+  const [likedWords, setLikedWords] = useRecoilState(likedWordList);
+  const [likedStories, setLikedStories] = useRecoilState(likedStoryList);
   const [isAdmin, setIsAdmin] = useRecoilState(isAdminState);
   const [isTeacher, setIsTeacher] = useRecoilState(isTeacherState);
   const [userId, setUserId] = useRecoilState(userIdState);
@@ -39,6 +49,8 @@ const SignInUp = ()=>{
           setIsTeacher(data.isTeacher);
           setUserLevelState(data.readingLevel);
           setWordSetState(data.notes); 
+          data.likedWordCards && setLikedWords(data.likedWordCards);
+          data.likedPassages && setLikedStories(data.likedPassages);
        }catch(error){
          setError(error.message);
        }

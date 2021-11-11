@@ -32,3 +32,12 @@ export const usernameState = atom({
     key: "isAdminState",
     default: false,
   });
+  export const likedWordList = atom({
+    key: "likedWordList",
+    default: [],
+  })
+
+  export const likedStoryList = atom({
+    key: "likedStoryList",
+    default: []
+  })
