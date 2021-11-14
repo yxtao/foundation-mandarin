@@ -116,7 +116,7 @@ const WordWall = (props)=>{
                             parentDeleteCallback={handleDeleteCallback} 
                             parentLikeCallback = {handleLikeCallback}
                             parentRemoveLikeCallback = {handleRemoveLikeCallback }
-                            hideDelete={item.creator !== userName  }
+                            hideDelete={true }
                             hideLike = {!isTeacher || item.creator === userName || likedWords.includes(item.wordId)}
                             hideRemoveLike = {!isTeacher || item.creator === userName || !likedWords.includes(item.wordId) }/> 
                         </Grid>) 

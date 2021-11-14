@@ -18,17 +18,17 @@ const Reading = (props)=>{
     const [words, setWords] = useState(props.words);
     const [cardList, setCardList] = useState(props.words);
     const [wordSet,setWordSet] = useRecoilState(wordsetstate);
-    const name = useParams().name;
+    const id = useParams().name;
 
     useEffect(()=> {
-        setStory(props.stories.find(element=> element.name === name))   
-    },[name, props])
+        setStory(props.stories.find(element=> element.storyId === id))   
+    },[id, props])
 
-    const handleDeleteCallback=(name)=>{
-      setNotes((preNotes)=>preNotes.filter(note=>note !== name))
+    const handleDeleteCallback=(wordId)=>{
+      setNotes((preNotes)=>preNotes.filter(note=>note !== wordId))
     }
-    const handleAddCallback =(name) =>{
-      setNotes([...notes,name])
+    const handleAddCallback =(wordId) =>{
+      setNotes([...notes,wordId])
     }
     
     useEffect(()=>{

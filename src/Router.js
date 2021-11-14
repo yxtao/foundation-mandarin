@@ -23,10 +23,11 @@ import UploadWord from './components/Teacher/UploadWord';
 const Router = ()=>{
     const [storyList, setStoryList] = useRecoilState(storyliststate);
     const [wordList, setWordList] = useRecoilState(wordliststate);
-    const [wordSet, setWordSet] = useState([]);
     useEffect(()=> {
+        
        const fetchData= async()=> {
-            const db = await firebase.firestore().collection("story");
+            setStoryList([]);
+            const db = firebase.firestore().collection("story");
             db.onSnapshot((querySnapshot)=>{
                 const items=[];
                 querySnapshot.forEach((doc)=>{
@@ -35,7 +36,8 @@ const Router = ()=>{
                 setStoryList(items);
                 console.log(storyList);
             })
-            const chineseWordsDb = await firebase.firestore().collection("chinesewords")
+            setWordList([]);
+            const chineseWordsDb = firebase.firestore().collection("chinesewords")
             chineseWordsDb.onSnapshot((querySnapshot)=>{
                 const wordsItems=[];
                 querySnapshot.forEach((doc)=>{

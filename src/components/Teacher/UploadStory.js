@@ -76,11 +76,12 @@ const UploadStory=()=>{
 
         setSavingToFireBase(true);
         try{
-        await db.collection("story").add({
+        await db.collection("story").doc(user+name).set({
             creator: user,
             name:name,
             levels : levels,
             contents: contents,
+            storyId: user+name,
         })
         }catch(error){
             alert(error);

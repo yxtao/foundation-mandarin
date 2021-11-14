@@ -50,6 +50,7 @@ const SignInUp = ()=>{
           setUserLevelState(data.readingLevel);
           setWordSetState(data.notes); 
           data.likedWordCards && setLikedWords(data.likedWordCards);
+          console.log("likedwords", likedWords)
           data.likedPassages && setLikedStories(data.likedPassages);
        }catch(error){
          setError(error.message);

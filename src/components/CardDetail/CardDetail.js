@@ -6,13 +6,13 @@ import test1 from "../../assets/images/wordcards/test1.jpg";
 import "./CardDetail.css"
 
 const CardDetail = (props)=>{
-    const name = useParams().word; 
+    const wordId = useParams().word; 
     const [wordData, setWordData] = useState(null);
     const [phrasesData, setPhrasesData] = useState([]);
     const [sentencesData, setSentencesData] = useState([]);
     
     useEffect(()=>{
-       setWordData(props.wordList.find(element => element.name===name));
+       setWordData(props.wordList.find(element => element.wordId===wordId));
        let phrasesInfo = [];
        let sentencesInfo = [];
        
@@ -61,7 +61,7 @@ const CardDetail = (props)=>{
             setSentencesData(sentencesInfo);
         }
 
-    },[name, props.wordList, wordData])
+    },[wordId, props.wordList, wordData])
 
     if (!wordData) {
         return <div className="container-wrapper-detail"> loading... </div>
