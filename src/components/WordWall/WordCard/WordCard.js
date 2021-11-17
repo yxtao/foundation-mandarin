@@ -35,6 +35,9 @@ const WordCard = ({wordData, parentDeleteCallback, parentLikeCallback, parentRem
       <Typography gutterBottom variant="h4" component="h4" style={{width: "50%",margin:"auto"}}>
             {wordData.name}
           </Typography>
+          <p style={{width: "50%",margin:"auto"}}>
+            {wordData.creator}
+          </p>
       <Link to = {`/carddetail/${wordData.wordId}`}>
         <CardContent>
          <Typography>{wordData.pinyin? wordData.pinyin : ""}</Typography> 

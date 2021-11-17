@@ -83,7 +83,7 @@ const Story =({story, parentCallback, words})=>{
             <Grid  item xs={12} sm={12} > 
              {charactersPages.length>0 ? 
              <div> 
-              <Paper elevation={5} > 
+              <Paper elevation={5}> 
                     <div className="h4 p-4 storyContent">
                         {charactersPages[currentPage].map((character, index)=> keywords.includes(character)?
                         <button key={index}  

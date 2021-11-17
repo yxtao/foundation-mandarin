@@ -66,13 +66,15 @@ const ReadingList = (props)=>{
                    <Grid container spacing={5} >  
                   { props.stories.map((story, index)=>
                    <Grid item >
+                       <div>
                        <button  className="btn btn-link"
                                 key={index} 
                                 onClick={()=>openStory(story.storyId)}>
                                     <span class="h2 text-dark">
                                     {story.name}
-                                    </span> 
+                                    </span>            
                         </button>
+                        <p className="pl-3 text-dark">{" by-"+story.creator} </p>
                         <div className = "words-div">
                              <div  key={index}  className="p-2 flex-row">  
                              {isTeacher && story.creator!== userName && !likedStories.includes(story.storyId) &&
@@ -91,7 +93,8 @@ const ReadingList = (props)=>{
                                  <span class="text-success"> unlike </span>
                              </button> }
                             </div> 
-                        </div> 
+                        </div>
+                     </div> 
                     </Grid>)}
                 </Grid>
                </div>

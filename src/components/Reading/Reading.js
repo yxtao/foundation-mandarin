@@ -18,7 +18,7 @@ const Reading = (props)=>{
     const [words, setWords] = useState(props.words);
     const [cardList, setCardList] = useState(props.words);
     const [wordSet,setWordSet] = useRecoilState(wordsetstate);
-    const id = useParams().name;
+    const id = useParams().id;
 
     useEffect(()=> {
         setStory(props.stories.find(element=> element.storyId === id))   

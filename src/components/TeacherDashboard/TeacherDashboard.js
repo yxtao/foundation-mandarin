@@ -149,8 +149,8 @@ const TeacherDashboard = ()=>{
     const redirtToDetailWord = (wordId)=>{
       history.push(`/carddetail/${wordId}`)
     }
-    const redirtToStory = ()=>{
-
+    const redirtToStory = (id)=>{
+       history.push(`/story/${id}`)
     }
     const redirectToAddStory = ()=>{
         history.push("/addStory");
@@ -164,6 +164,18 @@ const TeacherDashboard = ()=>{
     const redirecToStoryList = ()=>{
         history.push("/reading")
     }
+    const redirectToMyStoryList = ()=>{
+        history.push("/myreading");
+    }
+    const redirectToLikedStoryList = ()=>{
+        history.push("/likedReading")
+    }
+    const redirectToOwnerList = () =>{
+        history.push("/myWordwall");
+    }
+    const redirectToLikedList = () =>{
+        history.push("/likedWordwall");
+    }
     const generateAccessCode =()=>{
         setCode(user+storyList.length+wordList.length);
         //TODO update user accesscode in accesscode collection
@@ -171,7 +183,7 @@ const TeacherDashboard = ()=>{
    
     if(!isTeacher) {
         return (<div className = "container-wrapper">
-            you are not a teacher
+           Please sign in as a teacher
         </div>)
         }
     return (
@@ -179,7 +191,11 @@ const TeacherDashboard = ()=>{
             {error}
             <div className="flex-div">
                     <div className = "flex-item p-2">
-                        <button className="btn btn-outline-info">  My word list </button>
+                        <button 
+                            className="btn btn-outline-info"
+                            onClick = {redirectToOwnerList}> 
+                                My word list 
+                         </button>
                         {wordList.map((word, index)=> word.creator === user?
                         <div className = "words-div">
                              <div  key={index}  className="p-2 flex-row">  
@@ -199,14 +215,17 @@ const TeacherDashboard = ()=>{
                         </div>  : null )}
                     </div>
                     <div className = "flex-item p-2">
-                        <button className="btn btn-outline-info">  My story list </button>
+                        <button
+                            className="btn btn-outline-info"
+                            onClick = {redirectToMyStoryList}>  
+                            My passage list </button>
                         {storyList.map((story, index)=> story.creator === user?
                         <div className = "words-div">
                              <div  key={index}  className="p-2 flex-row">  
                              <button        
                                  type="button" 
                                  className="btn btn-outline-light" 
-                                 onClick={()=>redirtToDetailWord(story.name) }>    
+                                 onClick={()=>redirtToStory (story.storyId) }>    
                                  <span class="h4 text-success">  {story.name}</span>
                              </button>
                              <button 
@@ -219,10 +238,10 @@ const TeacherDashboard = ()=>{
                         </div>  : null )}
                     </div>
                     <div className="flex-item p-5">
-                        <button className="btn btn-outline-info m-2" onClick={redirectToAddWord}>  Add word </button>
-                        <button className="btn btn-outline-info m-2 " onClick={redirectToAddStory}>  Add story </button>
+                        <button className="btn btn-outline-info m-2" onClick={redirectToAddWord}>  Add words </button>
+                        <button className="btn btn-outline-info m-2 " onClick={redirectToAddStory}>  Add passages </button>
                         <button className="btn btn-outline-info m-2" onClick= {redirectToWordwall}> all words </button>
-                        <button className="btn btn-outline-info m-2" onClick={redirecToStoryList}> all stories </button>
+                        <button className="btn btn-outline-info m-2" onClick={redirecToStoryList}> all passages </button>
                     </div>
                 </div>
             <div className = "flex-div">
@@ -232,7 +251,11 @@ const TeacherDashboard = ()=>{
                     <div className="p-3"> {code?"copy paste this code and share it with your students ":""}</div>
                 </div>
                 <div className = "flex-item p-2">
-                        <button className="btn btn-outline-info">  Liked word list </button>
+                        <button 
+                            className="btn btn-outline-info"
+                            onClick={redirectToLikedList}> 
+                            Liked word list 
+                         </button>
                         <div className = "words-div">
                         {likedWordObjs.map((word, index)=>
                             <div  key={index}  className="p-2 flex-column">       
@@ -246,13 +269,15 @@ const TeacherDashboard = ()=>{
                                     type="button" 
                                     className="btn btn-outline-light"
                                     onClick={()=>addToWordDB(word) }>    
-                                    <span class=" text-success"> + add to words </span>
+                                    <span class=" text-success"> + add to my word list </span>
                                 </button>
                             </div>)}
                         </div>
                     </div>
                     <div className = "flex-item p-2">
-                        <button className="btn btn-outline-info">  Liked story list </button>
+                        <button 
+                            className="btn btn-outline-info"
+                            onClick={redirectToLikedStoryList}>  Liked passage list </button>
                         <div className = "stories-div">
                         {likedStoryObjs.map((story, index)=>
                             <div  key={index}  className="p-2 flex-column">       
@@ -266,7 +291,7 @@ const TeacherDashboard = ()=>{
                                     type="button" 
                                     className="btn btn-outline-light"
                                     onClick={()=>addToStoryDB(story) }>    
-                                    <span class=" text-success"> + add to stories </span>
+                                    <span class=" text-success"> + add to my passage list </span>
                                 </button>
                             </div>)}
                         </div>

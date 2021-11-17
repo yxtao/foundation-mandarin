@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from'react';
+import { useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from "recoil";
 import {checkedAuthState, 
     usernameState, 
@@ -97,6 +98,12 @@ const WordWall = (props)=>{
                         <input class="form-control" id="ex1" type="text" placeholder="search by chinese character"/> {error}
                     </div>
                 </div>   
+                {userName? 
+                <div class="col-sm-4">
+                  <div class="col-xs-2 active-cyan">
+                  <button className="btn btn-outline-info">  search </button>
+                  </div>
+                </div> : null  }
             </div>
             <WordsPagination wordsNum={wordList.length} 
                 callbackRowsPerPage={handleCallbackRowsPerPage} 
