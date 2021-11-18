@@ -28,8 +28,12 @@ const WordWall = (props)=>{
     const [currentPage, setCurrentPage] = useState(0);
     const [error,setError] = useState("");
     
-    const handleDeleteCallback = (wordId) =>{
-        // TODO change to creator in database to "none!" 
+    const handleDeleteCallback = async (wordId) =>{
+        try{
+            await firebase.firestore().collection("chinesewords").doc(wordId).delete();
+        }catch(err){
+            setError(err.message);
+        }
     }
     const handleLikeCallback = async (wordId) =>{ 
         try {
@@ -123,7 +127,7 @@ const WordWall = (props)=>{
                             parentDeleteCallback={handleDeleteCallback} 
                             parentLikeCallback = {handleLikeCallback}
                             parentRemoveLikeCallback = {handleRemoveLikeCallback }
-                            hideDelete={true }
+                            hideDelete={!isTeacher || item.creator !== userName }
                             hideLike = {!isTeacher || item.creator === userName || likedWords.includes(item.wordId)}
                             hideRemoveLike = {!isTeacher || item.creator === userName || !likedWords.includes(item.wordId) }/> 
                         </Grid>) 

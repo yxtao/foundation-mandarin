@@ -1,6 +1,5 @@
 import React ,{useState, useEffect} from 'react';
 import { useHistory } from 'react-router';
-import { Link } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from "recoil";
 import {usernameState,
         firebaseState,
@@ -19,10 +18,15 @@ const TeacherDashboard = ()=>{
     const [userId, setUserId] = useRecoilState(userIdState);
     const [likedWords, setLikedWords] = useRecoilState(likedWordList);
     const [likedStories, setLikedStories] = useRecoilState(likedStoryList);
-    const [likedWordObjs, setLikedWorObjs] = useState([]);
-    const [likedStoryObjs, setLikedStoryObjs] = useState([]);
     const [storyList, setStoryList] = useRecoilState(storyliststate);
     const [wordList, setWordList] = useRecoilState(wordliststate);
+    const [likedWordObjs, setLikedWordObjs] = useState([]);
+    const [likedStoryObjs, setLikedStoryObjs] = useState([]);
+    const [selectedWords, setSelectedWords] = useState([]);
+    const [selectedStories, setSelectedStories] = useState([]);
+    const [myWords, setMywords] = useState([]);
+    const [myStories,setMyStories] = useState([]);
+    const [checkedStates, setCheckedStates] = useState([]);
     const [error,setError] = useState("");
     const [code,setCode] = useState("");
     
@@ -34,10 +38,17 @@ const TeacherDashboard = ()=>{
                let wordInfo = wordObj;
                 wordObjsTemp.push(wordInfo);
             }   
-        })
-        setLikedWorObjs(wordObjsTemp);
-        console.log("wordObjs",likedWordObjs)
+        })    
+        setLikedWordObjs(wordObjsTemp);
     },[wordList, likedWords])
+
+   useEffect(()=>{
+      setMywords(wordList.filter((word)=>word.creator===user));
+   }, [wordList,user])
+
+    useEffect(()=>{  
+        setCheckedStates( new Array(myWords.length).fill(false));
+    },[myWords.length])
 
     useEffect(()=>{
         let objsTemp = [];
@@ -50,8 +61,22 @@ const TeacherDashboard = ()=>{
             }   
         })
         setLikedStoryObjs(objsTemp);
-        console.log("storyObjs",likedStoryObjs) 
     }, [storyList, likedStories])
+
+    const handleOnChange = (position) => {
+        const updatedCheckedStates = checkedStates.map((item, index) =>index === position ? !item : item);
+        setCheckedStates(updatedCheckedStates);
+        let selected = [];
+        updatedCheckedStates.forEach((value,index)=>{
+            if(value===true){
+                selected.push(myWords[index]);
+            }
+            console.log(selected)
+        })
+        console.log("before", selectedWords);
+       setSelectedWords(selected);
+       console.log("after", selectedWords);
+    }
 
     const handleRemoveLike = async (wordId) =>{
         let words = [...likedWords];
@@ -92,14 +117,7 @@ const TeacherDashboard = ()=>{
             setError(err.message);
           }
     }
-    const deleteFromDB = async (word) =>{
-        try{
-            await firebase.firestore().collection("chinesewords").doc(word.wordId).delete();
-        }catch(err){
-            setError(err.message);
-        }
-    }
-
+  
     const addToStoryDB = async (story) =>{
         // WARNING: storyList is updated once firebase snapshot works
         try {
@@ -139,13 +157,6 @@ const TeacherDashboard = ()=>{
           }
       }
     
-    const deleteStoryFromDB = async(story) =>{
-        try{
-            await firebase.firestore().collection("story").doc(story.storyId).delete();
-        }catch(err){
-            setError(err.message);
-        }
-    }
     const redirtToDetailWord = (wordId)=>{
       history.push(`/carddetail/${wordId}`)
     }
@@ -196,23 +207,27 @@ const TeacherDashboard = ()=>{
                             onClick = {redirectToOwnerList}> 
                                 My word list 
                          </button>
-                        {wordList.map((word, index)=> word.creator === user?
-                        <div className = "words-div">
+                         <ul>
+                        {myWords.map((word, index)=>
+                        <li className = "words-div">
                              <div  key={index}  className="p-2 flex-row">  
+                             <input 
+                                type="checkbox"
+                                id={`custom-checkbox-${index}`}
+                                name={word.wordId}
+                                value={word.wordId}
+                                checked={checkedStates[index]}
+                                onChange={() => handleOnChange(index)}
+                            />
                              <button        
                                  type="button" 
                                  className="btn btn-outline-light" 
                                  onClick={()=>redirtToDetailWord(word.wordId) }>    
                                  <span class="h4 text-success">  {word.name}</span>
                              </button>
-                             <button 
-                                 type="button" 
-                                 className="btn btn-outline-light"
-                                 onClick={()=>deleteFromDB(word) }>    
-                                 <span class=" text-success"> x delete </span>
-                             </button>
                             </div> 
-                        </div>  : null )}
+                        </li>)}
+                        </ul>
                     </div>
                     <div className = "flex-item p-2">
                         <button
@@ -228,12 +243,6 @@ const TeacherDashboard = ()=>{
                                  onClick={()=>redirtToStory (story.storyId) }>    
                                  <span class="h4 text-success">  {story.name}</span>
                              </button>
-                             <button 
-                                 type="button" 
-                                 className="btn btn-outline-light"
-                                 onClick={()=>deleteStoryFromDB(story) }>    
-                                 <span class=" text-success"> x delete </span>
-                             </button>
                             </div> 
                         </div>  : null )}
                     </div>
@@ -246,7 +255,8 @@ const TeacherDashboard = ()=>{
                 </div>
             <div className = "flex-div">
                 <div className = "flex-item p-3">
-                    <button className="btn btn-outline-info m-2" onClick={generateAccessCode}> generate access code</button>
+                    <button className="btn btn-outline-info m-2" onClick={generateAccessCode}> assign access code</button>
+                    {selectedWords.map((word)=><span>{word.name +" "} </span>)}
                     <div className="p-3 m-3 text-danger">  {code} </div>
                     <div className="p-3"> {code?"copy paste this code and share it with your students ":""}</div>
                 </div>

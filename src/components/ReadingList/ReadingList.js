@@ -34,7 +34,7 @@ const ReadingList = (props)=>{
         }
         setLikedStories((pre) => [...pre,storyId]);
     }
-    const handleRemoveLikeCallback = async (storyId) =>{
+    const handleRemoveLike = async (storyId) =>{
         let stories = [...likedStories];
             stories= stories.filter(word=> word!==storyId);
         try {
@@ -59,6 +59,13 @@ const ReadingList = (props)=>{
             setError(err.message);
           }
       }
+    const handleDeleteStory = async(storyId)=>{
+        try{
+            await firebase.firestore().collection("story").doc(storyId).delete();
+        }catch(err){
+            setError(err.message);
+        }
+    }
     
     return (<div className="readingListMain">
                <div className="container">
@@ -89,8 +96,15 @@ const ReadingList = (props)=>{
                              <button 
                                  type="button" 
                                  className="btn btn-outline-light"
-                                 onClick={()=>handleRemoveLikeCallback(story.storyId) }>    
+                                 onClick={()=>handleRemoveLike(story.storyId) }>    
                                  <span class="text-success"> unlike </span>
+                             </button> }
+                             { story.creator === userName &&
+                             <button 
+                                 type="button" 
+                                 className="btn btn-outline-light"
+                                 onClick={()=>handleDeleteStory(story.storyId) }>    
+                                 <span class="text-success"> delete </span>
                              </button> }
                             </div> 
                         </div>
