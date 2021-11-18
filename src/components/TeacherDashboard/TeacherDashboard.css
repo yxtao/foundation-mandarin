@@ -4,7 +4,7 @@
     opacity:0.8;
     height:100vh;
     overflow-y:auto;
-    padding:3vw;
+    padding:2vw;
 }
 
 .flex-div{
@@ -16,12 +16,12 @@
 
 .flex-item{ 
     display:flex;
-    width:25vw;
+    width:30vw;
     height: 40vh;
     flex-direction: column;
     overflow-y:auto;
     overflow-x:auto;
-    margin: 2vw;
+    margin: 1vw;
     box-shadow: 0 10px 10px 0 rgb(66, 202, 243);
 }
 .flex-item:hover {

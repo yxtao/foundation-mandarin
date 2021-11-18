@@ -9,6 +9,10 @@ export const wordliststate = atom({
     key: "wordliststate",
     default: [],
   });
+  export const codeliststate = atom({
+    key: "codeliststate",
+    default: [],
+  });
   export const firestoreState = atom({
     key: "firestore", // unique ID (with respect to other atoms/selectors)
     default: firebase.app().firestore(), // default value (aka initial value)

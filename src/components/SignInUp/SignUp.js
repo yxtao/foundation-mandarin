@@ -25,7 +25,8 @@ const SignUp = (props) =>{
         email,
         likedWordCards:[],
         likedPassages:[],
-        accessCode:username,
+        //TODO CHANGE TO accessCodes
+        accessCode:[],
         isTeacher: true,
         isAdmin: false
       })

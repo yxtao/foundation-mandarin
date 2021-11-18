@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from'react';
 import firebase from './firebase/firebase';
 import { useRecoilState } from "recoil";
-import { storyliststate, wordliststate} from "./store/storyWordsAtoms" 
+import { storyliststate, wordliststate, codeliststate } from "./store/storyWordsAtoms" 
 import {checkedAuthState, 
     usernameState, 
     firebaseState,
@@ -26,10 +26,12 @@ import TeacherDashboard from './components/TeacherDashboard/TeacherDashboard';
 import CardDetail from "./components/CardDetail/CardDetail";
 import UploadStory from './components/Teacher/UploadStory';
 import UploadWord from './components/Teacher/UploadWord';
+import AccessCode from './components/AccessCodes/AccessCode';
 
 const Router = ()=>{
     const [storyList, setStoryList] = useRecoilState(storyliststate);
     const [wordList, setWordList] = useRecoilState(wordliststate);
+    const [codeList, setCodeList] = useRecoilState(codeliststate);
     const [userName, setUserName] = useRecoilState(usernameState);
     const [likedWords, setLikedWords] = useRecoilState(likedWordList);
     const [likedWordObjs, setLikedWordObjs] = useState([]);
@@ -71,7 +73,7 @@ const Router = ()=>{
                 console.log(storyList);
             })
             setWordList([]);
-            const chineseWordsDb = firebase.firestore().collection("chinesewords")
+            const chineseWordsDb = firebase.firestore().collection("chinesewords");
             chineseWordsDb.onSnapshot((querySnapshot)=>{
                 const wordsItems=[];
                 querySnapshot.forEach((doc)=>{
@@ -80,6 +82,15 @@ const Router = ()=>{
                 setWordList(wordsItems);
                 console.log("wordListfromfirebase", wordList);
             })
+            const codesDB = firebase.firestore().collection("codes");
+            codesDB.onSnapshot((querySnapshot)=>{
+                const codeItems = [];
+                querySnapshot.forEach((doc)=>{
+                    codeItems.push({...doc.data()});
+                })
+                setCodeList(codeItems)
+            })
+            console.log(codeList);
        }
         fetchData()  
     }, [])
@@ -100,6 +111,7 @@ const Router = ()=>{
                 <Route path="/reading" component={ ()=> <ReadingList stories={storyList} words={wordList}/>  } />
                 <Route path="/addStory" component={UploadStory} />
                 <Route path="/addWord" component={UploadWord} />
+                <Route path="/checkCodes" component={userName?AccessCode:SignOut} />
                 <Route path="/story/:id"  component={ () => <Reading stories={storyList} words={wordList} /> }/>
                 <Route path="/carddetail/:word" component={()=> <CardDetail wordList={wordList} /> } />
             </Switch>

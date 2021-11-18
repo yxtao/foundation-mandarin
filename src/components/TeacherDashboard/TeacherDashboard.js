@@ -27,6 +27,7 @@ const TeacherDashboard = ()=>{
     const [myWords, setMywords] = useState([]);
     const [myStories,setMyStories] = useState([]);
     const [checkedStates, setCheckedStates] = useState([]);
+    const [checkedStoryStates, setCheckedStoryStates] = useState([]);
     const [error,setError] = useState("");
     const [code,setCode] = useState("");
     
@@ -49,6 +50,15 @@ const TeacherDashboard = ()=>{
     useEffect(()=>{  
         setCheckedStates( new Array(myWords.length).fill(false));
     },[myWords.length])
+
+
+   useEffect(()=>{
+    setMyStories(storyList.filter((story)=>story.creator===user));
+   }, [storyList,user])
+
+  useEffect(()=>{  
+      setCheckedStoryStates( new Array(myStories.length).fill(false));
+    },[myStories.length])
 
     useEffect(()=>{
         let objsTemp = [];
@@ -73,10 +83,58 @@ const TeacherDashboard = ()=>{
             }
             console.log(selected)
         })
-        console.log("before", selectedWords);
        setSelectedWords(selected);
-       console.log("after", selectedWords);
     }
+
+    const handleOnStoryCheckChange = (position) => {
+        const updatedCheckedStoryStates = checkedStoryStates.map((item, index) =>index === position ? !item : item);
+        setCheckedStoryStates(updatedCheckedStoryStates);
+        let selected = [];
+        updatedCheckedStoryStates.forEach((value,index)=>{
+            if(value===true){
+                selected.push(myStories[index]);
+            }
+            console.log(selected)
+        })
+       setSelectedStories(selected);
+    }
+    
+    const generateAccessCode = async () =>{
+        let wordInfos = [];
+        let storyInfos = [];
+        selectedWords.forEach((word,index)=>{
+           let wordInfo = {name: word.name, wordId: word.wordId};
+            wordInfos.push(wordInfo);
+        })
+        selectedStories.forEach((story,index)=>{
+            let storyInfo = {name:story.name, storyId: story.storyId}
+            storyInfos.push(storyInfo);
+        })
+        try {
+            
+            const userRef = firebase.firestore().collection("users").doc(userId);
+            const userDoc = await userRef.get();
+            if(userDoc.exists){
+                const codes = userDoc.data().accessCode;
+                const newCode = user+(codes.length);
+                const newCodes = [...codes,newCode];
+                let codeObj = {
+                    code: newCode,
+                    creator: user,
+                    words: wordInfos,
+                    passages: storyInfos,
+                    codeId: newCode}
+                await firebase.firestore().collection("codes").doc(newCode).set(codeObj);
+                //TODO CHANGE TO accessCodes
+                await userRef.update({accessCode: newCodes});
+                setCode(newCode);
+            }else{
+                setError("User not found")
+            }
+          }catch(err){    
+            setError(err.message);
+          }
+    } 
 
     const handleRemoveLike = async (wordId) =>{
         let words = [...likedWords];
@@ -187,10 +245,9 @@ const TeacherDashboard = ()=>{
     const redirectToLikedList = () =>{
         history.push("/likedWordwall");
     }
-    const generateAccessCode =()=>{
-        setCode(user+storyList.length+wordList.length);
-        //TODO update user accesscode in accesscode collection
-    }
+    const redirtToAccessCode =() =>[
+        history.push("/checkCodes")
+    ]
    
     if(!isTeacher) {
         return (<div className = "container-wrapper">
@@ -233,79 +290,103 @@ const TeacherDashboard = ()=>{
                         <button
                             className="btn btn-outline-info"
                             onClick = {redirectToMyStoryList}>  
-                            My passage list </button>
-                        {storyList.map((story, index)=> story.creator === user?
-                        <div className = "words-div">
-                             <div  key={index}  className="p-2 flex-row">  
+                            My passage list 
+                        </button>
+                        <ul>
+                        {myStories.map((story, index)=> 
+                        <li className = "words-div">
+                            <div  key={index}  className="p-2 flex-row">  
+                            <input 
+                                type="checkbox"
+                                id={`custom-checkbox-${index}`}
+                                name={story.storyId}
+                                value={story.storyId}
+                                checked={checkedStoryStates[index]}
+                                onChange={() => handleOnStoryCheckChange(index)}
+                            />
                              <button        
                                  type="button" 
                                  className="btn btn-outline-light" 
-                                 onClick={()=>redirtToStory (story.storyId) }>    
+                                 onClick={()=>redirtToStory(story.storyId) }>    
                                  <span class="h4 text-success">  {story.name}</span>
                              </button>
-                            </div> 
-                        </div>  : null )}
+                            </div>
+                            </li>
+                        )}
+                        </ul>
                     </div>
-                    <div className="flex-item p-5">
+                    <div className="flex-item p-3">
                         <button className="btn btn-outline-info m-2" onClick={redirectToAddWord}>  Add words </button>
-                        <button className="btn btn-outline-info m-2 " onClick={redirectToAddStory}>  Add passages </button>
-                        <button className="btn btn-outline-info m-2" onClick= {redirectToWordwall}> all words </button>
-                        <button className="btn btn-outline-info m-2" onClick={redirecToStoryList}> all passages </button>
+                        <button className="btn btn-outline-info m-2" onClick={redirectToAddStory}>  Add passages </button>
+                        <button className="btn btn-outline-info m-2" onClick= {redirectToWordwall}> All words </button>
+                        <button className="btn btn-outline-info m-2" onClick={redirecToStoryList}> All passages </button>
+                        <button className="btn btn-outline-info m-2" onClick={redirtToAccessCode}>My access codes</button>
                     </div>
                 </div>
             <div className = "flex-div">
                 <div className = "flex-item p-3">
                     <button className="btn btn-outline-info m-2" onClick={generateAccessCode}> assign access code</button>
-                    {selectedWords.map((word)=><span>{word.name +" "} </span>)}
+                    {code?
+                     <>
                     <div className="p-3 m-3 text-danger">  {code} </div>
                     <div className="p-3"> {code?"copy paste this code and share it with your students ":""}</div>
+                    </> : 
+                    <>
+                    <ul>
+                    {selectedWords.map((word)=><li>{word.name +" "} </li>)}
+                    </ul>
+                    <ul>
+                    {selectedStories.map((story)=><li>{story.name +" "} </li>)}
+                    </ul>
+                    </> }  
                 </div>
                 <div className = "flex-item p-2">
-                        <button 
-                            className="btn btn-outline-info"
-                            onClick={redirectToLikedList}> 
-                            Liked word list 
-                         </button>
-                        <div className = "words-div">
-                        {likedWordObjs.map((word, index)=>
-                            <div  key={index}  className="p-2 flex-column">       
-                                <button        
-                                    type="button" 
-                                    className="btn btn-outline-light" 
-                                    onClick={()=>redirtToDetailWord(word.wordId) }>    
-                                    <span class="h4 text-success">  {word.name}</span>
-                                </button>
-                                <button 
-                                    type="button" 
-                                    className="btn btn-outline-light"
-                                    onClick={()=>addToWordDB(word) }>    
-                                    <span class=" text-success"> + add to my word list </span>
-                                </button>
-                            </div>)}
-                        </div>
+                    <button 
+                        className="btn btn-outline-info"
+                        onClick={redirectToLikedList}> 
+                        Liked word list 
+                        </button>
+                    <div className = "words-div">
+                    {likedWordObjs.map((word, index)=>
+                        <div  key={index}  className="p-2 flex-column">       
+                            <button        
+                                type="button" 
+                                className="btn btn-outline-light" 
+                                onClick={()=>redirtToDetailWord(word.wordId) }>    
+                                <span class="h4 text-success">  {word.name}</span>
+                            </button>
+                            <button 
+                                type="button" 
+                                className="btn btn-outline-light"
+                                onClick={()=>addToWordDB(word) }>    
+                                <span class=" text-success"> + add to my word list </span>
+                            </button>
+                        </div>)}
                     </div>
-                    <div className = "flex-item p-2">
-                        <button 
-                            className="btn btn-outline-info"
-                            onClick={redirectToLikedStoryList}>  Liked passage list </button>
-                        <div className = "stories-div">
-                        {likedStoryObjs.map((story, index)=>
-                            <div  key={index}  className="p-2 flex-column">       
-                                <button        
-                                    type="button" 
-                                    className="btn btn-outline-light" 
-                                    onClick={()=>redirtToStory(story.storyId) }>    
-                                    <span class="h4 text-success">  {story.name}</span>
-                                </button>
-                                <button 
-                                    type="button" 
-                                    className="btn btn-outline-light"
-                                    onClick={()=>addToStoryDB(story) }>    
-                                    <span class=" text-success"> + add to my passage list </span>
-                                </button>
-                            </div>)}
-                        </div>
+                </div>
+                <div className = "flex-item p-2">
+                    <button 
+                        className="btn btn-outline-info"
+                        onClick={redirectToLikedStoryList}>  Liked passage list 
+                    </button>
+                    <div className = "stories-div">
+                    {likedStoryObjs.map((story, index)=>
+                        <div  key={index}  className="p-2 flex-column">       
+                            <button        
+                                type="button" 
+                                className="btn btn-outline-light" 
+                                onClick={()=>redirtToStory(story.storyId) }>    
+                                <span class="h4 text-success">  {story.name}</span>
+                            </button>
+                            <button 
+                                type="button" 
+                                className="btn btn-outline-light"
+                                onClick={()=>addToStoryDB(story) }>    
+                                <span class=" text-success"> + add to my passage list </span>
+                            </button>
+                        </div>)}
                     </div>
+                </div>
              </div>
         </div>
     )
