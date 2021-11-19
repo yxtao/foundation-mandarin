@@ -73,7 +73,7 @@ const Story =({story, parentCallback, words})=>{
                         {story.levels.map((level, levelIndex)=> <option key ={levelIndex} value={levelIndex}>Level {level} </option>)}
                         </select> 
                     </div>
-            {story.voice && <audio src={story.voice[contentIndex].url} controls />  }
+            {/* {story.voice && <audio src={story.voice[contentIndex].url} controls />  } */}
             <Grid 
                 container 
                 alignItems="stretch"

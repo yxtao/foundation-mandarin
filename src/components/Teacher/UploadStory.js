@@ -76,13 +76,13 @@ const UploadStory=()=>{
 
         setSavingToFireBase(true);
         try{
-        await db.collection("story").doc(user+name).set({
-            creator: user,
-            name:name,
-            levels : levels,
-            contents: contents,
-            storyId: user+name,
-        })
+            await db.collection("story").doc(user+name).set({
+                creator: user,
+                name:name,
+                levels : levels,
+                contents: contents,
+                storyId: user+name,
+            })
         }catch(error){
             alert(error);
         }
@@ -138,7 +138,7 @@ const UploadStory=()=>{
              </Grid>
              <Grid item xs={12}  >
                  <div className="form-group">
-                     <textarea className="form-control" 
+                     <textarea  className="form-control" 
                                 rows="6" 
                                 value={content} 
                                 onChange={onContentChange} 

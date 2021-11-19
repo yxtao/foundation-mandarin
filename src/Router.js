@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from'react';
 import firebase from './firebase/firebase';
+import env from "react-dotenv";
 import { useRecoilState } from "recoil";
 import { storyliststate, wordliststate, codeliststate } from "./store/storyWordsAtoms" 
 import {checkedAuthState, 
