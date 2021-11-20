@@ -13,11 +13,15 @@ const AccessCode = ()=>{
     const userId = useRecoilValue(userIdState);
     const user = useRecoilValue(usernameState);
     const firebase = useRecoilValue(firebaseState);
-    const accessCodes = useRecoilValue(codeliststate);
+    const [accessCodes,setAccessCodes] = useRecoilState(codeliststate);
 
-    const repaceDeleteCode = async (code)=>{
-        console.log("id",userId)
-        console.log(code.codeId)
+    useEffect(()=>{
+        let arrayForSort = [...accessCodes]
+        arrayForSort.sort((a,b)=>(b.code).localeCompare(a.code));
+        setAccessCodes(arrayForSort);
+    }, [])
+
+    const repaceDeleteCode = async (code)=>{        
         try{
             const userRef = firebase.firestore().collection("users").doc(userId);
             const codeRef = firebase.firestore().collection("codes").doc(code.codeId);
@@ -51,7 +55,7 @@ const AccessCode = ()=>{
     }
     return(
         <div className= "container-wrapper">
-        {error}
+        {error}choose the set and copy paste the code to share it with your student
         <ul>
         {accessCodes.filter((access)=> access.creator===user).map((code,index)=>
             <li key={index} className="border-bottom border-primary ">

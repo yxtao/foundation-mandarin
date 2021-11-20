@@ -51,6 +51,10 @@ const TeacherDashboard = ()=>{
         setCheckedStates( new Array(myWords.length).fill(false));
     },[myWords.length])
 
+    useEffect(()=>{
+       
+    },[])
+
 
    useEffect(()=>{
     setMyStories(storyList.filter((story)=>story.creator===user));
@@ -100,6 +104,7 @@ const TeacherDashboard = ()=>{
     }
     
     const generateAccessCode = async () =>{
+
         let wordInfos = [];
         let storyInfos = [];
         selectedWords.forEach((word,index)=>{
@@ -110,8 +115,7 @@ const TeacherDashboard = ()=>{
             let storyInfo = {name:story.name, storyId: story.storyId}
             storyInfos.push(storyInfo);
         })
-        try {
-            
+        try {    
             const userRef = firebase.firestore().collection("users").doc(userId);
             const userDoc = await userRef.get();
             if(userDoc.exists){
@@ -127,6 +131,7 @@ const TeacherDashboard = ()=>{
                 await firebase.firestore().collection("codes").doc(newCode).set(codeObj);
                 //TODO CHANGE TO accessCodes
                 await userRef.update({accessCode: newCodes});
+                redirtToAccessCode();
                 setCode(newCode);
             }else{
                 setError("User not found")
@@ -275,7 +280,7 @@ const TeacherDashboard = ()=>{
                                 value={word.wordId}
                                 checked={checkedStates[index]}
                                 onChange={() => handleOnChange(index)}
-                            />
+                            />---
                              <button        
                                  type="button" 
                                  className="btn btn-outline-light" 
@@ -303,7 +308,7 @@ const TeacherDashboard = ()=>{
                                 value={story.storyId}
                                 checked={checkedStoryStates[index]}
                                 onChange={() => handleOnStoryCheckChange(index)}
-                            />
+                            />---
                              <button        
                                  type="button" 
                                  className="btn btn-outline-light" 
@@ -325,20 +330,17 @@ const TeacherDashboard = ()=>{
                 </div>
             <div className = "flex-div">
                 <div className = "flex-item p-3">
-                    <button className="btn btn-outline-info m-2" onClick={generateAccessCode}> assign access code</button>
-                    {code?
-                     <>
-                    <div className="p-3 m-3 text-danger">  {code} </div>
-                    <div className="p-3"> {code?"copy paste this code and share it with your students ":""}</div>
-                    </> : 
-                    <>
+                    <button 
+                        className="btn btn-outline-info m-2" 
+                        onClick={generateAccessCode}>
+                        assign access code
+                    </button>
                     <ul>
                     {selectedWords.map((word)=><li>{word.name +" "} </li>)}
                     </ul>
                     <ul>
                     {selectedStories.map((story)=><li>{story.name +" "} </li>)}
                     </ul>
-                    </> }  
                 </div>
                 <div className = "flex-item p-2">
                     <button 
