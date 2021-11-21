@@ -54,7 +54,7 @@ const AccessCode = ()=>{
         }
     }
     return(
-        <div className= "container-wrapper">
+        <div id="code" className= "container-wrapper">
         {error}choose the set and copy paste the code to share it with your student
         <ul>
         {accessCodes.filter((access)=> access.creator===user).map((code,index)=>

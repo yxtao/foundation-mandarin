@@ -88,8 +88,8 @@ const Reading = (props)=>{
                 > confirm and save 确定保存
                 </button>
             </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item">
                         <div className="container">
                             {contents.map((content, index)=> 
                             <div 

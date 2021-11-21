@@ -72,12 +72,12 @@ const ReadingList = (props)=>{
                    {error}
                    <Grid container spacing={5} >  
                   { props.stories.map((story, index)=>
-                   <Grid item >
+                   <Grid item key={index}>
                        <div>
                        <button  className="btn btn-link"
                                 key={index} 
                                 onClick={()=>openStory(story.storyId)}>
-                                    <span class="h2 text-dark">
+                                    <span className="h2 text-dark">
                                     {story.name}
                                     </span>            
                         </button>
@@ -89,7 +89,7 @@ const ReadingList = (props)=>{
                                  type="button" 
                                  className="btn btn-outline-light" 
                                  onClick={()=>handleLike(story.storyId)}>    
-                                 <span class="text-success">like</span>
+                                 <span className="text-success">like</span>
                              </button>
                              }
                              {likedStories.includes(story.storyId) &&
@@ -97,14 +97,14 @@ const ReadingList = (props)=>{
                                  type="button" 
                                  className="btn btn-outline-light"
                                  onClick={()=>handleRemoveLike(story.storyId) }>    
-                                 <span class="text-success"> unlike </span>
+                                 <span className="text-success"> unlike </span>
                              </button> }
                              { story.creator === userName &&
                              <button 
                                  type="button" 
                                  className="btn btn-outline-light"
                                  onClick={()=>handleDeleteStory(story.storyId) }>    
-                                 <span class="text-success"> delete </span>
+                                 <span className="text-success"> delete </span>
                              </button> }
                             </div> 
                         </div>

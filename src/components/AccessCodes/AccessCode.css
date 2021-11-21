@@ -13,3 +13,11 @@
     overflow-y:auto;
     overflow-x:auto;
 }
+@media only screen and (max-width: 768px) {
+   #code {
+       margin-top: 10vh;
+       padding:2vw;
+       height:100vh;
+       background-color: white;
+    }
+  }

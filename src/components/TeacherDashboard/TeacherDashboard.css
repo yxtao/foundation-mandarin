@@ -24,6 +24,25 @@
     margin: 1vw;
     box-shadow: 0 10px 10px 0 rgb(66, 202, 243);
 }
+
+@media only screen and (max-width: 768px) {
+    .flex-item{ 
+        display:flex;      
+        flex-direction: column;
+        overflow-y:auto;
+        overflow-x:auto;
+        margin: 1vw;
+        box-shadow: 0 10px 10px 0 rgb(66, 222, 243);
+    }
+    #teacher-board .flex-item .btn {
+        font-size: 3vw;
+        margin: 1px;
+    }
+    #teacher-board {
+       margin-top: 10vh;
+    }
+  }
+
 .flex-item:hover {
     box-shadow: 0 10px 10px 0 rgb(243, 127, 226);
   }

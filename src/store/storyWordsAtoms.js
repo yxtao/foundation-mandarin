@@ -37,3 +37,7 @@ export const wordliststate = atom({
     key:"teachernamestate",
     default:""
   })
+  export const accesscodestate = atom({
+    key:"accesscodestate",
+    default:""
+  })

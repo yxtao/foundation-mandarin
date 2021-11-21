@@ -83,10 +83,10 @@ const Assessment= (props)=>{
     
      if(!user){
         return(
-            <div class ="justify-content-center row">
-                <div class="jumbotron bg-light w-50 ">
-                    <h1 class="display-4">Please sign in or sign up</h1>  
-                    <p class="lead">
+            <div className ="justify-content-center row">
+                <div className="jumbotron bg-light w-50 ">
+                    <h1 className="display-4">Please sign in or sign up</h1>  
+                    <p className="lead">
                        <button type="button" class="btn btn-outline-secondary" onClick={vistLoginUp}>sign in </button>  
                     </p>
                 </div>
@@ -96,13 +96,13 @@ const Assessment= (props)=>{
     
     if(completed){
         return(
-            <div class ="container-wrapper justify-content-center row p-4">
-                <div class="jumbotron bg-light w-60 h-50 m-3">
-                    <h1 class="display-6">Hello {user}</h1>
-                    <p class="lead">We recommend you to read level {levelState} books.</p>
-                    <hr class="my-6" />
+            <div className ="container-wrapper justify-content-center row p-4">
+                <div className="jumbotron bg-light w-60 h-50 m-3">
+                    <h1 className="display-6">Hello {user}</h1>
+                    <p className="lead">We recommend you to read level {levelState} books.</p>
+                    <hr className="my-6" />
                     <p> Please feel free to check recommendation pages to study the words, and vist the reading page.</p>
-                    <p class="lead">
+                    <p className="lead">
                        <button type="button" class="btn btn-outline-success" onClick={vistReading}>reading page</button>  
                     </p>
                 </div>
@@ -112,21 +112,21 @@ const Assessment= (props)=>{
 
     return (
         <div className="container-wrapper">
-            <div class="row">
-                <div class="col-sm-4">
+            <div className="row">
+                <div className="col-sm-4">
                 {user}
                 </div>
-                <div class="col-sm-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h1 class="display-1 text-center">{word}</h1>
+                <div className="col-sm-4">
+                    <div className="card">
+                        <div className="card-body">
+                            <h1 className="display-1 text-center">{word}</h1>
                             <hr />
-                            <div class="d-flex flex-row justify-content-between">
-                                <div class="p-4">
-                                    <button type="button" class="btn btn-outline-info" onClick={addKnow}>know</button>
+                            <div className="d-flex flex-row justify-content-between">
+                                <div className="p-4">
+                                    <button type="button" className="btn btn-outline-info" onClick={addKnow}>know</button>
                                 </div>
                                 <div class="p-4">
-                                    <button type="button" class="btn btn-outline-secondary" onClick={addUnKnow}>don't know</button>
+                                    <button type="button" className="btn btn-outline-secondary" onClick={addUnKnow}>don't know</button>
                                 </div>
                             </div>
                         </div>

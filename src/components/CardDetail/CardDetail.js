@@ -343,8 +343,8 @@ const CardDetail = (props)=>{
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                         <div className="container">
-                            {phrasesData.map(obj=> 
-                            <div className = "row">
+                            {phrasesData.map((obj, index)=> 
+                            <div className = "row" key={index}>
                                 <div className = "col">
                                     <h3 className="card-title">{obj.phrase}</h3>
                                     <h6 className="card-title">{" "}Level {obj.phraseLevel}</h6>
@@ -369,7 +369,7 @@ const CardDetail = (props)=>{
                                     <h6 className="card-title">{obj.sentence}</h6>
                                 </div>
                                 <div className = "col">
-                                    <h7 className="card-title">{"sentenceMeaning" in obj?obj.sentenceMeaning:""}</h7>
+                                    <h6 className="card-title">{"sentenceMeaning" in obj?obj.sentenceMeaning:""}</h6>
                                 </div>
                                 {/* <div className = "col">
                                     <audio controls class="embed-responsive-item">

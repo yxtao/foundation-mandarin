@@ -2,7 +2,7 @@ import React, {useEffect, useState} from'react';
 import firebase from './firebase/firebase';
 import env from "react-dotenv";
 import { useRecoilState } from "recoil";
-import { storyliststate, wordliststate, codeliststate } from "./store/storyWordsAtoms" 
+import { storyliststate, wordliststate, codeliststate, accesscodestate } from "./store/storyWordsAtoms" 
 import {checkedAuthState, 
     usernameState, 
     firebaseState,
@@ -30,6 +30,7 @@ import UploadWord from './components/Teacher/UploadWord';
 import AccessCode from './components/AccessCodes/AccessCode';
 
 const Router = ()=>{
+    const [accessCode, setAccessCode] = useRecoilState(accesscodestate);
     const [storyList, setStoryList] = useRecoilState(storyliststate);
     const [wordList, setWordList] = useRecoilState(wordliststate);
     const [codeList, setCodeList] = useRecoilState(codeliststate);
@@ -38,6 +39,39 @@ const Router = ()=>{
     const [likedWordObjs, setLikedWordObjs] = useState([]);
     const [likedStories, setLikedStories] = useRecoilState(likedStoryList);
     const [likedStoryObjs, setLikedStoryObjs] = useState([]);
+
+    useEffect(()=> {     
+       const fetchData= async()=> {
+            setStoryList([]);
+            const db = firebase.firestore().collection("story");
+            db.onSnapshot((querySnapshot)=>{
+                const items=[];
+                querySnapshot.forEach((doc)=>{
+                    items.push({...doc.data()});
+                });
+                setStoryList(items);
+            })
+            setWordList([]);
+            const chineseWordsDb = firebase.firestore().collection("chinesewords");
+            chineseWordsDb.onSnapshot((querySnapshot)=>{
+                const wordsItems=[];
+                querySnapshot.forEach((doc)=>{
+                    wordsItems.push({...doc.data()});
+                });
+                setWordList(wordsItems);
+            })
+            const codesDB = firebase.firestore().collection("codes");
+            codesDB.onSnapshot((querySnapshot)=>{
+                const codeItems = [];
+                querySnapshot.forEach((doc)=>{
+                    codeItems.push({...doc.data()});
+                })
+                setCodeList(codeItems)
+            })
+       }
+        fetchData()  
+    }, [])
+
     useEffect(()=>{
         let wordObjsTemp = [];
         wordList.forEach((wordObj, index)=>{
@@ -61,40 +95,43 @@ const Router = ()=>{
         setLikedStoryObjs(objsTemp);
     }, [storyList, likedStories])
 
-    useEffect(()=> {     
-       const fetchData= async()=> {
-            setStoryList([]);
-            const db = firebase.firestore().collection("story");
-            db.onSnapshot((querySnapshot)=>{
-                const items=[];
-                querySnapshot.forEach((doc)=>{
-                    items.push({...doc.data()});
-                });
-                setStoryList(items);
-                console.log(storyList);
+    useEffect(()=>{
+      let obj = null;
+      if(accessCode!==""){
+          obj = codeList.find((element)=> element.code === accessCode);
+          let wordIds =[];
+          let passageIds =[];
+          let newWordList = [];
+          let newStoryList = [];
+          if(obj){
+              console.log("obj", obj)
+            obj.words.forEach((word)=>{
+              wordIds.push(word.wordId);
             })
-            setWordList([]);
-            const chineseWordsDb = firebase.firestore().collection("chinesewords");
-            chineseWordsDb.onSnapshot((querySnapshot)=>{
-                const wordsItems=[];
-                querySnapshot.forEach((doc)=>{
-                    wordsItems.push({...doc.data()});
-                });
-                setWordList(wordsItems);
-                console.log("wordListfromfirebase", wordList);
+            obj.passages.forEach((passage)=>{
+                passageIds.push(passage.storyId)
             })
-            const codesDB = firebase.firestore().collection("codes");
-            codesDB.onSnapshot((querySnapshot)=>{
-                const codeItems = [];
-                querySnapshot.forEach((doc)=>{
-                    codeItems.push({...doc.data()});
-                })
-                setCodeList(codeItems)
+            console.log("wordIds",wordIds)
+            console.log("passageIds", passageIds)
+            wordList.forEach((word)=>{
+                if(wordIds.includes(word.wordId)){
+                    newWordList.push(word);
+                } 
             })
-            console.log(codeList);
-       }
-        fetchData()  
-    }, [])
+
+            storyList.forEach((story)=>{
+                if(passageIds.includes(story.storyId)){
+                    newStoryList.push(story);
+                }
+            })
+            setWordList(newWordList);
+            setStoryList(newStoryList);
+          }
+          console.log("newWordList", newWordList);
+        }
+      console.log("WordList", wordList);
+      console.log("StoryList", storyList);
+    },[accessCode])
    
     return(
         <BrowserRouter>

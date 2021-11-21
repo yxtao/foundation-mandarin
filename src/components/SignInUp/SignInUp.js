@@ -15,7 +15,6 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 
 import './SignInUp.css';
-import { DialogContent } from '@material-ui/core';
 
 const SignInUp = ()=>{
   const history = useHistory();
