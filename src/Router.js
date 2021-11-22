@@ -2,7 +2,7 @@ import React, {useEffect, useState} from'react';
 import firebase from './firebase/firebase';
 import env from "react-dotenv";
 import { useRecoilState } from "recoil";
-import { storyliststate, wordliststate, codeliststate, accesscodestate } from "./store/storyWordsAtoms" 
+import { storyliststate, wordliststate, storylistcopystate, wordlistcopystate,codeliststate, accesscodestate } from "./store/storyWordsAtoms" 
 import {checkedAuthState, 
     usernameState, 
     firebaseState,
@@ -33,6 +33,8 @@ const Router = ()=>{
     const [accessCode, setAccessCode] = useRecoilState(accesscodestate);
     const [storyList, setStoryList] = useRecoilState(storyliststate);
     const [wordList, setWordList] = useRecoilState(wordliststate);
+    const [storyListCopy, setStoryListCopy] = useRecoilState(storylistcopystate);
+    const [wordListCopy, setWordListCopy] = useRecoilState(wordlistcopystate);
     const [codeList, setCodeList] = useRecoilState(codeliststate);
     const [userName, setUserName] = useRecoilState(usernameState);
     const [likedWords, setLikedWords] = useRecoilState(likedWordList);
@@ -43,6 +45,7 @@ const Router = ()=>{
     useEffect(()=> {     
        const fetchData= async()=> {
             setStoryList([]);
+            setStoryListCopy([]);
             const db = firebase.firestore().collection("story");
             db.onSnapshot((querySnapshot)=>{
                 const items=[];
@@ -50,8 +53,10 @@ const Router = ()=>{
                     items.push({...doc.data()});
                 });
                 setStoryList(items);
+                setStoryListCopy(items);
             })
             setWordList([]);
+            setWordListCopy([]);
             const chineseWordsDb = firebase.firestore().collection("chinesewords");
             chineseWordsDb.onSnapshot((querySnapshot)=>{
                 const wordsItems=[];
@@ -59,6 +64,7 @@ const Router = ()=>{
                     wordsItems.push({...doc.data()});
                 });
                 setWordList(wordsItems);
+                setWordListCopy(wordsItems);
             })
             const codesDB = firebase.firestore().collection("codes");
             codesDB.onSnapshot((querySnapshot)=>{
@@ -104,22 +110,22 @@ const Router = ()=>{
           let newWordList = [];
           let newStoryList = [];
           if(obj){
-              console.log("obj", obj)
+             // console.log("obj", obj)
             obj.words.forEach((word)=>{
               wordIds.push(word.wordId);
             })
             obj.passages.forEach((passage)=>{
                 passageIds.push(passage.storyId)
             })
-            console.log("wordIds",wordIds)
-            console.log("passageIds", passageIds)
-            wordList.forEach((word)=>{
+            // console.log("wordIds",wordIds)
+            // console.log("passageIds", passageIds)
+            wordListCopy.forEach((word)=>{
                 if(wordIds.includes(word.wordId)){
                     newWordList.push(word);
                 } 
             })
 
-            storyList.forEach((story)=>{
+            storyListCopy.forEach((story)=>{
                 if(passageIds.includes(story.storyId)){
                     newStoryList.push(story);
                 }
@@ -127,11 +133,11 @@ const Router = ()=>{
             setWordList(newWordList);
             setStoryList(newStoryList);
           }
-          console.log("newWordList", newWordList);
+         // console.log("newWordList", newWordList);
         }
-      console.log("WordList", wordList);
-      console.log("StoryList", storyList);
-    },[accessCode])
+    //   console.log("WordList", wordList);
+    //   console.log("StoryList", storyList);
+    },[accessCode, wordListCopy, storyListCopy,codeList])
    
     return(
         <BrowserRouter>

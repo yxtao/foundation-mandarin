@@ -17,6 +17,7 @@ import "./WordWall.css";
 const WordWall = (props)=>{
     const isTeacher = useRecoilValue(isTeacherState);
     const firebase = useRecoilValue(firebaseState);
+    const [target, setTarget] = useState("");
     const [likedWords, setLikedWords] = useRecoilState(likedWordList);
     const [likedStories, setLikedStories] = useRecoilState(likedStoryList);
     const [userId, setUserId] = useRecoilState(userIdState);
@@ -27,6 +28,20 @@ const WordWall = (props)=>{
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [currentPage, setCurrentPage] = useState(0);
     const [error,setError] = useState("");
+
+    const handleTargetChange= (e)=>{
+        setTarget(e.target.value);
+    }
+
+    const onSearch = ()=>{
+        let wordListCopy = [...wordList];
+        if(target !== ""){
+            const result = wordListCopy.filter((word)=>word.name === target);
+            setWordList(result);
+        }else{
+            setWordList(props.words);
+        } 
+    }
     
     const handleDeleteCallback = async (wordId) =>{
         try{
@@ -99,15 +114,20 @@ const WordWall = (props)=>{
             <div class="row">
                 <div class="col-sm-4">
                     <div class="col-xs-2 active-cyan">
-                        <input class="form-control" id="ex1" type="text" placeholder="search by chinese character"/> {error}
+                        <input 
+                            class="form-control" 
+                            type="text" 
+                            placeholder="search by chinese character"
+                            value = {target}
+                            onChange ={(e)=>handleTargetChange(e)}
+                         /> {error}
                     </div>
                 </div>   
-                {userName? 
                 <div class="col-sm-4">
                   <div class="col-xs-2 active-cyan">
-                  <button className="btn btn-outline-info">  search </button>
+                  <button className="btn btn-outline-info" onClick={onSearch}>  search </button>
                   </div>
-                </div> : null  }
+                </div> 
             </div>
             <WordsPagination wordsNum={wordList.length} 
                 callbackRowsPerPage={handleCallbackRowsPerPage} 

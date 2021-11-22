@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import { useHistory } from 'react-router';
 import { useRecoilState, useRecoilValue} from "recoil";
 import { checkedAuthState, usernameState, isAdminState, firebaseState, isTeacherState } from "../../store/AuthAtoms" 
-import {accesscodestate } from "../../store/storyWordsAtoms" 
+import {accesscodestate, codeliststate} from "../../store/storyWordsAtoms" 
 import Grid from '@material-ui/core/Grid';
 import "./home.css";
 
@@ -12,14 +12,22 @@ const HomePage=()=> {
   const user = useRecoilValue(usernameState);
   const isAdmin = useRecoilValue(isAdminState);
   const isTeacher = useRecoilValue(isTeacherState);
+  const [codeList, setCodeList] = useRecoilState(codeliststate);
   const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
   const [accessCode, setAccessCode] = useRecoilState(accesscodestate);
+  const [error, setError] = useState("");
   const onCodeChange =(e)=>{
     setCode(e.target.value)
   }
   const checkCode=()=>{
-    setAccessCode(code);
-    history.push("/reading");
+    let obj = codeList.find((element)=> element.code === code);
+    console.log("obj code", obj)
+    if (obj){
+      setAccessCode(code);
+      history.push("/reading");
+    }else{
+       setError("This Access Code Does Not Exist!")
+    }
   }
   if(isTeacher){
     return(
@@ -56,7 +64,12 @@ const HomePage=()=> {
                   </button>
                 </div>
             </Grid>
-        </Grid>
+            <Grid item>
+            <div>
+              <p className="text-danger"> {error} </p>
+            </div>
+          </Grid> 
+        </Grid>    
     </div>
   );
 }

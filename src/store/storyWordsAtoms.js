@@ -9,6 +9,15 @@ export const wordliststate = atom({
     key: "wordliststate",
     default: [],
   });
+
+export const storylistcopystate = atom({
+  key: "storylistcopystate",
+  default: [],
+});  
+export const wordlistcopystate = atom({
+  key: "wordlistcopystate",
+  default: [],
+});
   export const codeliststate = atom({
     key: "codeliststate",
     default: [],
