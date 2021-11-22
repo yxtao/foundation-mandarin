@@ -32,7 +32,6 @@ const WordWall = (props)=>{
     const handleTargetChange= (e)=>{
         setTarget(e.target.value);
     }
-
     const onSearch = ()=>{
         let wordListCopy = [...wordList];
         if(target !== ""){
@@ -92,7 +91,6 @@ const WordWall = (props)=>{
           setPagesNum(1);
       } else{
             for(let i = 0; i<wordList.length; i=i+rowsPerPage) {
-                //TODO: Delete static word List
                 const words =[...wordList];
                 let shortArray = words.slice(i,i+rowsPerPage)
                 pagesArray.push(shortArray);

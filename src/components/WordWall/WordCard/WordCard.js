@@ -46,10 +46,6 @@ const WordCard = ({wordData, parentDeleteCallback, parentLikeCallback, parentRem
               <Typography key={index} variant="body2" color="textSecondary" component="p">
                   {phrase}
               </Typography>)}
-         {wordData.sentences.map((phrase,index)=>
-              <Typography key={index} variant="body2" color="textSecondary" component="p">
-                  {phrase}
-              </Typography>)}
         </CardContent>
         </Link>
       </CardActionArea>

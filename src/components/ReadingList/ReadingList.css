@@ -4,5 +4,10 @@
     opacity:0.8;
     height:100vh;
     overflow-y:auto;
-    padding: 10%;
+    padding: 5vw;
+  }
+  @media only screen and (max-width: 768px){
+    .readingListMain{
+      padding-top: 10vh;
+    }
   }
