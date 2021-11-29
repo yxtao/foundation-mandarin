@@ -21,6 +21,9 @@
       line-height:2;
     }
   }
+  .storyMain{
+    margin: 5vw;
+  }
 
   .nextpage{
     font-size: x-large;

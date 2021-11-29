@@ -10,6 +10,7 @@
     /* Add shadows to create the "card" effect */
     box-shadow: 5px 15px 15px 0 rgb(4, 153, 252);
     transition: 0.3s;
+    margin: 5vw;
 }
 
 .detail-image{
@@ -20,3 +21,17 @@
     height:10vh;
     width:30vw;
 }
+
+@media (orientation: portrait) and (max-width: 768px){
+    .container-wrapper-detail{
+        padding-top: 10vh;
+    }
+    .cardDiv{
+        margin:1vh;  
+    }
+  }
+  @media (orientation: landscape) and (max-width: 768px){
+    .container-wrapper-detail{
+        padding-top: 10vh;
+    }
+  }

@@ -11,3 +11,8 @@
       padding-top: 10vh;
     }
   }
+  @media (orientation: landscape) and (max-width: 768px){
+    .readingListMain{
+      padding-top: 10vw;
+    }
+  }

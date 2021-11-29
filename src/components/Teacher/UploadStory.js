@@ -57,7 +57,7 @@ const UploadStory=()=>{
    }
    if(!isAdmin && !isTeacher) return (
     <div className = "container m-5">
-      You are not the admin or a teacher
+      Please sign in
     </div>
   )
     return (
@@ -68,15 +68,15 @@ const UploadStory=()=>{
                  <textarea class="form-control" 
                             rows="2" 
                             value={title} 
-                            onChange={onTitleChange} placeholder="story title"
-                            style={{width:"20vw",margin:"auto"}}
+                            onChange={onTitleChange} placeholder="短文名"
+                            style={{width:"40vw",margin:"auto"}}
                             /> 
               </div>
              </Grid>
              {contents.map((_,index)=>
                 <>
                   <Grid item xs={12} >
-                    Level 
+                    级别
                     <input 
                         className="h5" 
                         name="level" 
@@ -90,15 +90,15 @@ const UploadStory=()=>{
                                value={contents[index]} 
                                onChange={(e)=> handleContentsChange(e, index)} 
                                style={{overflowY:"auto",overflowX:"auto"}}
-                               placeholder="story content" /> 
+                               placeholder="短文内容" /> 
                    </div>
                    </Grid>
                </>
              )}           
             <button
-                className="btn btn-outline-info"
+                className="btn btn-outline-success ml-4 mb-5"
                 onClick={addCounts}>
-                add more contents and levels
+                添加内容和级别
              </button>
         
             <Grid item xs={12}  >
@@ -107,7 +107,7 @@ const UploadStory=()=>{
                 className="btn btn-success" 
                 disabled={savingToFirebase} 
                 onClick={onStoryCreate}>
-                Create the story 
+                确定保存
                 </button> }
             </Grid>
         </Grid>

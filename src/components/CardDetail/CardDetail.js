@@ -305,7 +305,7 @@ const CardDetail = (props)=>{
                 > edit 编辑
                 </button>
              </div>}
-            <div class="card cardDiv m-5">
+            <div className="card cardDiv">
                 <div className="container">
                     <div className = "row p-2 p-lg-3">
                         {wordData && "image" in wordData ?
@@ -320,7 +320,7 @@ const CardDetail = (props)=>{
                         }
                     </div>
                 </div>
-                <div class="card-body">
+                <div className="card-body">
                     <div className="container">
                         <div className = "row">
                             <div className = "col">
@@ -340,8 +340,8 @@ const CardDetail = (props)=>{
                         </div>
                     </div>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item">
                         <div className="container">
                             {phrasesData.map((obj, index)=> 
                             <div className = "row" key={index}>
@@ -361,7 +361,7 @@ const CardDetail = (props)=>{
                             )}
                         </div>
                     </li>
-                    <li class="list-group-item">
+                    <li className="list-group-item">
                         <div className="container">
                             {sentencesData.map(obj=> 
                             <div className = "row">

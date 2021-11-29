@@ -234,9 +234,9 @@ const UploadWord=()=>{
                 </>
             )}
              <button
-                className="btn btn-outline-info"
+                className="btn btn-outline-info ml-4 mb-5"
                 onClick={addCounts}>
-                add more contents and levels
+                + 添加词语和句子
              </button>
             { name &&
             <> 
@@ -245,7 +245,7 @@ const UploadWord=()=>{
                     className="btn btn-success" 
                     disabled={savingToFirebase} 
                     onClick={onWordCreate}>
-                    添加进数据库 
+                    确定保存 
                 </button> 
             </Grid>
             </> }

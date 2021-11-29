@@ -108,12 +108,12 @@ const WordWall = (props)=>{
     }
 
     return(
-        <div className="wallMain p-5">
-            <div class="row">
-                <div class="col-sm-4">
+        <div className="wallMain">
+            <div className="row">
+                <div className="col-sm-4">
                     <div class="col-xs-2 active-cyan">
                         <input 
-                            class="form-control" 
+                            className="form-control" 
                             type="text" 
                             placeholder="search by chinese character"
                             value = {target}
@@ -121,8 +121,8 @@ const WordWall = (props)=>{
                          /> {error}
                     </div>
                 </div>   
-                <div class="col-sm-4">
-                  <div class="col-xs-2 active-cyan">
+                <div className="col-sm-4">
+                  <div className="col-xs-2 active-cyan">
                   <button className="btn btn-outline-info" onClick={onSearch}>  search </button>
                   </div>
                 </div> 

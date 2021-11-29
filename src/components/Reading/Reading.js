@@ -81,7 +81,7 @@ const Reading = (props)=>{
         return( 
         <div className="readingMain">
               {error}
-            <div className="p-3 text-right">  
+            <div className="text-right">  
                 <button 
                 className="btn btn-outline-danger"
                 onClick={offEditMode}

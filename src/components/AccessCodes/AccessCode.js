@@ -55,11 +55,12 @@ const AccessCode = ()=>{
     }
     return(
         <div id="code" className= "container-wrapper">
-        {error}choose the set and copy paste the code to share it with your student
+        {error} 选择和复制代码发给学生
+        <hr/>
         <ul>
         {accessCodes.filter((access)=> access.creator===user).map((code,index)=>
-            <li key={index} className="border-bottom border-primary ">
-            <p> code: {code.codeId}</p> 
+            <li key={index} className="border-bottom border-success ">
+            <p> 代码号 &nbsp; &nbsp; {" "+code.codeId}</p> 
             <div>{code.words.map((word, i)=>
                     <span key={i}> {word.name +","}</span> 
             )}
@@ -72,7 +73,7 @@ const AccessCode = ()=>{
                 <button 
                     className="btn btn-outline-danger m-2 "
                     onClick={async()=> await repaceDeleteCode(code)}>
-                    delete
+                    删除
                 </button>
             </div>
             </li>)}

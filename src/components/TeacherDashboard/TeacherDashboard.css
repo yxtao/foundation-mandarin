@@ -4,14 +4,15 @@
     opacity:0.8;
     height:100vh;
     overflow-y:auto;
+    overflow-x:auto;
     padding:2vw;
 }
 
 .flex-div{
     display:flex;
-    flex-direction: row;
+    flex-direction:row;
     overflow-y:auto;
-    overflow-x:auto;
+    overflow-x:auto;  
 }
 
 .flex-item{ 

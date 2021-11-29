@@ -4,4 +4,16 @@
     opacity:0.8;
     height:100vh;
     overflow-y:auto;
+    padding:5vw;
+  }
+
+  @media (orientation: portrait) and (max-width: 768px){
+    .wallMain{
+      padding-top: 5vw;
+    }
+  }
+  @media (orientation: landscape) and (max-width: 768px){
+    .wallMain{
+      padding-top: 10vw;
+    }
   }

@@ -267,12 +267,12 @@ const TeacherDashboard = ()=>{
                         <button 
                             className="btn btn-outline-info"
                             onClick = {redirectToOwnerList}> 
-                                My word list 
+                                我的字库
                          </button>
                          <ul>
                         {myWords.map((word, index)=>
                         <li className = "words-div">
-                             <div  key={index}  className="p-2 flex-row">  
+                             <div  key={index}  className="flex-row">  
                              <input 
                                 type="checkbox"
                                 id={`custom-checkbox-${index}`}
@@ -295,12 +295,12 @@ const TeacherDashboard = ()=>{
                         <button
                             className="btn btn-outline-info"
                             onClick = {redirectToMyStoryList}>  
-                            My passage list 
+                           我的短文
                         </button>
                         <ul>
                         {myStories.map((story, index)=> 
                         <li className = "words-div">
-                            <div  key={index}  className="p-2 flex-row">  
+                            <div  key={index}  className="flex-row">  
                             <input 
                                 type="checkbox"
                                 id={`custom-checkbox-${index}`}
@@ -321,11 +321,11 @@ const TeacherDashboard = ()=>{
                         </ul>
                     </div>
                     <div className="flex-item p-md-3">
-                        <button className="btn btn-outline-info m-md-2" onClick={redirectToAddWord}>  Add words </button>
-                        <button className="btn btn-outline-info m-md-2" onClick={redirectToAddStory}>  Add passages </button>
-                        <button className="btn btn-outline-info m-md-2" onClick= {redirectToWordwall}> All words </button>
-                        <button className="btn btn-outline-info m-md-2" onClick={redirecToStoryList}> All passages </button>
-                        <button className="btn btn-outline-info m-md-2" onClick={redirtToAccessCode}>Access codes</button>
+                        <button className="btn btn-outline-info m-md-2" onClick={redirectToAddWord}>  添加字</button>
+                        <button className="btn btn-outline-info m-md-2" onClick={redirectToAddStory}>  添加短文 </button>
+                        <button className="btn btn-outline-info m-md-2" onClick= {redirectToWordwall}> 字库 </button>
+                        <button className="btn btn-outline-info m-md-2" onClick={redirecToStoryList}> 短文库 </button>
+                        <button className="btn btn-outline-info m-md-2" onClick={redirtToAccessCode}>学生码</button>
                     </div>
                 </div>
             <div className = "flex-div">
@@ -333,7 +333,7 @@ const TeacherDashboard = ()=>{
                     <button 
                         className="btn btn-outline-info m-md-2" 
                         onClick={generateAccessCode}>
-                        assign access code
+                        生成学生码
                     </button>
                     <ul>
                     {selectedWords.map((word)=><li>{word.name +" "} </li>)}
@@ -346,7 +346,7 @@ const TeacherDashboard = ()=>{
                     <button 
                         className="btn btn-outline-info"
                         onClick={redirectToLikedList}> 
-                        Liked word list 
+                        喜欢的字
                         </button>
                     <div className = "words-div">
                     {likedWordObjs.map((word, index)=>
@@ -361,7 +361,7 @@ const TeacherDashboard = ()=>{
                                 type="button" 
                                 className="btn btn-outline-light"
                                 onClick={()=>addToWordDB(word) }>    
-                                <span className="text-success"> + add to my word list </span>
+                                <span className="text-info"> + 加到我的字库 </span>
                             </button>
                         </div>)}
                     </div>
@@ -369,7 +369,7 @@ const TeacherDashboard = ()=>{
                 <div className = "flex-item p-md-2">
                     <button 
                         className="btn btn-outline-info"
-                        onClick={redirectToLikedStoryList}>  Liked passage list 
+                        onClick={redirectToLikedStoryList}>  喜欢的短文
                     </button>
                     <div className = "stories-div">
                     {likedStoryObjs.map((story, index)=>
@@ -384,7 +384,7 @@ const TeacherDashboard = ()=>{
                                 type="button" 
                                 className="btn btn-outline-light"
                                 onClick={()=>addToStoryDB(story) }>    
-                                <span className="text-success"> + add</span>
+                                <span className="text-info"> + 加入我的短文库</span>
                             </button>
                         </div>)}
                     </div>
