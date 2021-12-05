@@ -1,12 +1,12 @@
 import env from "react-dotenv";
 
 var firebaseConfigInfo = {
-    apiKey: env.REACT_APP_KEY,
-    authDomain: env.REACT_APP_DOMAIN,
-    projectId: env.REACT_APP_PROJECTID,
-    storageBucket:env.REACT_APP_BUCKET,
-    messagingSenderId: env.REACT_APP_SENDER,
-    appId:env.REACT_APP_APPID
+    apiKey: "AIzaSyBRLUaJ8GOLLc3wkqWx4g_088Eq7JZRLu8",
+    authDomain: "foundationchinese-63433.firebaseapp.com",
+    projectId: "foundationchinese-63433",
+    storageBucket:"foundationchinese-63433.appspot.com",
+    messagingSenderId: "826964024609",
+    appId:"826964024609:web:d3979be07e772195b77260"
   };
 
   export default firebaseConfigInfo;

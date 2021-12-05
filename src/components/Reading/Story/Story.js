@@ -66,14 +66,14 @@ const Story =({story, parentCallback, words})=>{
 
     return(
         <div className="storyMain">
-            <Typography style={{textAlign:"center"}} variant="h4" component="h5"> {story.name} level {bookLevel}</Typography>
-                    <div class="h4">
+            <Typography style={{textAlign:"center"}} variant="h5" component="h5"> {story.name} level {bookLevel}</Typography>
+                    <div>
                         <select name="level" id="level" onChange={changeBookLevel}>
-                        <option key ={userLevelState} value={userLevelIndex}> Level {userLevelState} </option>
+                        {/* <option key ={userLevelState} value={userLevelIndex}> Level {userLevelState} </option> */}
                         {story.levels.map((level, levelIndex)=> <option key ={levelIndex} value={levelIndex}>Level {level} </option>)}
                         </select> 
                     </div>
-            {story.voice && <audio src={story.voice[contentIndex].url} controls />  }
+            {/* {story.voice && <audio src={story.voice[contentIndex].url} controls />  } */}
             <Grid 
                 container 
                 alignItems="stretch"
@@ -83,9 +83,9 @@ const Story =({story, parentCallback, words})=>{
             <Grid  item xs={12} sm={12} > 
              {charactersPages.length>0 ? 
              <div> 
-              <Paper elevation={5} > 
-                    <div className="h4 container p-4 storyContent">
-                        {charactersPages[currentPage].map((character, index)=> keywords.includes(character)?
+              <Paper elevation={5}> 
+                    <div className="h4 p-4 storyContent">
+                        {charactersPages[currentPage]&&charactersPages[currentPage].map((character, index)=> keywords.includes(character)?
                         <button key={index}  
                                type="button" 
                                className="btn btn-outline-light"
@@ -95,7 +95,7 @@ const Story =({story, parentCallback, words})=>{
                         :character)}
                     </div>
                </Paper> 
-                <div class="row align-items-center justify-content-center">
+                <div className="row align-items-center justify-content-center">
                     <div className="col-4 ">
                         <button className= "btn" onClick={handleSetPreviousPage}> <span className="nextpage"> pre page {"<"} </span>  </button>
                     </div>
@@ -104,7 +104,7 @@ const Story =({story, parentCallback, words})=>{
                     </div>
                 </div> 
                 </div>
-               : null}
+               : <div ></div>}
             </Grid>
         </Grid>
     </div>

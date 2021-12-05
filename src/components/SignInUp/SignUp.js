@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, waitForAllSettled } from "recoil";
 import {createUserAccount, loginUser} from "../../api/api";
-import { checkedAuthState, usernameState, firebaseState } from "../../store/AuthAtoms" 
+import { checkedAuthState, usernameState, firebaseState, userIdState } from "../../store/AuthAtoms" 
 import {Grid, TextField} from '@material-ui/core';
 
 
@@ -11,62 +11,60 @@ const SignUp = (props) =>{
     const [email, setEmail]= useState("");
     const [password, setPassword] = useState("");
     const [userName, setUserName] = useState("");
+    const [userId, setUserId] = useRecoilState(userIdState);
     const [user, setUser] = useRecoilState(usernameState);
     const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
     const [isClicked, setIsClicked] = useState(false);
+    const [error, setError] = useState("");
 
-    const checkUsernameExist = async (username) =>{
-      const userRef = db.collection("users").doc(username);
-      try {
-        const doc = await userRef.get();
-        if(doc.exists){ 
-          alert("username has taken");
-          return true;
-         }else{
-          return false;
-        }
-      }catch(error){
-        alert(error);
-        setIsClicked(false);
-      }
-    }
-
-    const addAdultUser = async(username,password,email, uid)=>{
-      // TODO : add readingLevel and notes
+    const addUser = async(username,password,email, uid)=>{
       await db.collection("users").doc(uid).set({
+        uid,
         username,
         password,
         email,
-        isadult:true,
-        readingLevel:0,
-        notes:[],
-        isAdmin: false,
-        uid
+        likedWordCards:[],
+        likedPassages:[],
+        //TODO CHANGE TO accessCodes
+        accessCode:[],
+        isTeacher: true,
+        isAdmin: false
       })
+    }
+    const isNameValid = (name) =>{
+      return /^[0-9a-zA-Z]+$/.test(name);
     }
     const handleSubmit = async (e) => {
       e.preventDefault();
-      setIsClicked(true);
-      let alreadyTaken = true;
-      try{
-        alreadyTaken = await checkUsernameExist(userName);
-      }catch(error){
-        alert(error);
+      if(!isNameValid(userName)){
+        setError("User name is not valid, can only contain numbers and letters.")
+        setIsClicked(false);
+        return;
       }
-      if(!alreadyTaken){  
-        try{
-          await createUserAccount({ email,password,userName});
-          alert("sucess");
-        }catch(error){
-          alert(error);
-        }
+      setIsClicked(true);
+      try{
+        await createUserAccount({ email,password,userName});
+      }catch(error){
+        setError("User name or email exist, please choose a different one");
+        setIsClicked(false);
+        return;
+      }
+      
+      try{
         await loginUser(email,password);
-        var currentUser = firebase.auth().currentUser;
-        if(currentUser){
+      }catch(error){
+        setError(error.message)
+        setIsClicked(false);
+        return;
+      }
+      var currentUser = firebase.auth().currentUser;
+      if(currentUser){
         setUser(currentUser.displayName);
+        setUserId(currentUser.uid);
         setIsAuthenticated(true); 
-        await addAdultUser(userName,password,email, currentUser.uid);
-        }
+        await addUser(userName,password,email, currentUser.uid);
+      }else{
+        setError("failed sign in up, please retry")
       }
       setIsClicked(false);
     } 
@@ -108,6 +106,7 @@ const SignUp = (props) =>{
                      </Grid>
                 </form>
             </Grid>
+            <div className="text-danger p-lg-3">{error}</div>             
         </div>
     )
  }

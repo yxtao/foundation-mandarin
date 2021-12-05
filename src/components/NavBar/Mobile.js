@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link} from 'react-router-dom';
 import { useRecoilValue , useRecoilState} from "recoil";
-import { checkedAuthState, usernameState, isAdminState } from "../../store/AuthAtoms" 
+import { checkedAuthState, usernameState, isTeacherState } from "../../store/AuthAtoms" 
 
 import{ 
   Toolbar,
@@ -11,18 +11,17 @@ import{
   MenuItem,  
 } from "@material-ui/core";
 
-
 import MenuIcon from "@material-ui/icons/Menu";
 import { makeStyles } from '@material-ui/core/styles';
 
 const Mobile = (props) => {
     const user = useRecoilValue(usernameState);
-    const isAdmin = useRecoilValue(isAdminState);
+    const isTeacher = useRecoilValue(isTeacherState);
     const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const [navItems, setNavItems] = useState([
-        {label:"Sign in", link:"/SignInUp"},
+        {label:"Teacher Sign in", link:"/SignInUp"},
         {label:"Home 主页", link:"/"},
         {label:"Word Wall 汉字墙", link:"/wordwall"}, 
         {label:"Reading 阅读", link:"/reading"}]);
@@ -62,23 +61,23 @@ const Mobile = (props) => {
     if(isAuthticated){
         setNavItems( [
             {label:"Home 主页", link:"/"},
-            {label:"Assessment 测试", link:"/assessment"},
-            {label:"Notes 笔记", link:"/recommendation"},
+            // {label:"Assessment 测试", link:"/assessment"},
+            // {label:"Notes 笔记", link:"/recommendation"},
             {label:"Word Wall 汉字墙", link:"/wordwall"}, 
             {label:"Reading 阅读", link:"/reading"},
             {label:"Sign out", link:"/signout"}]);
     } 
-    if(isAuthticated&& isAdmin){
-      setNavItems((pre)=>[{label:"Admin", link:"/teacher"},...pre]) 
+    if(isAuthticated&& isTeacher){
+      setNavItems((pre)=>[{label:"Teacher", link:"/teacherDashboard"},...pre]) 
     }
     if(!isAuthticated){
       setNavItems([
-          {label:"Sign in", link:"/SignInUp"},
+          {label:"Teacher Sign in", link:"/SignInUp"},
           {label:"Home 主页", link:"/"},
           {label:"Word Wall 汉字墙", link:"/wordwall"}, 
           {label:"Reading 阅读", link:"/reading"}]);  
     }
-  }, [isAuthticated, isAdmin])
+  }, [isAuthticated, isTeacher])
 
   return (    
     <Toolbar style={{ background: 'transparent',boxShadow: 'none'}} >

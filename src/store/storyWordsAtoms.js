@@ -9,6 +9,19 @@ export const wordliststate = atom({
     key: "wordliststate",
     default: [],
   });
+
+export const storylistcopystate = atom({
+  key: "storylistcopystate",
+  default: [],
+});  
+export const wordlistcopystate = atom({
+  key: "wordlistcopystate",
+  default: [],
+});
+  export const codeliststate = atom({
+    key: "codeliststate",
+    default: [],
+  });
   export const firestoreState = atom({
     key: "firestore", // unique ID (with respect to other atoms/selectors)
     default: firebase.app().firestore(), // default value (aka initial value)
@@ -28,3 +41,12 @@ export const wordliststate = atom({
     key: "userlevelstate",
     default: 0,
   });
+
+  export const teachernamestate = atom({
+    key:"teachernamestate",
+    default:""
+  })
+  export const accesscodestate = atom({
+    key:"accesscodestate",
+    default:""
+  })

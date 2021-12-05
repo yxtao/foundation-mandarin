@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useRecoilValue , useRecoilState} from "recoil";
-import { isAdminState, firebaseState } from "../../store/AuthAtoms" 
+import { isAdminState, firebaseState, isTeacherState } from "../../store/AuthAtoms" 
 
 import "./Teacher.css"
 import UploadStory from './UploadStory'; 
@@ -9,9 +9,10 @@ import UploadWord from './UploadWord';
 const Teacher=()=>{
   const[uploadContent, setUploadContent] = useState("");
   const isAdmin = useRecoilValue(isAdminState);
-  if(!isAdmin) return (
+  const isTeacher = useRecoilValue(isTeacherState);
+  if(!isAdmin && !isTeacher) return (
     <div className = "container m-5">
-      You are not the Admin
+      You are not the admin or a teacher
     </div>
   )
   return(

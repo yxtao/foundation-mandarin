@@ -17,8 +17,27 @@ export const usernameState = atom({
     key: "usernameState",
     default: "",
   });
+  
+  export const userIdState = atom({
+    key: "userIdState",
+    default: "",
+  });
 
   export const isAdminState = atom({
     key: "isAdminState",
     default: false,
   });
+
+  export const isTeacherState = atom({
+    key: "isAdminState",
+    default: false,
+  });
+  export const likedWordList = atom({
+    key: "likedWordList",
+    default: [],
+  })
+
+  export const likedStoryList = atom({
+    key: "likedStoryList",
+    default: []
+  })

@@ -1,4 +1,13 @@
 import React, {useEffect, useState} from'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from "recoil";
+import {checkedAuthState, 
+    usernameState, 
+    firebaseState,
+    isTeacherState, 
+    userIdState,
+    likedWordList,
+    likedStoryList } from "../../store/AuthAtoms"
 import {Grid} from "@material-ui/core";
 import WordCard from'./WordCard/WordCard';
 import WordsPagination from './WordCard/WordsPagination/WordsPagnation';
@@ -6,16 +15,74 @@ import "./WordWall.css";
 //TODO:store it in firebase
 
 const WordWall = (props)=>{
-    
+    const isTeacher = useRecoilValue(isTeacherState);
+    const firebase = useRecoilValue(firebaseState);
+    const [target, setTarget] = useState("");
+    const [likedWords, setLikedWords] = useRecoilState(likedWordList);
+    const [likedStories, setLikedStories] = useRecoilState(likedStoryList);
+    const [userId, setUserId] = useRecoilState(userIdState);
+    const [userName, setUserName] = useRecoilState(usernameState);
     const [wordList, setWordList] = useState([...props.words]);
     const [wordPageArrays, setwordPageArrays] = useState([]);
     const [pagesNum, setPagesNum]= useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [currentPage, setCurrentPage] = useState(0);
-    
-    const handleDeleteCallback = (word) =>{
-        //doing nothing  right now
+    const [error,setError] = useState("");
+
+    const handleTargetChange= (e)=>{
+        setTarget(e.target.value);
     }
+    const onSearch = ()=>{
+        let wordListCopy = [...wordList];
+        if(target !== ""){
+            const result = wordListCopy.filter((word)=>word.name === target);
+            setWordList(result);
+        }else{
+            setWordList(props.words);
+        } 
+    }
+    
+    const handleDeleteCallback = async (wordId) =>{
+        try{
+            await firebase.firestore().collection("chinesewords").doc(wordId).delete();
+        }catch(err){
+            setError(err.message);
+        }
+    }
+    const handleLikeCallback = async (wordId) =>{ 
+        try {
+            await updatelikedWordCards(userId, [...likedWords,wordId]);
+        }catch(err){
+            setError(err.message)
+        }
+        setLikedWords((pre) => [...pre,wordId]);
+    }
+    const handleRemoveLikeCallback = async (wordId) =>{
+        let words = [...likedWords];
+            words= words.filter(word=> word!==wordId);
+        try {
+            await updatelikedWordCards(userId, words);
+        }catch(err){
+            setError(err.message)
+        }
+        setLikedWords(words);
+     }
+     const updatelikedWordCards = async(uid, words)=>{
+        try {
+            const docRef = firebase.firestore().collection("users").doc(uid);
+            const doc = await docRef.get(); 
+            if(!doc.exists) { 
+                 setError("NOT FOUND"); 
+                 return;
+             }
+            await docRef.update({
+                likedWordCards:words
+            })
+          }catch(err){    
+            setError(err.message);
+          }
+      }
+    
     useEffect(()=>{
       const pagesArray=[]; 
       if(wordList.length<rowsPerPage) {
@@ -24,7 +91,6 @@ const WordWall = (props)=>{
           setPagesNum(1);
       } else{
             for(let i = 0; i<wordList.length; i=i+rowsPerPage) {
-                //TODO: Delete static word List
                 const words =[...wordList];
                 let shortArray = words.slice(i,i+rowsPerPage)
                 pagesArray.push(shortArray);
@@ -32,7 +98,6 @@ const WordWall = (props)=>{
             setwordPageArrays(pagesArray);
             setPagesNum(wordPageArrays.length);
         }
-      console.log("wordPageArrays", wordPageArrays);
     },[rowsPerPage, wordList, pagesNum])
 
     const handleCallbackRowsPerPage = (e)=>{
@@ -43,25 +108,28 @@ const WordWall = (props)=>{
     }
 
     return(
-        <div className="wallMain p-5">
-            <div class="row">
-                <div class="col-sm-4">
+        <div className="wallMain">
+            <div className="row">
+                <div className="col-sm-4">
                     <div class="col-xs-2 active-cyan">
-                        <input class="form-control" id="ex1" type="text" placeholder="search by chinese character"/>
+                        <input 
+                            className="form-control" 
+                            type="text" 
+                            placeholder="search by chinese character"
+                            value = {target}
+                            onChange ={(e)=>handleTargetChange(e)}
+                         /> {error}
                     </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="col-xs-2 active-cyan">
-                        <input class="form-control" id="ex1" type="text" placeholder="search by english meaning"/>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="col-xs-2 active-cyan">
-                        <input class="form-control" id="ex1" type="text" placeholder="search by level"/>
-                    </div>
-                </div>
+                </div>   
+                <div className="col-sm-4">
+                  <div className="col-xs-2 active-cyan">
+                  <button className="btn btn-outline-info" onClick={onSearch}>  search </button>
+                  </div>
+                </div> 
             </div>
-            <WordsPagination wordsNum={wordList.length} callbackRowsPerPage={handleCallbackRowsPerPage} callbackCurrentPage={handleCallbackCurrentPage }/>
+            <WordsPagination wordsNum={wordList.length} 
+                callbackRowsPerPage={handleCallbackRowsPerPage} 
+                callbackCurrentPage={handleCallbackCurrentPage }/>
             <Grid container 
                 direction="row"
                 alignItems="stretch"
@@ -73,7 +141,13 @@ const WordWall = (props)=>{
                 wordPageArrays[currentPage].length!==0 && 
                 wordPageArrays[currentPage].map((item,index)=> 
                         <Grid key={index} item xs={12} sm={4} md={3} > 
-                        <WordCard wordData={item} parentDeleteCallback={handleDeleteCallback} hideDelete={true}/> 
+                        <WordCard wordData={item} 
+                            parentDeleteCallback={handleDeleteCallback} 
+                            parentLikeCallback = {handleLikeCallback}
+                            parentRemoveLikeCallback = {handleRemoveLikeCallback }
+                            hideDelete={!isTeacher || item.creator !== userName }
+                            hideLike = {!isTeacher || item.creator === userName || likedWords.includes(item.wordId)}
+                            hideRemoveLike = {!isTeacher || item.creator === userName || !likedWords.includes(item.wordId) }/> 
                         </Grid>) 
                 } 
             </Grid>

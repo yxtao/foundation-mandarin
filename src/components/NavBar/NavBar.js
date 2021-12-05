@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import { Link} from 'react-router-dom';
 import { useRecoilValue , useRecoilState} from "recoil";
-import { checkedAuthState, usernameState, isAdminState, firebaseState } from "../../store/AuthAtoms" 
+import { checkedAuthState, usernameState, isAdminState, firebaseState, isTeacherState } from "../../store/AuthAtoms" 
 import{
     AppBar,
     Toolbar,
@@ -35,11 +35,12 @@ const displayDesktop =(navItems, user)=>{
 const NavBar = ()=>{
     const user = useRecoilValue(usernameState);
     const isAdmin = useRecoilValue(isAdminState);
+    const isTeacher = useRecoilValue(isTeacherState);
     const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
     const [mobileView, setMobileView] = useState(false)
     
     const [navItems, setNavItems] = useState([
-        {label:"Sign in", link:"/SignInUp"},
+        {label:"Teacher Sign in", link:"/SignInUp"},
         {label:"Home 主页", link:"/"},
         {label:"Word Wall 汉字墙", link:"/wordwall"}, 
         {label:"Reading 阅读", link:"/reading"}]);
@@ -60,18 +61,18 @@ const NavBar = ()=>{
       if(isAuthticated){
           setNavItems( [
               {label:"Home 主页", link:"/"},
-              {label:"Assessment 测试", link:"/assessment"},
-              {label:"Notes 笔记", link:"/recommendation"},
+            //   {label:"Assessment 测试", link:"/assessment"},
+            //   {label:"Notes 笔记", link:"/recommendation"},
               {label:"Word Wall 汉字墙", link:"/wordwall"}, 
               {label:"Reading 阅读", link:"/reading"},
               {label:"Sign out", link:"/signout"}]);
       } 
-      if(isAuthticated&& isAdmin ){
-        setNavItems((pre)=>[{label:"Admin", link:"/teacher"},...pre]) 
+      if(isAuthticated&& (isAdmin || isTeacher || true) ){
+        setNavItems((pre)=>[{label:"Teacher", link:"/teacherDashboard"},...pre]) 
       }
       if(!isAuthticated){
         setNavItems([
-            {label:"Sign in", link:"/SignInUp"},
+            {label:"Teacher Sign in", link:"/SignInUp"},
             {label:"Home 主页", link:"/"},
             {label:"Word Wall 汉字墙", link:"/wordwall"}, 
             {label:"Reading 阅读", link:"/reading"}]);  
@@ -79,7 +80,7 @@ const NavBar = ()=>{
     }, [isAuthticated, isAdmin])
     
     return (
-        <AppBar position={mobileView?"fixed":"sticky" }   style={{ background:mobileView? 'transparent':"#97f2f8",boxShadow: 'none', height:"auto", opacity:0.7}} >
+        <AppBar position={mobileView?"fixed":"sticky" }   style={{ background:"white",boxShadow: 'none', height:"auto", opacity:mobileView ? 1:0.7}} >
             {mobileView? <Mobile /> : displayDesktop(navItems, user)}
         </AppBar>
     )
