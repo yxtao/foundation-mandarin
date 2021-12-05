@@ -90,7 +90,7 @@ const Reading = (props)=>{
             </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
-                        <div className="container">
+                        <div>
                             {contents.map((content, index)=> 
                             <div 
                                 className = "row m-3"
@@ -102,7 +102,7 @@ const Reading = (props)=>{
                                             onChange={(e)=>handlelevelsChange(e,index)}/>
                                 </div>
                                 <div className = "col">
-                                    <div className="p-2"> 
+                                    <div className="p-2" > 
                                         <textarea 
                                             rows={6}
                                             cols="100"

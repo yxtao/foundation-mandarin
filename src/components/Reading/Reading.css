@@ -6,6 +6,14 @@
     overflow-y:auto;
     padding:5vw;
 }
+
+textarea {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  width: 100%;
+}
 @media only screen and (max-width: 768px){
     .readingMain{
       padding-top: 10vh;
