@@ -160,21 +160,21 @@ const ReadingList = (props)=>{
                                 type="button" 
                                 className="btn btn-outline-light" 
                                 onClick={()=>handleLike(story.storyId)}>    
-                                <span className="text-success">like</span>
+                                <h4 className="text-success">♡</h4>
                             </button> }
                             {likedStories.includes(story.storyId) &&
                             <button 
                                 type="button" 
                                 className="btn btn-outline-light"
                                 onClick={()=>handleRemoveLike(story.storyId) }>    
-                                <span className="text-success"> unlike </span>
+                                <h4 className="text-success">♥</h4>
                             </button> }
                             { story.creator === userName &&
                             <button 
                                 type="button" 
                                 className="btn btn-outline-light"
                                 onClick={()=>handleDeleteStory(story.storyId) }>    
-                                <span className="text-success"> delete </span>
+                                <span className="text-success"> x 删除 </span>
                             </button> }
                         </div> 
                     </div>
