@@ -154,7 +154,7 @@ const CardDetail = (props)=>{
                 <button 
                     className="btn btn-outline-danger"
                     onClick={offEditMode}
-                > confirm and save 确定保存
+                > 确定保存
                 </button>
             </div>
             <div class="card cardDiv m-5">
@@ -178,21 +178,21 @@ const CardDetail = (props)=>{
                             <div className = "col">
                                 {error}
                                 <h3 className="card-title">{wordData && wordData.name? wordData.name: "name has not uploaded"}</h3>
-                                <div> level
+                                <div> 级别
                                     <input 
                                         className="card-title" 
                                         defaultValue= {wordData && wordData.wordLevel? wordData.level: ""}
                                         value={level}
                                         onChange={(e)=>handleLevelChange(e)}/>
                                 </div>
-                                <div> pinyin
+                                <div> 拼音
                                     <input 
                                         className="card-title" 
                                         defaultValue= {wordData && wordData.pinyin? wordData.pinyin: "pinyin has not uploaded"}
                                         value={pinyin}
                                         onChange={(e)=>handlePinyinChange(e)}/>
                                 </div>
-                                 <div> meaning
+                                 <div> 翻译
                                     <input 
                                         className="card-title" 
                                         defaultValue={wordData && wordData.wordMeaning? wordData.wordMeaning: ""}
@@ -219,14 +219,14 @@ const CardDetail = (props)=>{
                                 className = "row"
                                 key={index}>
                                 <div className = "col">
-                                    <div> phrase
+                                    <div> 词语
                                         <input 
                                             className="card-title"
                                             defaultValue = {obj.phrase}
                                             value={phrases[index]} 
                                             onChange={(e)=>handlePharsesChange(e, index)}/>
                                     </div>
-                                    <div> Level
+                                    <div> 词语级别
                                         <input 
                                             className="card-title"
                                             defaultValue={phrasesLevels[index]}
@@ -235,7 +235,7 @@ const CardDetail = (props)=>{
                                     </div>
                                 </div>
                                 <div className = "col">
-                                    meaning
+                                    翻译
                                     <input 
                                         className="card-title"
                                         defaultValue={"phraseMeaning" in obj?obj.phraseMeaning:""}
@@ -256,7 +256,7 @@ const CardDetail = (props)=>{
                             {sentencesData.map((obj, index)=> 
                             <div  className = "row" key={index}>
                                 <div className = "col">
-                                    sentence
+                                    句子
                                     <input 
                                         className="card-title"
                                         size = "50"
@@ -266,7 +266,7 @@ const CardDetail = (props)=>{
                                      />
                                 </div>
                                 <div className = "col">
-                                    meaning
+                                    句子意思
                                     <input 
                                         className="card-title"
                                         size = "50"

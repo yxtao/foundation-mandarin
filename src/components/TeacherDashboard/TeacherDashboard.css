@@ -44,10 +44,6 @@
     }
   }
 
-.flex-item:hover {
-    box-shadow: 0 10px 10px 0 rgb(243, 127, 226);
-  }
-
 .words-div{
     display: flex;
 }

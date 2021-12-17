@@ -52,15 +52,15 @@ const WordCard = ({wordData, parentDeleteCallback, parentLikeCallback, parentRem
       <CardActions>
         {hideDelete === true? null : 
         <Button size="small" color="primary" onClick={()=>sendDeleteCallback(wordData.wordId)}>
-          delete 
+          x 删除 
         </Button> }
         {hideLike === true? null : 
         <Button size="small" color="primary" onClick={sendLikeCallback}>
-          like
+          <h4>♡</h4>
         </Button> }
         {hideRemoveLike === true? null : 
         <Button size="small" color="primary" onClick={sendRemoveCallback}>
-          Unlike
+          <h4>♥</h4>
         </Button> }
       </CardActions>
     </Card>
