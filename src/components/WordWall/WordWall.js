@@ -31,6 +31,9 @@ const WordWall = (props)=>{
 
     const handleTargetChange= (e)=>{
         setTarget(e.target.value);
+        if(target===""){
+            setWordList(props.words);
+        }
     }
     const onSearch = ()=>{
         let wordListCopy = [...wordList];

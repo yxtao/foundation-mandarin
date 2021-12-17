@@ -10,10 +10,10 @@
 .storyContent{
     height: 30vh;
     line-height:3;
-    box-shadow: 5px 15px 15px 0 rgb(106, 180, 250);
-    transition: 0.3s;   
+    box-shadow: 3px 1px 1px 0 rgb(4, 127, 243);  
     overflow-x: auto;
     overflow-y: auto;
+    white-space: pre-line; 
 }
 @media only screen and (max-width: 768px) {
     .storyContent{
@@ -24,9 +24,10 @@
   .storyMain{
     margin: 5vw;
   }
-
   .nextpage{
     font-size: x-large;
     color:rgb(0, 119, 255);
   }
+  
+  
  
