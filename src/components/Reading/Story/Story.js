@@ -3,8 +3,7 @@ import { useRecoilValue , useRecoilState} from "recoil";
 import {userlevelstate } from "../../../store/storyWordsAtoms";
 import {Paper, Grid, Typography} from '@material-ui/core';
 import "./Story.css"
-
-  
+ 
 const Story =({story, parentCallback, words})=>{
     const [contentIndex, setContentIndex] = useState(0);
     const [bookLevel, setBookLevel] = useState(story.levels[contentIndex]);
@@ -16,16 +15,12 @@ const Story =({story, parentCallback, words})=>{
     
     useEffect(()=>{
         let foundIndex= story.levels.findIndex((e)=> Number(e)===userLevelState);
-        console.log(foundIndex, story.levels,userLevelState)
         if(foundIndex!==-1){
             setUserLevelIndex(foundIndex);
             setContentIndex(foundIndex);
             setBookLevel(userLevelState);
         }
-        console.log(userLevelIndex)
-
         const wordList = [...keywords];
-    
         words.forEach(element => {
             wordList.push(element.name)
         });
@@ -34,13 +29,13 @@ const Story =({story, parentCallback, words})=>{
     },[userLevelState, story.levels])
   
     useEffect(()=>{
-        const characters = story.contents[contentIndex].split("");
         const pagesArray=[]; 
-      for (let index=0; index<characters.length; index=index+100){
-          const copyCharacters = [...characters];
-          let shortCharactersArray = copyCharacters.slice(index, index+100) 
-          pagesArray.push(shortCharactersArray)
-      }
+        const pagesInfo = story.contents[contentIndex].split("\n");
+        for(let i=0; i<pagesInfo.length; i++){
+            let letters = pagesInfo[i].split("");
+            if(letters.length<=0) continue;
+            pagesArray.push(letters);
+        }
       setCharactersPages(pagesArray);
     },[contentIndex, story.contents])
 
