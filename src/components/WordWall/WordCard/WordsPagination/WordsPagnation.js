@@ -1,9 +1,10 @@
 import React from 'react';
 import TablePagination from '@material-ui/core/TablePagination';
+import "./WordsPagnation.css"
 
 const WordsPagination = (props) => {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(4);
+  const [rowsPerPage, setRowsPerPage] = React.useState(8);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -18,13 +19,14 @@ const WordsPagination = (props) => {
 
   return (
     <TablePagination
+      size="small"
       component="div"
       count={props.wordsNum}
       page={page}
       onPageChange={handleChangePage}
       rowsPerPage={rowsPerPage}
       onRowsPerPageChange={handleChangeRowsPerPage}
-      rowsPerPageOptions = {[8,16,32,64]}
+      rowsPerPageOptions = {[4,8,16,32,64]}
     />
   );
 }

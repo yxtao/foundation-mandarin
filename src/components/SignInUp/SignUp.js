@@ -16,7 +16,6 @@ const SignUp = (props) =>{
     const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
     const [isClicked, setIsClicked] = useState(false);
     const [error, setError] = useState("");
-
     const addUser = async(username,password,email, uid)=>{
       await db.collection("users").doc(uid).set({
         uid,
@@ -49,7 +48,6 @@ const SignUp = (props) =>{
         setIsClicked(false);
         return;
       }
-      
       try{
         await loginUser(email,password);
       }catch(error){
@@ -100,7 +98,7 @@ const SignUp = (props) =>{
                       </Grid>
                       <br/>
                       <Grid item>
-                        <button className="btn btn-outline-primary" disabled={isClicked}type = "submit"> 
+                        <button className="btn btn-outline-success" disabled={isClicked}type = "submit"> 
                         Sign up
                        </button>
                      </Grid>
