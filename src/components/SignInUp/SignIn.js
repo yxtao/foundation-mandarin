@@ -13,10 +13,12 @@ const SignIn = (props) =>{
     const [userId, setUserId] = useRecoilState(userIdState);
     const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
     const [error, setError] = useState("");
+    const [disabled, setDisabled] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{ 
+            setDisabled(true);
             await loginUser(email,password);
             var currentUser = firebase.auth().currentUser;
             setUser(currentUser.displayName); 
@@ -25,6 +27,7 @@ const SignIn = (props) =>{
         }catch(error){
             setError(JSON.stringify(error.message));
         }
+        setDisabled(false);
     }
     return (
         <div>
@@ -49,7 +52,7 @@ const SignIn = (props) =>{
                     </Grid>
                     <br/>
                     <Grid item>
-                        <button className="btn btn-outline-success" type = "submit"> 
+                        <button className="btn btn-outline-success login-btn" type = "submit" disabled={disabled}> 
                          log in 
                         </button>
                      </Grid>

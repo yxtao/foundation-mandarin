@@ -76,22 +76,18 @@ const SignInUp = ()=>{
   const setSignIn = ()=>{
     setIsSignUp(false);
   }
-
+  
     return (
      <div className="wrapperDiv">
-       <div className="bg-light p-1 input ">
-        <div className = "row justify-content-around">
-          <div className="col-2 ">
-            <button className="btn text-success btn-bg"  
-                    style={{borderBottom:!isSignUp? "2px solid black": "white"}}
-                    onClick={setSignIn}> Sign In</button> 
-          </div>
-          <div className="col-2 ">
+       <div className="input ">
+         <div className="buttons-div">
+          <button className="btn text-success btn-bg"  
+                      style={{borderBottom:!isSignUp? "2px solid black": "white"}}
+                      onClick={setSignIn}> Sign In</button> 
           <button className="btn text-success btn-bg "
-                  style={{borderBottom:isSignUp? "2px solid black": "white"}}
-                  onClick={setSignUp}> Sign Up</button> 
-          </div>
-        </div>
+                    style={{borderBottom:isSignUp? "2px solid black": "white"}}
+                    onClick={setSignUp}> Sign Up</button> 
+         </div>  
         {isSignUp? <SignUp/> : <SignIn /> }
        </div>
     </div>
