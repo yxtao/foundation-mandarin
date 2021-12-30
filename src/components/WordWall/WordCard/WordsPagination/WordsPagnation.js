@@ -27,6 +27,7 @@ const WordsPagination = (props) => {
       rowsPerPage={rowsPerPage}
       onRowsPerPageChange={handleChangeRowsPerPage}
       rowsPerPageOptions = {[4,8,16,32,64]}
+      labelRowsPerPage =""
     />
   );
 }

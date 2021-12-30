@@ -1,25 +1,18 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
-import test1 from "../../../assets/images/wordcards/test1.jpg"
+import "./WordCard.css"
 
-const useStyles = makeStyles({
-  root: {
-    background:"#EDFCFC",
-    maxWidth: 280,
-    boxShadow: "5px 10px 10px 0 rgb(4, 200, 200)", 
-  },
-});
-
-const WordCard = ({wordData, parentDeleteCallback, parentLikeCallback, parentRemoveLikeCallback,hideDelete, hideLike, hideRemoveLike})=> {
-  const classes = useStyles();
+const WordCard = ({wordData,
+                   parentDeleteCallback, 
+                   parentLikeCallback,
+                   parentRemoveLikeCallback,
+                   hideDelete, 
+                   hideLike, 
+                   hideRemoveLike})=> {
   const sendDeleteCallback=()=>{
     parentDeleteCallback(wordData.wordId);
   }
@@ -30,23 +23,19 @@ const WordCard = ({wordData, parentDeleteCallback, parentLikeCallback, parentRem
     parentRemoveLikeCallback(wordData.wordId);
   }
   return (
-    <Card className={classes.root} style={{height:"35vh"}}> 
-      <CardActionArea style={{height:"30vh" ,overflowY:"auto",overflowX:"auto"}} >
-      <Typography gutterBottom variant="h4" component="h4" style={{width: "50%",margin:"auto"}}>
-            {wordData.name}
-          </Typography>
-          <p style={{width: "50%",margin:"auto"}}>
-            {wordData.creator}
-          </p>
-      <Link to = {`/carddetail/${wordData.wordId}`}>
-        <CardContent>
-         <Typography>{wordData.pinyin? wordData.pinyin : ""}</Typography> 
-         <Typography>{wordData.wordMeaning? wordData.wordMeaning: ""}</Typography> 
+    <Card id="word-card"> 
+      <CardActionArea id="action-card">
+      <div className="card-title">
+            <h2>{wordData.name}</h2>
+            <h5>{wordData.creator}</h5>
+      </div>
+      <Link id="link-detail" to= {`/carddetail/${wordData.wordId}`}>
+        <div id="card-content">
+         <h4>{wordData.pinyin? wordData.pinyin : ""}</h4> 
+         <p>{wordData.wordMeaning? wordData.wordMeaning: ""}</p> 
          {wordData.phrases.map((phrase,index)=>
-              <Typography key={index} variant="body2" color="textSecondary" component="p">
-                  {phrase}
-              </Typography>)}
-        </CardContent>
+              <p> {phrase} </p>)}
+        </div>
         </Link>
       </CardActionArea>
       <CardActions>

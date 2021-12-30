@@ -13,10 +13,7 @@
     width:50vw;
     margin:auto;
 }
-/* On mouse-over, add a deeper shadow */
-.input:hover {
-    box-shadow: 0 10px 10px 0 rgb(23, 179, 206);
-  }
+
 @media (orientation: portrait) and (max-width: 768px) {
     .wrapperDiv{
         padding: 5%;

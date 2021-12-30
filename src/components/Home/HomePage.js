@@ -17,7 +17,7 @@ const HomePage=()=> {
   const [accessCode, setAccessCode] = useRecoilState(accesscodestate);
   const [error, setError] = useState("");
   const onCodeChange =(e)=>{
-    setCode(e.target.value)
+    setCode(e.target.value.trim())
   }
   const checkCode=()=>{
     let obj = codeList.find((element)=> element.code === code);
@@ -32,7 +32,7 @@ const HomePage=()=> {
   if(isTeacher){
     return(
       <div  className="CenterMain pt-5 mt-5 ">
-        welcome 
+        welcome {user}
       </div>
     )
   }
