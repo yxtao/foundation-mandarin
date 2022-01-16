@@ -201,12 +201,6 @@ const CardDetail = (props)=>{
                                  </div>
                             </div>
                             <div className = "col">
-                            {/* { wordData && wordData.wordAudio ? 
-                                <audio controls class="embed-responsive-item">
-                                    <source src= {wordData.wordAudio[0].url} />
-                                </audio>
-                                :null
-                             } */}
                             </div>
                         </div>
                     </div>
@@ -242,11 +236,6 @@ const CardDetail = (props)=>{
                                         value={phrasesMeanings[index]}
                                         onChange={(e)=>handlePhrasesMeaningsChange(e,index)}/> 
                                 </div>
-                                {/* <div className = "col">
-                                    <audio controls class="embed-responsive-item">
-                                        <source src={ obj.phraseAudio} />
-                                    </audio>
-                                </div> */}
                             </div>
                             )}
                         </div>
@@ -274,11 +263,6 @@ const CardDetail = (props)=>{
                                         defaultValue={"sentenceMeaning" in obj?obj.sentenceMeaning:""}
                                         onChange={(e)=>handleSentencesMeaningsChange(e,index)}/>
                                 </div>
-                                {/* <div className = "col">
-                                    <audio controls class="embed-responsive-item">
-                                        <source src={ obj.sentenceAudio} />
-                                    </audio>
-                                </div> */}
                             </div>
                             )}
                         </div>
@@ -325,17 +309,12 @@ const CardDetail = (props)=>{
                         <div className = "row">
                             <div className = "col">
                                 <h3 className="card-title">{wordData && wordData.name? wordData.name: "name has not uploaded"}</h3>
-                                <h5 className="card-title">level {wordData && wordData.wordLevel? wordData.wordLevel: "0"}</h5>
+                                <p className="card-title">level {wordData && wordData.wordLevel? wordData.wordLevel: "0"}</p>
                                 <h3 className="card-title">{wordData && wordData.pinyin? wordData.pinyin: "pinyin has not uploaded"}</h3>
-                                <h3 className="card-title">{wordData && wordData.wordMeaning? wordData.wordMeaning: ""}</h3>
+                                
                             </div>
                             <div className = "col">
-                            {/* { wordData && wordData.wordAudio ? 
-                                <audio controls class="embed-responsive-item">
-                                    <source src= {wordData.wordAudio[0].url} />
-                                </audio>
-                                :null
-                             } */}
+                            <p className="card-title">{wordData && wordData.wordMeaning? wordData.wordMeaning: ""}</p>
                             </div>
                         </div>
                     </div>
@@ -347,16 +326,11 @@ const CardDetail = (props)=>{
                             <div className = "row" key={index}>
                                 <div className = "col">
                                     <h3 className="card-title">{obj.phrase}</h3>
-                                    <h6 className="card-title">{" "}Level {obj.phraseLevel}</h6>
+                                    <p className="card-title">{" "}Level {obj.phraseLevel}</p>
                                 </div>
                                 <div className = "col">
-                                    <h6 className="card-title"> {"phraseMeaning" in obj?obj.phraseMeaning:""}</h6>
+                                    <p className="card-title"> {"phraseMeaning" in obj?obj.phraseMeaning:""}</p>
                                 </div>
-                                {/* <div className = "col">
-                                    <audio controls class="embed-responsive-item">
-                                        <source src={ obj.phraseAudio} />
-                                    </audio>
-                                </div> */}
                             </div>
                             )}
                         </div>
@@ -369,24 +343,14 @@ const CardDetail = (props)=>{
                                     <h6 className="card-title">{obj.sentence}</h6>
                                 </div>
                                 <div className = "col">
-                                    <h6 className="card-title">{"sentenceMeaning" in obj?obj.sentenceMeaning:""}</h6>
+                                    <p className="card-title">{"sentenceMeaning" in obj?obj.sentenceMeaning:""}</p>
                                 </div>
-                                {/* <div className = "col">
-                                    <audio controls class="embed-responsive-item">
-                                        <source src={ obj.sentenceAudio} />
-                                    </audio>
-                                </div> */}
                             </div>
                             )}
                         </div>
                     </li>
                 </ul>
                 <div className="card-body">
-                {wordData && "xiangxingImage" in wordData && wordData.xiangxingImage[0].url ?
-                            <div> 
-                                <img src={ wordData && wordData.strokeImage ? wordData.xiangxingImage[0].url : test1} className="img-responsive xiangxing-image" alt="..." />
-                           </div>:null
-                            }
                 </div>
             </div>
         </div>

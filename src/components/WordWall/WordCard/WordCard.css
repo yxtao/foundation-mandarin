@@ -1,0 +1,27 @@
+#word-card {
+    background-color: rgb(210, 242, 248); 
+    max-width: 280;
+    box-shadow: 5px 10px 10px 0 rgb(4, 200, 200); 
+    height:35vh;
+    overflow: auto;
+}
+#action-card{
+    height:28vh;
+    overflow: auto;
+}
+#action-card:hover{
+    box-shadow: 5px 5px 5px 0 rgb(168, 235, 204); 
+}
+#link-detail{
+    text-decoration: none;
+}
+.card-title{
+    width:50%;
+    margin:auto;
+    font-family: 'Times New Roman';
+}
+#card-content{
+    color:rgb(12, 11, 12);
+    padding:5px;
+    font-family: 'Times New Roman';
+}

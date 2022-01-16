@@ -262,17 +262,23 @@ const TeacherDashboard = ()=>{
     return (
         <div id="teacher-board" className="container-wrapper">
             {error}
-            <div  className="flex-div">
+            <div className="flex-div">
                     <div className = "flex-item p-md-2">
                         <button 
                             className="btn btn-outline-info"
                             onClick = {redirectToOwnerList}> 
                                 我的字库
                          </button>
-                         <ul>
+                        <ul>
                         {myWords.map((word, index)=>
-                        <li className = "words-div">
-                             <div  key={index}  className="flex-row">  
+                        <li>
+                             <div  key={index}> 
+                             <button        
+                                 type="button" 
+                                 className="btn btn-outline-light" 
+                                 onClick={()=>redirtToDetailWord(word.wordId) }>    
+                                 <span className="text-success">  {word.name}</span>
+                             </button> 
                              <input 
                                 type="checkbox"
                                 id={`custom-checkbox-${index}`}
@@ -280,16 +286,11 @@ const TeacherDashboard = ()=>{
                                 value={word.wordId}
                                 checked={checkedStates[index]}
                                 onChange={() => handleOnChange(index)}
-                            />---
-                             <button        
-                                 type="button" 
-                                 className="btn btn-outline-light" 
-                                 onClick={()=>redirtToDetailWord(word.wordId) }>    
-                                 <span className="text-success">  {word.name}</span>
-                             </button>
+                            />
                             </div> 
-                        </li>)}
-                        </ul>
+                        </li>
+                       )}
+                    </ul>
                     </div>
                     <div className = "flex-item p-md-2">
                         <button
@@ -299,8 +300,14 @@ const TeacherDashboard = ()=>{
                         </button>
                         <ul>
                         {myStories.map((story, index)=> 
-                        <li className = "words-div">
-                            <div  key={index}  className="flex-row">  
+                        <li>
+                            <div  key={index}> 
+                            <button        
+                                 type="button" 
+                                 className="btn btn-outline-light" 
+                                 onClick={()=>redirtToStory(story.storyId) }>    
+                                 <span className="text-success">  {story.name}</span>
+                             </button> 
                             <input 
                                 type="checkbox"
                                 id={`custom-checkbox-${index}`}
@@ -308,15 +315,9 @@ const TeacherDashboard = ()=>{
                                 value={story.storyId}
                                 checked={checkedStoryStates[index]}
                                 onChange={() => handleOnStoryCheckChange(index)}
-                            />---
-                             <button        
-                                 type="button" 
-                                 className="btn btn-outline-light" 
-                                 onClick={()=>redirtToStory(story.storyId) }>    
-                                 <span className="text-success">  {story.name}</span>
-                             </button>
+                            /> 
                             </div>
-                            </li>
+                         </li>
                         )}
                         </ul>
                     </div>
@@ -346,9 +347,9 @@ const TeacherDashboard = ()=>{
                     <button 
                         className="btn btn-outline-info"
                         onClick={redirectToLikedList}> 
-                        喜欢的字
+                        收藏的字
                         </button>
-                    <div className = "words-div">
+                    <div>
                     {likedWordObjs.map((word, index)=>
                         <div  key={index}  className="p-md-2 flex-column">       
                             <button        
