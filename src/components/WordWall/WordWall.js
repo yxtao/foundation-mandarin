@@ -30,10 +30,10 @@ const WordWall = (props)=>{
     const [error,setError] = useState("");
 
     const handleTargetChange= (e)=>{
-        setTarget(e.target.value);
-        if(target===""){
+        if(e.target.value===""){
             setWordList(props.words);
         }
+        setTarget(e.target.value.trim());
     }
     const onSearch = ()=>{
         let wordListCopy = [...wordList];

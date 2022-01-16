@@ -52,10 +52,10 @@ const ReadingList = (props)=>{
         setCurrentPage(e)
     } 
     const handleTargetChange= (e)=>{
-        setTarget(e.target.value);
-        if(target===""){
+        if(e.target.value===""){
             setStories(props.stories);
         }
+        setTarget(e.target.value.trim());
     }
     const onSearch = ()=>{
         let storiesCopy = [...stories];
