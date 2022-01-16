@@ -104,9 +104,13 @@ const TeacherDashboard = ()=>{
     }
     
     const generateAccessCode = async () =>{
-
         let wordInfos = [];
         let storyInfos = [];
+        if(selectedWords.length === 0 && selectedStories.length === 0){
+           setError("生成学生码时必须选中字和短文");
+           return;
+        }
+        setError("");
         selectedWords.forEach((word,index)=>{
            let wordInfo = {name: word.name, wordId: word.wordId};
             wordInfos.push(wordInfo);
@@ -261,7 +265,7 @@ const TeacherDashboard = ()=>{
         }
     return (
         <div id="teacher-board" className="container-wrapper">
-            {error}
+            <p className="text-danger"> {error} </p>
             <div className="flex-div">
                     <div className = "flex-item p-md-2">
                         <button 
@@ -330,9 +334,9 @@ const TeacherDashboard = ()=>{
                     </div>
                 </div>
             <div className = "flex-div">
-                <div className = "flex-item p-md-3">
+                <div className = "flex-item p-md-2">
                     <button 
-                        className="btn btn-outline-info m-md-2" 
+                        className="btn btn-outline-info" 
                         onClick={generateAccessCode}>
                         生成学生码
                     </button>
@@ -347,7 +351,7 @@ const TeacherDashboard = ()=>{
                     <button 
                         className="btn btn-outline-info"
                         onClick={redirectToLikedList}> 
-                        收藏的字
+                        喜欢的字
                         </button>
                     <div>
                     {likedWordObjs.map((word, index)=>

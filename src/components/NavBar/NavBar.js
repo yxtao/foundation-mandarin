@@ -41,7 +41,7 @@ const NavBar = ()=>{
     
     const [navItems, setNavItems] = useState([
         {label:"Teacher Sign in", link:"/SignInUp"},
-        {label:"Home 主页", link:"/"},
+        {label:"Home 主页🏠", link:"/"},
         {label:"Word Wall 汉字墙", link:"/wordwall"}, 
         {label:"Reading 阅读", link:"/reading"}]);
 
@@ -60,24 +60,24 @@ const NavBar = ()=>{
     useEffect(()=>{
       if(isAuthticated){
           setNavItems( [
-              {label:"Home 主页", link:"/"},
+              {label:"Home主页🏠", link:"/"},
             //   {label:"Assessment 测试", link:"/assessment"},
             //   {label:"Notes 笔记", link:"/recommendation"},
-              {label:"Word Wall 汉字墙", link:"/wordwall"}, 
-              {label:"Reading 阅读", link:"/reading"},
+              {label:"Words汉字📝", link:"/wordwall"}, 
+              {label:"Reading读📖", link:"/reading"},
               {label:"Sign out", link:"/signout"}]);
       } 
       if(isAuthticated&& (isAdmin || isTeacher || true) ){
-        setNavItems((pre)=>[{label:"Teacher", link:"/teacherDashboard"},...pre]) 
+        setNavItems((pre)=>[{label:"Teacher🧑‍🏫", link:"/teacherDashboard"},...pre]) 
       }
       if(!isAuthticated){
         setNavItems([
             {label:"Teacher Sign in", link:"/SignInUp"},
-            {label:"Home 主页", link:"/"},
-            {label:"Word Wall 汉字墙", link:"/wordwall"}, 
-            {label:"Reading 阅读", link:"/reading"}]);  
+            {label:"Home主页🏠", link:"/"},
+            {label:"Words汉字📝", link:"/wordwall"}, 
+            {label:"Reading读📖", link:"/reading"}]);  
       }
-    }, [isAuthticated, isAdmin])
+    }, [isAuthticated, isAdmin, isTeacher])
     
     return (
         <AppBar position={mobileView?"fixed":"sticky" }  

@@ -146,13 +146,11 @@ const ReadingList = (props)=>{
             storyPageArrays[currentPage].length!==0 && 
             storyPageArrays[currentPage].map((story,index)=> 
             <Grid key={index} item xs={12} sm={4} md={3} > 
-                <div>
-                    <button  
-                    className="btn btn-link"
-                        onClick={()=>openStory(story.storyId)}>
-                        <span className="h2 text-dark">{story.name} </span>            
-                    </button>
-                    <p className="pl-3 text-dark">{" by-"+story.creator} </p>
+                <div className="reading-list-card">
+                    <div onClick={()=>openStory(story.storyId)}>  
+                        <p className="h2 pl-3 text-dark">{story.name} </p>            
+                        <p className="pl-3 text-dark">{" by-"+story.creator} </p>
+                    </div>
                     <div className = "words-div">
                         <div  key={index}  className="p-2 flex-row">  
                             {isTeacher && story.creator!== userName && !likedStories.includes(story.storyId) &&
@@ -174,7 +172,7 @@ const ReadingList = (props)=>{
                                 type="button" 
                                 className="btn btn-outline-light"
                                 onClick={()=>handleDeleteStory(story.storyId) }>    
-                                <span className="text-success"> x 删除 </span>
+                                <span className="text-success"> 🗑  删除 </span>
                             </button> }
                         </div> 
                     </div>

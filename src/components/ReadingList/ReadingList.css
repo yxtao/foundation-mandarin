@@ -5,14 +5,28 @@
     height:100vh;
     overflow-y:auto;
     padding: 5vw;
+    font-family: 'Times New Roman';
+  }
+  .reading-list-card{
+    box-shadow: 1px 3px 3px 0 rgb(4, 200, 200); 
+    height:20vh
+  }
+  .reading-list-card:hover{
+    box-shadow: 5px 10px 10px 0 rgb(4, 200, 200); 
   }
   @media only screen and (max-width: 768px){
     .readingListMain{
       padding-top: 15vh;
     }
+    .reading-list-card{
+      height:23vh
+    }
   }
   @media (orientation: landscape) and (max-width: 768px){
     .readingListMain{
       padding-top: 10vw;
+    }
+    .reading-list-card{
+      height:23vw
     }
   }

@@ -3,6 +3,7 @@
     opacity:0.8;
     height:100%;
     overflow-y:auto;
+    font-family: 'Times New Roman';
 }
 textarea {
   -webkit-box-sizing: border-box;

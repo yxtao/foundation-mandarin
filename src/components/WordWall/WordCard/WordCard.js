@@ -25,11 +25,11 @@ const WordCard = ({wordData,
   return (
     <Card id="word-card"> 
       <CardActionArea id="action-card">
-      <div className="card-title">
-            <h2>{wordData.name}</h2>
-            <h5>{wordData.creator}</h5>
-      </div>
-      <Link id="link-detail" to= {`/carddetail/${wordData.wordId}`}>
+      <Link id="link-detail" to= {`/carddetail/${wordData.wordId}`}> 
+        <div className="card-title">
+              <h2>{wordData.name}</h2>
+              <h5>{wordData.creator}</h5>
+        </div>
         <div id="card-content">
          <h4>{wordData.pinyin? wordData.pinyin : ""}</h4> 
          <p>{wordData.wordMeaning? wordData.wordMeaning: ""}</p> 
@@ -40,8 +40,8 @@ const WordCard = ({wordData,
       </CardActionArea>
       <CardActions>
         {hideDelete === true? null : 
-        <Button size="small" color="primary" onClick={()=>sendDeleteCallback(wordData.wordId)}>
-          x 删除 
+        <Button size="small" color="primary" onClick={()=>sendDeleteCallback(wordData.wordId)}>    
+        🗑 删除 
         </Button> }
         {hideLike === true? null : 
         <Button size="small" color="primary" onClick={sendLikeCallback}>

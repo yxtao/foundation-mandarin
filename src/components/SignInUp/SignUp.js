@@ -34,15 +34,15 @@ const SignUp = (props) =>{
       return /^[0-9a-zA-Z]+$/.test(name);
     }
     const handleSubmit = async (e) => {
+      setIsClicked(true);
       e.preventDefault();
       if(!isNameValid(userName)){
         setError("User name is not valid, can only contain numbers and letters.")
         setIsClicked(false);
         return;
       }
-      setIsClicked(true);
       try{
-        await createUserAccount({ email,password,userName});
+        await createUserAccount({ email,password,userName}); 
       }catch(error){
         setError("User name or email exist, please choose a different one");
         setIsClicked(false);
@@ -62,9 +62,9 @@ const SignUp = (props) =>{
         setIsAuthenticated(true); 
         await addUser(userName,password,email, currentUser.uid);
       }else{
-        setError("failed sign in up, please retry")
+        setError("failed sign in/up, please retry");
+        setIsClicked(false);
       }
-      setIsClicked(false);
     } 
   
     return (
@@ -98,7 +98,7 @@ const SignUp = (props) =>{
                       </Grid>
                       <br/>
                       <Grid item>
-                        <button className="btn btn-outline-success" disabled={isClicked}type = "submit"> 
+                        <button className="btn btn-outline-success" disabled={isClicked} type = "submit"> 
                         Sign up
                        </button>
                      </Grid>

@@ -17,8 +17,8 @@ const SignIn = (props) =>{
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setDisabled(true);
         try{ 
-            setDisabled(true);
             await loginUser(email,password);
             var currentUser = firebase.auth().currentUser;
             setUser(currentUser.displayName); 
@@ -26,8 +26,8 @@ const SignIn = (props) =>{
             setIsAuthenticated(true);
         }catch(error){
             setError(JSON.stringify(error.message));
-        }
-        setDisabled(false);
+            setDisabled(false);
+        }   
     }
     return (
         <div>
