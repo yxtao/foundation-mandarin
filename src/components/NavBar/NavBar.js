@@ -18,7 +18,7 @@ const displayDesktop =(navItems, user)=>{
     return(
             <Toolbar  >
                 <Box  display='flex' flexGrow={1} style={{color: "black"}}>
-                    Logo
+                    MandarinBuilder中文分享
                 </Box>
                 <div className="userName">
                 {user }
