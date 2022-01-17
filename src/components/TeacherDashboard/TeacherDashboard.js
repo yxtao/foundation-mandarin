@@ -51,16 +51,11 @@ const TeacherDashboard = ()=>{
         setCheckedStates( new Array(myWords.length).fill(false));
     },[myWords.length])
 
-    useEffect(()=>{
-       
-    },[])
-
-
    useEffect(()=>{
     setMyStories(storyList.filter((story)=>story.creator===user));
    }, [storyList,user])
 
-  useEffect(()=>{  
+   useEffect(()=>{  
       setCheckedStoryStates( new Array(myStories.length).fill(false));
     },[myStories.length])
 
@@ -223,7 +218,9 @@ const TeacherDashboard = ()=>{
             setError(err.message);
           }
       }
-    
+    const redirectToHomePage = ()=>{
+        history.push("/")
+    }
     const redirtToDetailWord = (wordId)=>{
       history.push(`/carddetail/${wordId}`)
     }
@@ -265,6 +262,10 @@ const TeacherDashboard = ()=>{
         }
     return (
         <div id="teacher-board" className="container-wrapper">
+            <button
+            className="btn btn-outline-warning"
+            onClick={redirectToHomePage}>
+            如何使用❓ </button>
             <p className="text-danger"> {error} </p>
             <div className="flex-div">
                     <div className = "flex-item p-md-2">

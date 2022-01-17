@@ -33,6 +33,17 @@ const HomePage=()=> {
     return(
       <div  className="CenterMain pt-5 mt-5 ">
         welcome {user}
+        <div className="video-responsive">
+          <iframe
+            width="853"
+            height="480"
+            src="https://www.youtube.com/embed/04kQVMdKAAc?rel=0" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            title="user guide"
+          />
+        </div>
       </div>
     )
   }
