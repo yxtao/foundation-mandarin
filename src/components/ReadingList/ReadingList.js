@@ -60,7 +60,7 @@ const ReadingList = (props)=>{
     const onSearch = ()=>{
         let storiesCopy = [...stories];
         if(target !== ""){
-            const result = storiesCopy.filter((s)=>s.name === target);
+            const result = storiesCopy.filter((s)=>s.name.includes(target));
             setStories(result);
         }else{
             setStories(props.stories);
@@ -120,7 +120,7 @@ const ReadingList = (props)=>{
                         <input 
                             class="form-control" 
                             type="text" 
-                            placeholder="search by story name"
+                            placeholder="search by title"
                             value = {target}
                             onChange ={(e)=>handleTargetChange(e)}
                         /> {error}
