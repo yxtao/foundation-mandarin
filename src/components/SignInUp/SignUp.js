@@ -42,9 +42,9 @@ const SignUp = (props) =>{
         return;
       }
       try{
-        await createUserAccount({ email,password,userName}); 
+         await createUserAccount({ email,password,userName}); 
       }catch(error){
-        setError("User name or email exist, please choose a different one");
+        setError(error.response.data.message);
         setIsClicked(false);
         return;
       }
@@ -75,7 +75,7 @@ const SignUp = (props) =>{
                     <br/>
                     <TextField 
                         value = {email}
-                        onInput = {e => setEmail(e.target.value)}
+                        onInput = {e => setEmail(e.target.value.trim())}
                         placeholder = "email" 
                       />
                     </Grid>
@@ -83,7 +83,7 @@ const SignUp = (props) =>{
                     <Grid item>
                       <TextField 
                         value = {password}
-                        onInput = {e => setPassword(e.target.value)}
+                        onInput = {e => setPassword(e.target.value.trim())}
                         placeholder="password"
                       />
                     <br/>
@@ -92,7 +92,7 @@ const SignUp = (props) =>{
                       <Grid item>
                         <TextField 
                         value = {userName}
-                        onInput = {e => setUserName(e.target.value)}
+                        onInput = {e => setUserName(e.target.value.trim())}
                         placeholder="user name"
                       />
                       </Grid>
@@ -104,7 +104,7 @@ const SignUp = (props) =>{
                      </Grid>
                 </form>
             </Grid>
-            <div className="text-danger p-lg-3">{error}</div>             
+            <div className="text-danger p-lg-3 m-3">{ error!=="" && JSON.stringify(error)}</div>             
         </div>
     )
  }
