@@ -85,7 +85,7 @@ const Reading = (props)=>{
                 <button 
                 className="btn btn-outline-danger"
                 onClick={offEditMode}
-                > confirm and save 确定保存
+                > save 确定保存
                 </button>
             </div>
                 <ul className="list-group list-group-flush">

@@ -28,7 +28,8 @@ const WordCard = ({wordData,
       <Link id="link-detail" to= {`/carddetail/${wordData.wordId}`}> 
         <div className="card-title">
               <h2>{wordData.name}</h2>
-              <h5>{wordData.creator}</h5>
+              <h5>level {wordData.wordLevel}</h5>
+              <h5>by {wordData.creator}</h5>
         </div>
         <div id="card-content">
          <h4>{wordData.pinyin? wordData.pinyin : ""}</h4> 

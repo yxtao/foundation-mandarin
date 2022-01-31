@@ -85,17 +85,22 @@ const Story =({story, parentCallback, words})=>{
                                type="button" 
                                className="btn btn-outline-light"
                                onClick={()=>sendCallback(character)}>
-                                <span class="h4 text-warning"> {character} </span>
+                                <span className="h4 text-warning"> {character} </span>
                         </button>
-                        :character)}
+                        :  <button key={index}  
+                        type="button" 
+                        className="btn btn-outline-light"
+                        >
+                         <span className="h4 text-dark"> {character} </span>
+                 </button>)}
                     </div>
                </Paper> 
                 <div className="row align-items-center justify-content-center">
                     <div className="col-4 ">
-                        <button className= "btn" onClick={handleSetPreviousPage}> <span className="nextpage"> pre page {"<"} </span>  </button>
+                        <button className= "btn btn-link" disabled={currentPage === 0} onClick={handleSetPreviousPage}> <span className="nextpage"> pre page {"<"} </span>  </button>
                     </div>
                     <div className="col-4">
-                        <button className="btn" onClick={handleSetNextPage} > <span className="nextpage"> {">"} next page</span>  </button> 
+                        <button className="btn btn-link" disabled={currentPage === charactersPages.length-1} onClick={handleSetNextPage} > <span className="nextpage"> {">"} next page</span>  </button> 
                     </div>
                 </div> 
                 </div>

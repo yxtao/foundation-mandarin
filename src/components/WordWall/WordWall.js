@@ -6,8 +6,7 @@ import {checkedAuthState,
     firebaseState,
     isTeacherState, 
     userIdState,
-    likedWordList,
-    likedStoryList } from "../../store/AuthAtoms"
+    likedWordList } from "../../store/AuthAtoms"
 import {Grid} from "@material-ui/core";
 import WordCard from'./WordCard/WordCard';
 import WordsPagination from './WordCard/WordsPagination/WordsPagnation';
@@ -19,7 +18,6 @@ const WordWall = (props)=>{
     const firebase = useRecoilValue(firebaseState);
     const [target, setTarget] = useState("");
     const [likedWords, setLikedWords] = useRecoilState(likedWordList);
-    const [likedStories, setLikedStories] = useRecoilState(likedStoryList);
     const [userId, setUserId] = useRecoilState(userIdState);
     const [userName, setUserName] = useRecoilState(usernameState);
     const [wordList, setWordList] = useState([...props.words]);
@@ -142,7 +140,7 @@ const WordWall = (props)=>{
                 {wordPageArrays.length!==0 && 
                 wordPageArrays[currentPage] &&
                 wordPageArrays[currentPage].length!==0 && 
-                wordPageArrays[currentPage].map((item,index)=> 
+                wordPageArrays[currentPage].sort((a,b)=>a.wordLevel-b.wordLevel).map((item,index)=> 
                         <Grid key={index} item xs={12} sm={4} md={3} > 
                         <WordCard wordData={item} 
                             parentDeleteCallback={handleDeleteCallback} 

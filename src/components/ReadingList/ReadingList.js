@@ -66,7 +66,6 @@ const ReadingList = (props)=>{
             setStories(props.stories);
         } 
     }
-    
     const openStory = (id) => {
        history.push(`/story/${id}`);
        console.log(props.stories)
