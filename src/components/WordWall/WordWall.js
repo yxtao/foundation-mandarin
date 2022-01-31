@@ -21,11 +21,52 @@ const WordWall = (props)=>{
     const [userId, setUserId] = useRecoilState(userIdState);
     const [userName, setUserName] = useRecoilState(usernameState);
     const [wordList, setWordList] = useState([...props.words]);
+    const [wordListBackUp, setWordListBackUp] = useState([...props.words]);
     const [wordPageArrays, setwordPageArrays] = useState([]);
     const [pagesNum, setPagesNum]= useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [currentPage, setCurrentPage] = useState(0);
     const [error,setError] = useState("");
+    const [creators, setCreators] = useState([]);
+    const [checkedStates, setCheckedStates] = useState([]);
+    const [selectedCreators,setSelectedCreators] = useState([]);
+
+    useEffect(()=>{  
+        let temp = [];
+        wordList.forEach((e)=>{
+            if(!temp.includes(e.creator)){
+                temp.push(e.creator);
+            }
+        })
+        setCreators(temp);   
+    },[])
+
+   useEffect(()=>{
+    setCheckedStates( new Array(creators.length).fill(false));
+   },[creators.length])
+   
+   useEffect(()=>{
+     let wordListCopy = [...wordListBackUp];
+     if(selectedCreators.length!==0){
+         const result = wordListCopy.filter((word)=>selectedCreators.includes(word.creator));
+         setWordList(result);
+     }else{
+        setWordList(wordListBackUp);
+     } 
+   },[selectedCreators])
+
+    const handleOnChange = (position) => {
+        const updatedCheckedStates = checkedStates.map((item, index) =>index === position ? !item : item);
+        setCheckedStates(updatedCheckedStates);
+        let selected = [];
+        updatedCheckedStates.forEach((value,index)=>{
+            if(value===true){
+                selected.push(creators[index]);
+            }
+            console.log(selected)
+        })
+        setSelectedCreators(selected);
+    }
 
     const handleTargetChange= (e)=>{
         if(e.target.value===""){
@@ -127,6 +168,26 @@ const WordWall = (props)=>{
                   <button className="btn btn-outline-info" onClick={onSearch}>  search </button>
                   </div>
                 </div> 
+                <div className="col-sm-4 creators-checkbox-div">
+                <ul>
+                {creators.sort().map((name, index)=>
+                        <li>
+                             <div  key={index}> 
+                             <input 
+                                type="checkbox"
+                                id={`custom-checkbox-${index}`}
+                                name={name}
+                                value={name}
+                                checked={checkedStates[index]}
+                                onChange={() => handleOnChange(index)}
+                            />
+                            &nbsp;
+                            <label for={`custom-checkbox-${index}`}>{name}</label>
+                            </div> 
+                        </li>
+                       )}
+                    </ul>
+                </div>   
             </div>
             <WordsPagination wordsNum={wordList.length} 
                 callbackRowsPerPage={handleCallbackRowsPerPage} 
