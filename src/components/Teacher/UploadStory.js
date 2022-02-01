@@ -15,11 +15,29 @@ const UploadStory=()=>{
    const [levels, setLevels] = useState(["0"]);
    const [contents, setContents] = useState([""]);
    const [savingToFirebase, setSavingToFireBase] = useState(false);
+   const  tags= ["animal","plant","family"]
+   const [checkedTagsStates, setCheckedTagsStates] = useState([]);
+   const [selectedTags,setSelectedTags] = useState([]);
 
+   useEffect(()=>{
+    setCheckedTagsStates( new Array(tags.length).fill(false)); 
+   },[tags.length])
+   
+   const handleOnSelectedTagsChange = (position) => {
+        const updatedCheckedStates = checkedTagsStates.map((item, index) =>index === position ? !item : item);
+        setCheckedTagsStates(updatedCheckedStates);
+        let selected = [];
+        updatedCheckedStates.forEach((value,index)=>{
+            if(value===true){
+                selected.push(tags[index]);
+            }
+        })
+        setSelectedTags(selected);
+   }
    const onTitleChange = (e)=>{
        setTitle(e.target.value)
    }
- 
+  
   const handleLevelsChange = (e, index)=>{
       const temp = [...levels];
       temp[index] = e.target.value;
@@ -46,6 +64,7 @@ const UploadStory=()=>{
                 levels : levels,
                 contents: contents,
                 storyId: user+title,
+                tags:selectedTags.length!==0?selectedTags:["default"]
             })
         }catch(error){
             alert(error);
@@ -53,6 +72,8 @@ const UploadStory=()=>{
        setContents([""]);  
        setLevels(["0"]) ;
        setTitle("");
+       setSelectedTags([]);
+       setCheckedTagsStates( new Array(tags.length).fill(false)); 
        setSavingToFireBase(false);
    }
    if(!isAdmin && !isTeacher) return (
@@ -72,6 +93,29 @@ const UploadStory=()=>{
                             style={{width:"40vw",margin:"auto"}}
                             /> 
               </div>
+             </Grid>
+             <Grid item xs={4}  >
+             tags
+              <div className="form-group tags-checkbox-div">
+                    <ul>
+                    {tags.sort().map((name, index)=>
+                            <li>
+                                <div  key={index}> 
+                                <input 
+                                    type="checkbox"
+                                    id={`custom-checkbox-story-tag${index}`}
+                                    name={name}
+                                    value={name}
+                                    checked={checkedTagsStates[index]}
+                                    onChange={() => handleOnSelectedTagsChange(index)}
+                                />
+                                &nbsp;
+                                <label for={`custom-checkbox-story-tag${index}`}>{name}</label>
+                                </div> 
+                            </li>
+                        )}
+                    </ul>
+                </div> 
              </Grid>
              {contents.map((_,index)=>
                 <>
