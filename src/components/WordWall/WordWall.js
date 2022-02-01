@@ -29,20 +29,24 @@ const WordWall = (props)=>{
     const [error,setError] = useState("");
     const [creators, setCreators] = useState([]);
     const [checkedStates, setCheckedStates] = useState([]);
+    const [checkedPinyinStates, setCheckedPinyinStates] = useState([]);
     const [selectedCreators,setSelectedCreators] = useState([]);
+    const [selectedPinyin, setSelectedPinyin] = useState([]);
+    const pinyinLetters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
 
     useEffect(()=>{  
         let temp = [];
-        wordList.forEach((e)=>{
+        wordListBackUp.forEach((e)=>{
             if(!temp.includes(e.creator)){
                 temp.push(e.creator);
             }
         })
-        setCreators(temp);   
+        setCreators(temp); 
+        setCheckedPinyinStates( new Array(26).fill(false));  
     },[])
 
    useEffect(()=>{
-    setCheckedStates( new Array(creators.length).fill(false));
+    setCheckedStates( new Array(creators.length).fill(false)); 
    },[creators.length])
    
    useEffect(()=>{
@@ -53,7 +57,17 @@ const WordWall = (props)=>{
      }else{
         setWordList(wordListBackUp);
      } 
-   },[selectedCreators])
+   },[selectedCreators,wordListBackUp])
+
+   useEffect(()=>{
+    let wordListCopy = [...wordListBackUp];
+    if(selectedPinyin.length!==0){
+        const result = wordListCopy.filter((word)=>selectedPinyin.includes(word.pinyin.toUpperCase().charAt(0)));
+        setWordList(result);
+    }else{
+       setWordList(wordListBackUp);
+    } 
+  },[selectedPinyin, wordListBackUp])
 
     const handleOnChange = (position) => {
         const updatedCheckedStates = checkedStates.map((item, index) =>index === position ? !item : item);
@@ -66,6 +80,18 @@ const WordWall = (props)=>{
             console.log(selected)
         })
         setSelectedCreators(selected);
+    }
+    const handleSelectedPinyinOnChange = (position) => {
+        const updatedCheckedStates = checkedPinyinStates.map((item, index) =>index === position ? !item : item);
+        setCheckedPinyinStates(updatedCheckedStates);
+        let selected = [];
+        updatedCheckedStates.forEach((value,index)=>{
+            if(value===true){
+                selected.push(pinyinLetters[index]);
+            }
+            console.log(selected)
+        })
+        setSelectedPinyin(selected);
     }
 
     const handleTargetChange= (e)=>{
@@ -152,23 +178,23 @@ const WordWall = (props)=>{
     return(
         <div className="wallMain">
             <div className="row">
-                <div className="col-sm-4">
+                <div className="col-sm-2">
                     <div class="col-xs-2 active-cyan">
                         <input 
                             className="form-control" 
                             type="text" 
-                            placeholder="search by chinese character"
+                            placeholder="Chinese character"
                             value = {target}
                             onChange ={(e)=>handleTargetChange(e)}
                          /> {error}
                     </div>
                 </div>   
-                <div className="col-sm-4">
-                  <div className="col-xs-2 active-cyan">
+                <div className="col-sm-2">
+                  <div className="col-xs-1 active-cyan">
                   <button className="btn btn-outline-info" onClick={onSearch}>  search </button>
                   </div>
                 </div> 
-                <div className="col-sm-4 creators-checkbox-div">
+                <div className="col-sm-3 creators-checkbox-div">
                 <ul>
                 {creators.sort().map((name, index)=>
                         <li>
@@ -187,7 +213,27 @@ const WordWall = (props)=>{
                         </li>
                        )}
                     </ul>
-                </div>   
+                </div> 
+                <div className="col-sm-2 creators-checkbox-div">
+                <ul>
+                {pinyinLetters.sort().map((letter, index)=>
+                        <li>
+                             <div  key={index}> 
+                             <input 
+                                type="checkbox"
+                                id={`custom-checkbox-pinyin-${index}`}
+                                name={letter}
+                                value={letter}
+                                checked={checkedPinyinStates[index]}
+                                onChange={() => handleSelectedPinyinOnChange(index)}
+                            />
+                            &nbsp;
+                            <label for={`custom-checkbox-pinyin-${index}`}>{letter}</label>
+                            </div> 
+                        </li>
+                       )}
+                    </ul>
+                </div>     
             </div>
             <WordsPagination wordsNum={wordList.length} 
                 callbackRowsPerPage={handleCallbackRowsPerPage} 
