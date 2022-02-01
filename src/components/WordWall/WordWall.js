@@ -194,7 +194,7 @@ const WordWall = (props)=>{
                   <button className="btn btn-outline-info" onClick={onSearch}>  search </button>
                   </div>
                 </div> 
-                <div className="col-sm-3 creators-checkbox-div">
+                <div className="col-sm-2 creators-checkbox-div">
                 <ul>
                 {creators.sort().map((name, index)=>
                         <li>

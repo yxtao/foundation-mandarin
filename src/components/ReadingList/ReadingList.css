@@ -14,6 +14,13 @@
   .reading-list-card:hover{
     box-shadow: 5px 10px 10px 0 rgb(4, 200, 200); 
   }
+
+  .stories-checkbox-div{
+    height:10vh;
+    overflow-y: auto;
+    overflow-x: auto;
+    box-shadow: 2px 2px 2px 2px rgb(17, 233, 161);
+  }
   @media only screen and (max-width: 768px){
     .readingListMain{
       padding-top: 15vh;
@@ -22,11 +29,14 @@
       height:23vh
     }
   }
-  @media (orientation: landscape) and (max-width: 768px){
+  @media (orientation: landscape) and (max-width: 900px){
     .readingListMain{
       padding-top: 10vw;
     }
     .reading-list-card{
       height:23vw
+    }
+    .stories-checkbox-div{
+      height:10vw;
     }
   }
