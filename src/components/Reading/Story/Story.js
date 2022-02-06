@@ -14,7 +14,7 @@ const Story =({story, parentCallback, words})=>{
     const [userLevelIndex, setUserLevelIndex] = useState(0);
     
     useEffect(()=>{
-        let foundIndex= story.levels.findIndex((e)=> Number(e)===userLevelState);
+        let foundIndex= story.levels.length!==0 && story.levels.findIndex((e)=> Number(e)===userLevelState);
         if(foundIndex!==-1){
             setUserLevelIndex(foundIndex);
             setContentIndex(foundIndex);
@@ -30,7 +30,7 @@ const Story =({story, parentCallback, words})=>{
   
     useEffect(()=>{
         const pagesArray=[]; 
-        const pagesInfo = story.contents[contentIndex].split("\n");
+        const pagesInfo = story.contents.length!==0 && story.contents[contentIndex].split("\n");
         for(let i=0; i<pagesInfo.length; i++){
             let letters = pagesInfo[i].split("");
             if(letters.length<=0) continue;
@@ -85,17 +85,22 @@ const Story =({story, parentCallback, words})=>{
                                type="button" 
                                className="btn btn-outline-light"
                                onClick={()=>sendCallback(character)}>
-                                <span class="h4 text-warning"> {character} </span>
+                                <span className="h4 text-warning"> {character} </span>
                         </button>
-                        :character)}
+                        :  <button key={index}  
+                        type="button" 
+                        className="btn btn-outline-light"
+                        >
+                         <span className="h4 text-dark"> {character} </span>
+                 </button>)}
                     </div>
                </Paper> 
                 <div className="row align-items-center justify-content-center">
                     <div className="col-4 ">
-                        <button className= "btn" onClick={handleSetPreviousPage}> <span className="nextpage"> pre page {"<"} </span>  </button>
+                        <button className= "btn btn-link" disabled={currentPage === 0} onClick={handleSetPreviousPage}> <span className="nextpage"> pre page {"<"} </span>  </button>
                     </div>
                     <div className="col-4">
-                        <button className="btn" onClick={handleSetNextPage} > <span className="nextpage"> {">"} next page</span>  </button> 
+                        <button className="btn btn-link" disabled={currentPage === charactersPages.length-1} onClick={handleSetNextPage} > <span className="nextpage"> {">"} next page</span>  </button> 
                     </div>
                 </div> 
                 </div>

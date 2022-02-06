@@ -80,7 +80,6 @@ const TeacherDashboard = ()=>{
             if(value===true){
                 selected.push(myWords[index]);
             }
-            console.log(selected)
         })
        setSelectedWords(selected);
     }
