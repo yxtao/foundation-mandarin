@@ -15,9 +15,23 @@ const UploadStory=()=>{
    const [levels, setLevels] = useState(["0"]);
    const [contents, setContents] = useState([""]);
    const [savingToFirebase, setSavingToFireBase] = useState(false);
-   const  tags= ["animal","plant","family"]
    const [checkedTagsStates, setCheckedTagsStates] = useState([]);
    const [selectedTags,setSelectedTags] = useState([]);
+   const  tags= ["Biographies",
+        "Creatures",
+        "Nature",
+        "Myths and Legends",
+        "Me and my life",
+        "Poetry",
+        "Feelings",
+        "Science and math",
+        "Friends and family",
+        "Fun and funny",
+        "Seasons",
+        "World cultures",
+        "Social studies",
+        "Holidays and celebrations",
+        ];
 
    useEffect(()=>{
     setCheckedTagsStates( new Array(tags.length).fill(false)); 
@@ -54,20 +68,29 @@ const UploadStory=()=>{
       const temp2 = [...levels];
       setLevels(temp2);
   }
-
    const onStoryCreate = async ()=>{
         setSavingToFireBase(true);
-        try{
-            await db.collection("story").doc(user+title).set({
-                creator: user,
-                name:title,
-                levels : levels,
-                contents: contents,
-                storyId: user+title,
-                tags:selectedTags.length!==0?selectedTags:["default"]
-            })
-        }catch(error){
-            alert(error);
+        let contentsCopy = [...contents];
+        let levelsCopy = [...levels];
+        for(let i=0; i<contentsCopy.length; i++){
+            if(contentsCopy[i].length === 0){
+                contentsCopy.splice(i,1);
+                levelsCopy.splice(i,1);
+            }
+        }
+        if(contentsCopy.length!==0){
+            try{
+                await db.collection("story").doc(user+title).set({
+                    creator: user,
+                    name:title,
+                    levels : levelsCopy,
+                    contents: contentsCopy,
+                    storyId: user+title,
+                    tags:selectedTags.length!==0?selectedTags:["default"]
+                })
+            }catch(error){
+                alert(error);
+            }
         }
        setContents([""]);  
        setLevels(["0"]) ;
@@ -95,7 +118,7 @@ const UploadStory=()=>{
               </div>
              </Grid>
              <Grid item xs={4}  >
-             tags
+             topics
               <div className="form-group tags-checkbox-div">
                     <ul>
                     {tags.sort().map((name, index)=>

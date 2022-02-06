@@ -31,7 +31,21 @@ const ReadingList = (props)=>{
     const [creators, setCreators] = useState([]);
     const [selectedCreators,setSelectedCreators] = useState([]);
     const [checkedCreatorsStates, setCheckedCreatorsStates] = useState([]);
-    const  tags= ["animal","plant","family"] // TODO update it base on db data
+    const  tags= ["Biographies",
+        "Creatures",
+        "Nature",
+        "Myths and Legends",
+        "Me and my life",
+        "Poetry",
+        "Feelings",
+        "Science and math",
+        "Friends and family",
+        "Fun and funny",
+        "Seasons",
+        "World cultures",
+        "Social studies",
+        "Holidays and celebrations",
+        ]; // TODO update it base on db data
     const [selectedTags,setSelectedTags] = useState([]);
     const [checkedTagsStates, setCheckedTagsStates] = useState([]);
 
@@ -43,7 +57,7 @@ const ReadingList = (props)=>{
             }
         })
         setCreators(temp);   
-    },[])
+    },[storiesBackUp])
 
     useEffect(()=>{
         setCheckedCreatorsStates( new Array(creators.length).fill(false)); 
@@ -136,6 +150,12 @@ const ReadingList = (props)=>{
             setStories(props.stories);
         } 
     }
+    const onClearFilter =()=>{
+        setCheckedTagsStates( new Array(tags.length).fill(false));  
+        setCheckedCreatorsStates( new Array(creators.length).fill(false)); 
+        setSelectedCreators([]);
+        setSelectedTags([]);
+    }
     const openStory = (id) => {
        history.push(`/story/${id}`);
        console.log(props.stories)
@@ -200,45 +220,55 @@ const ReadingList = (props)=>{
                         <button className="btn btn-outline-info" onClick={onSearch}>  search </button>
                     </div>
                 </div> 
-                <div className="col-sm-2 stories-checkbox-div">
-                <ul>
-                {creators.sort().map((name, index)=>
-                        <li>
-                             <div  key={index}> 
-                             <input 
-                                type="checkbox"
-                                id={`custom-checkbox-story-creator${index}`}
-                                name={name}
-                                value={name}
-                                checked={checkedCreatorsStates[index]}
-                                onChange={() => handleOnSelectedCreatorsChange(index)}
-                            />
-                            &nbsp;
-                            <label for={`custom-checkbox-story-creator${index}`}>{name}</label>
-                            </div> 
-                        </li>
-                       )}
-                    </ul>
+                <div className="col-sm-2">
+                    filter by usernames
+                    <div className="stories-checkbox-div">
+                        <ul>
+                        {creators.sort((a,b)=> a.toLowerCase().localeCompare(b.toLowerCase()))
+                                 .map((name, index)=>
+                                <li>
+                                    <div  key={index}> 
+                                    <input 
+                                        type="checkbox"
+                                        id={`custom-checkbox-story-creator${index}`}
+                                        name={name}
+                                        value={name}
+                                        checked={checkedCreatorsStates[index]}
+                                        onChange={() => handleOnSelectedCreatorsChange(index)}
+                                    />
+                                    &nbsp;
+                                    <label for={`custom-checkbox-story-creator${index}`}>{name}</label>
+                                    </div> 
+                                </li>
+                            )}
+                        </ul>
+                    </div>
                 </div> 
-                <div className="col-sm-2 stories-checkbox-div">
-                <ul>
-                {tags.sort().map((name, index)=>
-                        <li>
-                             <div  key={index}> 
-                             <input 
-                                type="checkbox"
-                                id={`custom-checkbox-story-tag${index}`}
-                                name={name}
-                                value={name}
-                                checked={checkedTagsStates[index]}
-                                onChange={() => handleOnSelectedTagsChange(index)}
-                            />
-                            &nbsp;
-                            <label for={`custom-checkbox-story-tag${index}`}>{name}</label>
-                            </div> 
-                        </li>
-                       )}
-                    </ul>
+                <div className="col-sm-3">
+                    filter by topics
+                    <div className="stories-checkbox-div">
+                        <ul>
+                        {tags.sort().map((name, index)=>
+                                <li>
+                                    <div  key={index}> 
+                                    <input 
+                                        type="checkbox"
+                                        id={`custom-checkbox-story-tag${index}`}
+                                        name={name}
+                                        value={name}
+                                        checked={checkedTagsStates[index]}
+                                        onChange={() => handleOnSelectedTagsChange(index)}
+                                    />
+                                    &nbsp;
+                                    <label for={`custom-checkbox-story-tag${index}`}>{name}</label>
+                                    </div> 
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+                </div>
+                <div className="col-sm-2 ">
+                    <button className="btn btn-sm btn-outline-primary" onClick={onClearFilter}>  clear filter </button>
                 </div> 
             </div>
             <WordsPagination wordsNum={stories.length} 

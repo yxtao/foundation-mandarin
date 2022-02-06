@@ -44,7 +44,7 @@ const WordWall = (props)=>{
         setCreators(temp); 
         setCheckedPinyinStates( new Array(26).fill(false));  
     },[])
-
+   
    useEffect(()=>{
     setCheckedStates( new Array(creators.length).fill(false)); 
    },[creators.length])
@@ -96,7 +96,7 @@ const WordWall = (props)=>{
 
     const handleTargetChange= (e)=>{
         if(e.target.value===""){
-            setWordList(props.words);
+            setWordList(wordListBackUp);
         }
         setTarget(e.target.value.trim());
     }
@@ -106,10 +106,16 @@ const WordWall = (props)=>{
             const result = wordListCopy.filter((word)=>word.name === target);
             setWordList(result);
         }else{
-            setWordList(props.words);
+            setWordList(wordListBackUp);
         } 
     }
-    
+     
+    const onClearFilter =()=>{
+        setCheckedPinyinStates( new Array(26).fill(false));  
+        setCheckedStates( new Array(creators.length).fill(false)); 
+        setSelectedCreators([]);
+        setSelectedPinyin([]);
+    }
     const handleDeleteCallback = async (wordId) =>{
         try{
             await firebase.firestore().collection("chinesewords").doc(wordId).delete();
@@ -194,48 +200,60 @@ const WordWall = (props)=>{
                   <button className="btn btn-outline-info" onClick={onSearch}>  search </button>
                   </div>
                 </div> 
-                <div className="col-sm-2 creators-checkbox-div">
-                <ul>
-                {creators.sort().map((name, index)=>
-                        <li>
-                             <div  key={index}> 
-                             <input 
-                                type="checkbox"
-                                id={`custom-checkbox-${index}`}
-                                name={name}
-                                value={name}
-                                checked={checkedStates[index]}
-                                onChange={() => handleOnChange(index)}
-                            />
-                            &nbsp;
-                            <label for={`custom-checkbox-${index}`}>{name}</label>
-                            </div> 
-                        </li>
-                       )}
-                    </ul>
+
+                <div className="col-sm-2">
+                    filter by usernames
+                  <div className= "creators-checkbox-div">
+                    <ul>
+                    {creators.sort((a,b)=> a.toLowerCase().localeCompare(b.toLowerCase()))
+                             .map((name, index)=>
+                            <li>
+                                <div  key={index}> 
+                                <input 
+                                    type="checkbox"
+                                    id={`custom-checkbox-${index}`}
+                                    name={name}
+                                    value={name}
+                                    checked={checkedStates[index]}
+                                    onChange={() => handleOnChange(index)}
+                                />
+                                &nbsp;
+                                <label for={`custom-checkbox-${index}`}>{name}</label>
+                                </div> 
+                            </li>
+                        )}
+                        </ul>
+                    </div>
                 </div> 
-                <div className="col-sm-2 creators-checkbox-div">
-                <ul>
-                {pinyinLetters.sort().map((letter, index)=>
-                        <li>
-                             <div  key={index}> 
-                             <input 
-                                type="checkbox"
-                                id={`custom-checkbox-pinyin-${index}`}
-                                name={letter}
-                                value={letter}
-                                checked={checkedPinyinStates[index]}
-                                onChange={() => handleSelectedPinyinOnChange(index)}
-                            />
-                            &nbsp;
-                            <label for={`custom-checkbox-pinyin-${index}`}>{letter}</label>
-                            </div> 
-                        </li>
-                       )}
-                    </ul>
-                </div>     
+                <div className="col-sm-2 ">
+                    1st letter of Pinyin
+                    <div className="creators-checkbox-div"> 
+                    <ul>
+                        {pinyinLetters.sort().map((letter, index)=>
+                            <li>
+                                <div  key={index}> 
+                                <input 
+                                    type="checkbox"
+                                    id={`custom-checkbox-pinyin-${index}`}
+                                    name={letter}
+                                    value={letter}
+                                    checked={checkedPinyinStates[index]}
+                                    onChange={() => handleSelectedPinyinOnChange(index)}
+                                />
+                                &nbsp;
+                                <label for={`custom-checkbox-pinyin-${index}`}>{letter}</label>
+                                </div> 
+                            </li>
+                        )}
+                        </ul>
+                    </div>
+                </div>  
+                <div className="col-sm-2 ">
+                    <button className="btn btn-sm btn-outline-primary" onClick={onClearFilter}>  clear filter </button>
+                </div>   
             </div>
-            <WordsPagination wordsNum={wordList.length} 
+            <WordsPagination
+                wordsNum={wordList.length} 
                 callbackRowsPerPage={handleCallbackRowsPerPage} 
                 callbackCurrentPage={handleCallbackCurrentPage }/>
             <Grid container 
