@@ -351,7 +351,7 @@ const TeacherDashboard = ()=>{
                     <button 
                         className="btn btn-outline-info"
                         onClick={redirectToLikedList}> 
-                        喜欢的字
+                        收藏的字
                         </button>
                     <div>
                     {likedWordObjs.map((word, index)=>
