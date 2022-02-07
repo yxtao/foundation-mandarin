@@ -15,11 +15,43 @@ const UploadStory=()=>{
    const [levels, setLevels] = useState(["0"]);
    const [contents, setContents] = useState([""]);
    const [savingToFirebase, setSavingToFireBase] = useState(false);
+   const [checkedTagsStates, setCheckedTagsStates] = useState([]);
+   const [selectedTags,setSelectedTags] = useState([]);
+   const  tags= ["Biographies",
+        "Creatures",
+        "Nature",
+        "Myths and Legends",
+        "Me and my life",
+        "Poetry",
+        "Feelings",
+        "Science and math",
+        "Friends and family",
+        "Fun and funny",
+        "Seasons",
+        "World cultures",
+        "Social studies",
+        "Holidays and celebrations",
+        ];
 
+   useEffect(()=>{
+    setCheckedTagsStates( new Array(tags.length).fill(false)); 
+   },[tags.length])
+   
+   const handleOnSelectedTagsChange = (position) => {
+        const updatedCheckedStates = checkedTagsStates.map((item, index) =>index === position ? !item : item);
+        setCheckedTagsStates(updatedCheckedStates);
+        let selected = [];
+        updatedCheckedStates.forEach((value,index)=>{
+            if(value===true){
+                selected.push(tags[index]);
+            }
+        })
+        setSelectedTags(selected);
+   }
    const onTitleChange = (e)=>{
        setTitle(e.target.value)
    }
- 
+  
   const handleLevelsChange = (e, index)=>{
       const temp = [...levels];
       temp[index] = e.target.value;
@@ -36,23 +68,35 @@ const UploadStory=()=>{
       const temp2 = [...levels];
       setLevels(temp2);
   }
-
    const onStoryCreate = async ()=>{
         setSavingToFireBase(true);
-        try{
-            await db.collection("story").doc(user+title).set({
-                creator: user,
-                name:title,
-                levels : levels,
-                contents: contents,
-                storyId: user+title,
-            })
-        }catch(error){
-            alert(error);
+        let contentsCopy = [...contents];
+        let levelsCopy = [...levels];
+        for(let i=0; i<contentsCopy.length; i++){
+            if(contentsCopy[i].length === 0){
+                contentsCopy.splice(i,1);
+                levelsCopy.splice(i,1);
+            }
+        }
+        if(contentsCopy.length!==0){
+            try{
+                await db.collection("story").doc(user+title).set({
+                    creator: user,
+                    name:title,
+                    levels : levelsCopy,
+                    contents: contentsCopy,
+                    storyId: user+title,
+                    tags:selectedTags.length!==0?selectedTags:["default"]
+                })
+            }catch(error){
+                alert(error);
+            }
         }
        setContents([""]);  
        setLevels(["0"]) ;
        setTitle("");
+       setSelectedTags([]);
+       setCheckedTagsStates( new Array(tags.length).fill(false)); 
        setSavingToFireBase(false);
    }
    if(!isAdmin && !isTeacher) return (
@@ -72,6 +116,29 @@ const UploadStory=()=>{
                             style={{width:"40vw",margin:"auto"}}
                             /> 
               </div>
+             </Grid>
+             <Grid item xs={4}  >
+             topics
+              <div className="form-group tags-checkbox-div">
+                    <ul>
+                    {tags.sort().map((name, index)=>
+                            <li>
+                                <div  key={index}> 
+                                <input 
+                                    type="checkbox"
+                                    id={`custom-checkbox-story-tag${index}`}
+                                    name={name}
+                                    value={name}
+                                    checked={checkedTagsStates[index]}
+                                    onChange={() => handleOnSelectedTagsChange(index)}
+                                />
+                                &nbsp;
+                                <label for={`custom-checkbox-story-tag${index}`}>{name}</label>
+                                </div> 
+                            </li>
+                        )}
+                    </ul>
+                </div> 
              </Grid>
              {contents.map((_,index)=>
                 <>

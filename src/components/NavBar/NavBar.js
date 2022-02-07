@@ -18,14 +18,14 @@ const displayDesktop =(navItems, user)=>{
     return(
             <Toolbar  >
                 <Box  display='flex' flexGrow={1} style={{color: "black"}}>
-                    MandarinBuilder中文分享
+                    Mandarin Builder 中文分享
                 </Box>
                 <div className="userName">
-                {user }
+                {user } &nbsp; &nbsp; &nbsp; &nbsp;
                 </div>
                 <div>
                     {navItems.map((item, index)=>
-                        <Button component ={Link} to={item.link} style={{border:"",margin:"2px"}} key={index}>{item.label}</Button>
+                        <Button component ={Link} to={item.link} style={{border:"1px solid green",margin:"2px"}} key={index}>{item.label}</Button>
                     )}
                 </div>    
             </Toolbar>     
@@ -65,14 +65,14 @@ const NavBar = ()=>{
             //   {label:"Notes 笔记", link:"/recommendation"},
               {label:"Words汉字📝", link:"/wordwall"}, 
               {label:"Reading读📖", link:"/reading"},
-              {label:"Sign out", link:"/signout"}]);
+              {label:"Sign out退出", link:"/signout"}]);
       } 
       if(isAuthticated&& (isAdmin || isTeacher || true) ){
-        setNavItems((pre)=>[{label:"Teacher🧑‍🏫", link:"/teacherDashboard"},...pre]) 
+        setNavItems((pre)=>[{label:"Teacher老师界面", link:"/teacherDashboard"},...pre]) 
       }
       if(!isAuthticated){
         setNavItems([
-            {label:"Teacher Sign in", link:"/SignInUp"},
+            {label:"Teacher Sign in 老师登录", link:"/SignInUp"},
             {label:"Home主页🏠", link:"/"},
             {label:"Words汉字📝", link:"/wordwall"}, 
             {label:"Reading读📖", link:"/reading"}]);  

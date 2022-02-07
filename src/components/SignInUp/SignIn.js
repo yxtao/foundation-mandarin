@@ -25,7 +25,7 @@ const SignIn = (props) =>{
             setUserId(currentUser.uid);
             setIsAuthenticated(true);
         }catch(error){
-            setError(JSON.stringify(error.message));
+            setError(error.message);
             setDisabled(false);
         }   
     }
@@ -38,7 +38,7 @@ const SignIn = (props) =>{
                     <Grid item>
                     <TextField 
                         value = {email}
-                        onInput = {e => setEmail(e.target.value)}
+                        onInput = {e => setEmail(e.target.value.trim())}
                         placeholder = "email"
                       />
                     </Grid>
@@ -46,7 +46,7 @@ const SignIn = (props) =>{
                     <Grid item>
                       <TextField 
                         value = {password}
-                        onInput = {e => setPassword(e.target.value)}
+                        onInput = {e => setPassword(e.target.value.trim())}
                         placeholder="password"
                       />
                     </Grid>
@@ -58,7 +58,7 @@ const SignIn = (props) =>{
                      </Grid>
                 </form>
             </Grid>
-              <div className="text-danger p-lg-3">{error}</div>   
+              <div className="text-danger p-lg-3 m-3">{error!=="" && JSON.stringify(error)}</div>   
             </div>
         </div>
     )

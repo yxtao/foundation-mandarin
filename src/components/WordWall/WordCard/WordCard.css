@@ -3,7 +3,6 @@
     max-width: 280;
     box-shadow: 5px 10px 10px 0 rgb(4, 200, 200); 
     height:35vh;
-    overflow: auto;
 }
 #action-card{
     height:28vh;
