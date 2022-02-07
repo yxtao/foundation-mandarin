@@ -27,6 +27,7 @@ const UploadWord=()=>{
    const [levels, setLevels] = useState(["0"]);
    const [phrases, setPhrases] = useState([""]);
    const [savingToFirebase, setSavingToFireBase] = useState(false);
+   const [error, setError] = useState("");
    
    const onNameChange = (e)=>{
        setName(e.target.value)
@@ -74,8 +75,18 @@ const UploadWord=()=>{
    const onPinyinChange =(e)=>{
        setPinyin(e.target.value);
    }
+   const isFileImage = (file)=> {
+    const acceptedImageTypes = ['image/jpeg', 'image/png'];
+    return file && acceptedImageTypes.includes(file['type'])
+   }
    const onStrokeImageChange =(e)=>{
+    setError("");
     if(e.target.files[0]==null) return;
+    if(!isFileImage(e.target.files[0])){
+        setStrokeImage(null);
+        setError("Only allow jpeg and png files")
+        return;
+    }
        let size = e.target.files[0].size/1024/1024;
        const image = e.target.files[0];
        if(size > 1){
@@ -177,7 +188,7 @@ const UploadWord=()=>{
                         </div>
                     </Grid>
                     <Grid item >       
-                        笔顺图
+                        笔顺图 <span className="text-danger">{error}</span>
                         <input type="file" 
                                 className="form-control" 
                                 id="imageFile" 
