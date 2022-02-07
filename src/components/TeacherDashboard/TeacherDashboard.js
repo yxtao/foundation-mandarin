@@ -374,7 +374,7 @@ const TeacherDashboard = ()=>{
                 <div className = "flex-item p-md-2">
                     <button 
                         className="btn btn-outline-info"
-                        onClick={redirectToLikedStoryList}>  喜欢的短文
+                        onClick={redirectToLikedStoryList}>  收藏的短文
                     </button>
                     <div className = "stories-div">
                     {likedStoryObjs.map((story, index)=>
