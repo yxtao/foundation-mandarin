@@ -77,7 +77,7 @@ const Reading = (props)=>{
     }, [notes, user, isAdmin, isTeacher])
 
     if (!story) return <h1>loading</h1>
-    if(editMode){
+    if(editMode && story.contents.length!==0 ){
         return( 
         <div className="readingMain">
               {error}
@@ -132,7 +132,7 @@ const Reading = (props)=>{
                 </button>
             </div>
            }
-            <Story story= {story}  parentCallback = {handleAddCallback} words={words}/>
+            {story.contents.length!==0 ? <Story story= {story}  parentCallback = {handleAddCallback} words={words}/>: <div>no content</div>}
             <div className="p-5">
             <Grid container 
                 direction="row"
