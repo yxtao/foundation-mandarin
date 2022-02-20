@@ -150,15 +150,15 @@ const CardDetail = (props)=>{
     if(editMode){
         return(
             <div className="container-wrapper-detail p-lg-5"> 
-            <div className="m-3 text-right">
-                <button 
-                    className="btn btn-outline-danger"
-                    onClick={offEditMode}
-                > 确定保存
-                </button>
-            </div>
             <div class="card cardDiv m-5">
-                <div className="container">
+                    <div className="m-3 text-right">
+                        <button 
+                            className="btn btn-outline-danger edit-button"
+                            onClick={offEditMode}
+                        > 确定保存
+                        </button>
+                    </div>
+                <div className="container">   
                     <div className = "row p-2 p-lg-3">
                         {wordData && "image" in wordData ?
                         <div className = "col">
@@ -281,6 +281,8 @@ const CardDetail = (props)=>{
     }
     return (
         <div className="container-wrapper-detail p-lg-2"> 
+           
+            <div className="card cardDiv">
             {isTeacher && wordData.creator === user &&
             <div className="m-3 text-right">
                 <button 
@@ -289,7 +291,6 @@ const CardDetail = (props)=>{
                 > edit 编辑
                 </button>
              </div>}
-            <div className="card cardDiv">
                 <div className="container">
                     <div className = "row p-2 p-lg-3">
                         {wordData && "image" in wordData ?

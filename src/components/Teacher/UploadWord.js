@@ -20,6 +20,7 @@ const UploadWord=()=>{
    const [pinyin, setPinyin] = useState("");
    const [wordLevel,setWordLevel] = useState(0);
    const [strokeImage, setStrokeImage] = useState(null);
+   const [image, setImage] = useState(null);
    const [wordMeaning, setWordMeaning] = useState("");
    const [phraseMeanings, setPhraseMeanings] = useState([""]);
    const [sentenceMeanings, setSentenceMeanings] = useState([""]);
@@ -105,6 +106,32 @@ const UploadWord=()=>{
         })
      }
    }
+   const onImageChange =(e)=>{
+    setError("");
+    if(e.target.files[0]==null) return;
+    if(!isFileImage(e.target.files[0])){
+        setImage(null);
+        setError("Only allow jpeg and png files")
+        return;
+    }
+       let size = e.target.files[0].size/1024/1024;
+       const image = e.target.files[0];
+       if(size > 1){
+        new Compressor(image, {
+            quality:0.01,
+            success:(compressedResult)=>{
+                setImage(compressedResult);
+            }
+        })
+     }else{
+        new Compressor(image, {
+            quality:0.3,
+            success:(compressedResult)=>{
+             setImage(compressedResult);
+            }
+        })
+     }
+   }
   
    const onWordCreate = async ()=>{
 
@@ -134,12 +161,24 @@ const UploadWord=()=>{
                     })
                 })
             }
+            if (image!==null) {
+                const storageRef = storage.ref()
+                const fileRef = storageRef.child(`chinese/word/image/${user+name}`)
+                await fileRef.put(image, {contentType:'image/jpeg'})
+                await db.collection("chinesewords").doc(user+name).update({
+                    image: firebase.firestore.FieldValue.arrayUnion({
+                    name: name,
+                    url: await fileRef.getDownloadURL()
+                    })
+                })
+            }
         }catch(error){
-            alert(error.message);
+            setError(error.message);
         }
        setName("");
        setPinyin("");
        setStrokeImage(null);
+       setImage(null);
        setWordMeaning("");
        setStrokeImage(null);
        setWordLevel("0");
@@ -186,6 +225,13 @@ const UploadWord=()=>{
                          value={wordLevel}
                          onChange={(e)=> setWordLevel(e.target.value)}/>
                         </div>
+                    </Grid>
+                    <Grid item >       
+                        图片 <span className="text-danger">{error}</span>
+                        <input type="file" 
+                                className="form-control" 
+                                id="imageFile" 
+                                onChange={onImageChange}/>
                     </Grid>
                     <Grid item >       
                         笔顺图 <span className="text-danger">{error}</span>
