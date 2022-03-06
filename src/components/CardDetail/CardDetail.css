@@ -21,6 +21,9 @@
     height:10vh;
     width:30vw;
 }
+.source{
+    font-size: xx-small;
+}
 
 @media (orientation: portrait) and (max-width: 768px){
     .container-wrapper-detail{

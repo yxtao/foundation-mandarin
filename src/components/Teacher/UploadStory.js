@@ -17,6 +17,7 @@ const UploadStory=()=>{
    const [savingToFirebase, setSavingToFireBase] = useState(false);
    const [checkedTagsStates, setCheckedTagsStates] = useState([]);
    const [selectedTags,setSelectedTags] = useState([]);
+   const [source, setSource] = useState("");
    const  tags= ["Biographies",
         "Creatures",
         "Nature",
@@ -51,7 +52,9 @@ const UploadStory=()=>{
    const onTitleChange = (e)=>{
        setTitle(e.target.value)
    }
-  
+   const onSourceChange = (e)=>{
+       setSource(e.target.value)
+   }
   const handleLevelsChange = (e, index)=>{
       const temp = [...levels];
       temp[index] = e.target.value;
@@ -85,6 +88,7 @@ const UploadStory=()=>{
                     name:title,
                     levels : levelsCopy,
                     contents: contentsCopy,
+                    source: source,
                     storyId: user+title,
                     tags:selectedTags.length!==0?selectedTags:["default"]
                 })
@@ -92,7 +96,8 @@ const UploadStory=()=>{
                 alert(error);
             }
         }
-       setContents([""]);  
+       setContents([""]);
+       setSource("");
        setLevels(["0"]) ;
        setTitle("");
        setSelectedTags([]);
@@ -114,6 +119,16 @@ const UploadStory=()=>{
                             value={title} 
                             onChange={onTitleChange} placeholder="短文名"
                             style={{width:"40vw",margin:"auto"}}
+                            /> 
+              </div>
+             </Grid>
+             <Grid item xs={12}  >
+              <div className="form-group">
+                 <textarea class="form-control" 
+                            rows="1" 
+                            value={source} 
+                            onChange={onSourceChange} placeholder="如果短文内容是从别的网站或者书里引用的，请注明来源"
+                            style={{width:"50vw",margin:"auto"}}
                             /> 
               </div>
              </Grid>

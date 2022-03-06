@@ -142,6 +142,9 @@ const CardDetail = (props)=>{
         meaningsTemp[index] = e.target.value;
         setSentencesMeanings(meaningsTemp);
     }
+    const showAlert= (content)=>{
+         alert(content)
+    }
 
     if (!wordData) {
         return <div className="container-wrapper-detail p-lg-5 "> loading... </div>
@@ -296,11 +299,19 @@ const CardDetail = (props)=>{
                         {wordData && "image" in wordData ?
                         <div className = "col">
                         <img src={ wordData && wordData.image ? wordData.image[0].url : test1} className="img-responsive detail-image" alt="..." />
+                        {wordData.imageSource&& wordData.imageSource.length>1 
+                        && <button className="source btn btn-light btn-small" onClick={()=> showAlert(wordData.imageSource)}>
+                            查看图片来源
+                        </button>}
                         </div> :null
                         }
                         {wordData && "strokeImage" in wordData?
                         <div className = "col">
                         <img src={ wordData && wordData.strokeImage ? wordData.strokeImage[0].url : test1} className="img-responsive detail-image" alt="..." />
+                        {wordData.strokeSource&& wordData.strokeSource.length>1
+                         && <button className="source btn btn-light btn-small" onClick={()=> showAlert(wordData.strokeSource)}>
+                         查看图片来源
+                     </button>}
                         </div> : null
                         }
                     </div>

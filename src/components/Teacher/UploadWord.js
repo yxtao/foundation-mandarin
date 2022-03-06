@@ -29,7 +29,9 @@ const UploadWord=()=>{
    const [phrases, setPhrases] = useState([""]);
    const [savingToFirebase, setSavingToFireBase] = useState(false);
    const [error, setError] = useState("");
-   
+   const [imageSource, setImageSource] = useState("");
+   const [strokeSource, setStrokeSource] = useState("");
+
    const onNameChange = (e)=>{
        setName(e.target.value)
    }
@@ -80,6 +82,9 @@ const UploadWord=()=>{
     const acceptedImageTypes = ['image/jpeg', 'image/png'];
     return file && acceptedImageTypes.includes(file['type'])
    }
+   const onStrokeSourceChange = (e) =>{
+       setStrokeSource(e.target.value)
+   }
    const onStrokeImageChange =(e)=>{
     setError("");
     if(e.target.files[0]==null) return;
@@ -105,6 +110,10 @@ const UploadWord=()=>{
             }
         })
      }
+   }
+
+   const onImageSourceChange = (e) =>{
+       setImageSource(e.target.value)
    }
    const onImageChange =(e)=>{
     setError("");
@@ -149,6 +158,8 @@ const UploadWord=()=>{
                 phraseLevels : levels,
                 phrases: phrases,
                 sentences: sentences, 
+                imageSource: imageSource,
+                strokeSource: strokeSource
             })
             if (strokeImage!==null) {
                 const storageRef = storage.ref()
@@ -232,6 +243,8 @@ const UploadWord=()=>{
                                 className="form-control" 
                                 id="imageFile" 
                                 onChange={onImageChange}/>
+                        <input placeholder = "注明图片来源"
+                               onChange = {onImageSourceChange}/>    
                     </Grid>
                     <Grid item >       
                         笔顺图 <span className="text-danger">{error}</span>
@@ -239,6 +252,8 @@ const UploadWord=()=>{
                                 className="form-control" 
                                 id="imageFile" 
                                 onChange={onStrokeImageChange}/>
+                        <input placeholder = "注明图片来源"
+                               onChange = {onStrokeSourceChange}/>  
                     </Grid>
             </Grid>
             {phrases.map((phrase,index)=>

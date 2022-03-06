@@ -110,6 +110,10 @@ const Story =({story, parentCallback, words})=>{
                : <div ></div>}
             </Grid>
         </Grid>
+       {story.source && story.source.length>1 && 
+        <button className="btn btn-light btn-sm" onClick={()=> alert(story.source)}>
+        查看内容来源
+    </button>}
     </div>
     )
 }
