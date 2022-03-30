@@ -193,16 +193,14 @@ const WordWall = (props)=>{
                             value = {target}
                             onChange ={(e)=>handleTargetChange(e)}
                          /> {error}
+                         <div className="pt-1 active-cyan">
+                            <button className="btn btn-outline-info" onClick={onSearch}>  search </button>
+                        </div>
                     </div>
                 </div>   
-                <div className="col-sm-2">
-                  <div className="col-xs-1 active-cyan">
-                  <button className="btn btn-outline-info" onClick={onSearch}>  search </button>
-                  </div>
-                </div> 
 
-                <div className="col-sm-2">
-                    filter by usernames
+                <div className="col-sm-3">
+                    by usernames
                   <div className= "creators-checkbox-div">
                     <ul>
                     {creators.sort((a,b)=> a.toLowerCase().localeCompare(b.toLowerCase()))
@@ -225,7 +223,7 @@ const WordWall = (props)=>{
                         </ul>
                     </div>
                 </div> 
-                <div className="col-sm-2 ">
+                <div className="col-sm-3 ">
                     1st letter of Pinyin
                     <div className="creators-checkbox-div"> 
                     <ul>

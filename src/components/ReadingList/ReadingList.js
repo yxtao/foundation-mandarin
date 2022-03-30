@@ -204,24 +204,23 @@ const ReadingList = (props)=>{
     return (
         <div className="readingListMain">
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <div class="col-xs-2 active-cyan">
                         <input 
                             class="form-control" 
                             type="text" 
-                            placeholder="search by title"
+                            placeholder="keywords"
                             value = {target}
                             onChange ={(e)=>handleTargetChange(e)}
-                        /> {error}
-                    </div>
-                </div>   
-                <div class="col-sm-1">
-                    <div class="col-xs-1 active-cyan">
+                        /> {error}   
+                    <div class=" pt-1 active-cyan">
                         <button className="btn btn-outline-info" onClick={onSearch}>  search </button>
                     </div>
-                </div> 
-                <div className="col-sm-2">
-                    filter by usernames
+                    </div>
+                </div>   
+               
+                <div className="col-sm-3">
+                    by usernames
                     <div className="stories-checkbox-div">
                         <ul>
                         {creators.sort((a,b)=> a.toLowerCase().localeCompare(b.toLowerCase()))
@@ -244,8 +243,8 @@ const ReadingList = (props)=>{
                         </ul>
                     </div>
                 </div> 
-                <div className="col-sm-3">
-                    filter by topics
+                <div className="col-sm-4">
+                    by topics
                     <div className="stories-checkbox-div">
                         <ul>
                         {tags.sort().map((name, index)=>
