@@ -25,7 +25,6 @@ const ReadingList = (props)=>{
     const [storiesBackUp,setStoriesBackUp] = useState(props.stories);
     const [target, setTarget] = useState("");
     const [storyPageArrays, setStoryPageArrays] = useState([]);
-    const [pagesNum, setPagesNum]= useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [pageNumState, setPageNumState] = useRecoilState(storyPagestate);
     const [currentPage, setCurrentPage] = useState(pageNumState);
@@ -75,8 +74,7 @@ const ReadingList = (props)=>{
             const result = storiesCopy.filter((story)=>selectedCreators.includes(story.creator));
             setStories(result);
             setCurrentPage(0);
-            setRowsPerPage(8);
-            
+            setRowsPerPage(8);     
         }else{
            setStories(storiesBackUp);
         } 
@@ -85,7 +83,7 @@ const ReadingList = (props)=>{
       useEffect(()=>{
         let storiesCopy = [...storiesBackUp];
         if(selectedTags.length!==0){
-            // TODO tags is an array in db
+            // TODO tags should be an array in db
             const result = storiesCopy.filter((story)=> 
                                                         (story.tags && story.tags.some(tag=>selectedTags.includes(tag)))
                                              );
@@ -126,7 +124,6 @@ const ReadingList = (props)=>{
         if(stories.length<rowsPerPage) {
             pagesArray.push(stories);
             setStoryPageArrays(pagesArray);
-            setPagesNum(1);
         } else{
               for(let i = 0; i<stories.length; i=i+rowsPerPage) {
                   const storiesCopy =[...stories];
@@ -134,9 +131,8 @@ const ReadingList = (props)=>{
                   pagesArray.push(shortArray);
               }
               setStoryPageArrays(pagesArray);
-              setPagesNum(storyPageArrays.length);
           }
-      },[rowsPerPage,stories, pagesNum])
+      },[rowsPerPage, stories])
 
     const handleCallbackRowsPerPage = (e)=>{
         setRowsPerPage(e)
@@ -227,7 +223,6 @@ const ReadingList = (props)=>{
                     </div>
                 </div>   
                 <div className="col-sm-3">
-                    {pageNumState}
                     by usernames
                     <div className="stories-checkbox-div">
                         <ul>
