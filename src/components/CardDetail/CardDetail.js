@@ -30,6 +30,7 @@ const CardDetail = (props)=>{
     const [sentencesMeanings, setSentencesMeanings] = useState([]);
     
     useEffect(()=>{
+        if(!wordId || wordId.length<0) return;
        setWordData(props.wordList.find(element => element.wordId===wordId));
        let phrasesInfo = [];
        let sentencesInfo = [];
@@ -63,7 +64,6 @@ const CardDetail = (props)=>{
            wordData.phraseLevels && setPhrasesLevels(wordData.phraseLevels);   
         }
        
-    
        if(wordData && "sentences" in wordData){
            for(let k=0; k<wordData.sentences.length; k++){
                 let sentenceObj = null;
@@ -153,7 +153,7 @@ const CardDetail = (props)=>{
     if(editMode){
         return(
             <div className="container-wrapper-detail p-lg-5"> 
-            <div class="card cardDiv m-5">
+            <div className="card cardDiv m-5">
                     <div className="m-3 text-right">
                         <button 
                             className="btn btn-outline-danger edit-button"
@@ -175,7 +175,7 @@ const CardDetail = (props)=>{
                         }
                     </div>
                 </div>
-                <div class="card-body">
+                <div className="card-body">
                     <div className="container">
                         <div className = "row">
                             <div className = "col">
@@ -208,10 +208,10 @@ const CardDetail = (props)=>{
                         </div>
                     </div>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
+                <ul className="list-group list-group-flush">
                         <div className="container">
                             {phrasesData.map((obj, index)=> 
+                            <li key={index} className="list-group-item"> 
                             <div 
                                 className = "row"
                                 key={index}>
@@ -240,36 +240,39 @@ const CardDetail = (props)=>{
                                         onChange={(e)=>handlePhrasesMeaningsChange(e,index)}/> 
                                 </div>
                             </div>
+                            </li>
                             )}
                         </div>
-                    </li>
-                    <li class="list-group-item">
+                    
                         <div className="container">
                             {sentencesData.map((obj, index)=> 
-                            <div  className = "row" key={index}>
-                                <div className = "col">
-                                    句子
-                                    <input 
-                                        className="card-title"
-                                        size = "50"
-                                        value={sentences[index]}
-                                        defaultValue={obj.sentence}
-                                        onChange={(e)=> handleSentencesChange(e,index)}
-                                     />
+                              <li className="list-group-item" key = {index}>
+                                <div  className = "row" key={index}>
+                                    <div className = "col">
+                                        句子
+                                        <input 
+                                            className="card-title"
+                                            size = "50"
+                                            value={sentences[index]}
+                                            defaultValue={obj.sentence}
+                                            onChange={(e)=> handleSentencesChange(e,index)}
+                                        />
+                                    </div>
+                                    <div className = "col">
+                                        句子意思
+                                        <input 
+                                            className="card-title"
+                                            size = "50"
+                                            value={sentencesMeanings[index]}
+                                            defaultValue={"sentenceMeaning" in obj?obj.sentenceMeaning:""}
+                                            onChange={(e)=>handleSentencesMeaningsChange(e,index)}/>
+                                    </div>
                                 </div>
-                                <div className = "col">
-                                    句子意思
-                                    <input 
-                                        className="card-title"
-                                        size = "50"
-                                        value={sentencesMeanings[index]}
-                                        defaultValue={"sentenceMeaning" in obj?obj.sentenceMeaning:""}
-                                        onChange={(e)=>handleSentencesMeaningsChange(e,index)}/>
-                                </div>
-                            </div>
+                            </li>
                             )}
+                            
                         </div>
-                    </li>
+                    
                 </ul>
                 <div className="card-body">
                 {wordData && "xiangxingImage" in wordData && wordData.xiangxingImage[0].url ?
@@ -332,35 +335,33 @@ const CardDetail = (props)=>{
                     </div>
                 </div>
                 <ul className="list-group list-group-flush">
-                    <li className="list-group-item">
-                        <div className="container">
-                            {phrasesData.map((obj, index)=> 
-                            <div className = "row" key={index}>
-                                <div className = "col">
-                                    <h3 className="card-title">{obj.phrase}</h3>
-                                    <p className="card-title">{" "}Level {obj.phraseLevel}</p>
-                                </div>
-                                <div className = "col">
-                                    <p className="card-title"> {"phraseMeaning" in obj?obj.phraseMeaning:""}</p>
-                                </div>
+                        
+                    {phrasesData.map((obj, index)=> 
+                        <li className="list-group-item">
+                        <div className = "row" key={index}>
+                            <div className = "col">
+                                <h3 className="card-title">{obj.phrase}</h3>
+                                <p className="card-title">{" "}Level {obj.phraseLevel}</p>
                             </div>
-                            )}
+                            <div className = "col">
+                                <p className="card-title"> {"phraseMeaning" in obj?obj.phraseMeaning:""}</p>
+                            </div>
                         </div>
                     </li>
-                    <li className="list-group-item">
-                        <div className="container">
-                            {sentencesData.map(obj=> 
-                            <div className = "row">
-                                <div className = "col">
-                                    <h6 className="card-title">{obj.sentence}</h6>
-                                </div>
-                                <div className = "col">
-                                    <p className="card-title">{"sentenceMeaning" in obj?obj.sentenceMeaning:""}</p>
-                                </div>
+                    )}
+                
+                    {sentencesData.map((obj, index)=> 
+                        <li key={index} className="list-group-item">
+                        <div className = "row">
+                            <div className = "col">
+                                <h6 className="card-title">{obj.sentence}</h6>
                             </div>
-                            )}
+                            <div className = "col">
+                                <p className="card-title">{"sentenceMeaning" in obj?obj.sentenceMeaning:""}</p>
+                            </div>
                         </div>
                     </li>
+                    )}
                 </ul>
                 <div className="card-body">
                 </div>

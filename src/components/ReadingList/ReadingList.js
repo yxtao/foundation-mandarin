@@ -8,8 +8,9 @@ import {
         userIdState,
         likedWordList,
         likedStoryList } from "../../store/AuthAtoms"
+import { storyPagestate } from '../../store/storyWordsAtoms';
 import {Grid} from "@material-ui/core";
-import WordsPagination from '../WordWall/WordCard/WordsPagination/WordsPagnation';
+import ReadingPagination from './ReadingPagination/ReadingPagination';
 
 import './ReadingList.css'
 
@@ -26,7 +27,8 @@ const ReadingList = (props)=>{
     const [storyPageArrays, setStoryPageArrays] = useState([]);
     const [pagesNum, setPagesNum]= useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [pageNumState, setPageNumState] = useRecoilState(storyPagestate);
+    const [currentPage, setCurrentPage] = useState(pageNumState);
     const [error,setError] = useState("");
     const [creators, setCreators] = useState([]);
     const [selectedCreators,setSelectedCreators] = useState([]);
@@ -72,6 +74,9 @@ const ReadingList = (props)=>{
         if(selectedCreators.length!==0){
             const result = storiesCopy.filter((story)=>selectedCreators.includes(story.creator));
             setStories(result);
+            setCurrentPage(0);
+            setRowsPerPage(8);
+            
         }else{
            setStories(storiesBackUp);
         } 
@@ -85,12 +90,15 @@ const ReadingList = (props)=>{
                                                         (story.tags && story.tags.some(tag=>selectedTags.includes(tag)))
                                              );
             setStories(result);
+            setCurrentPage(0);
+            setRowsPerPage(8);
         }else{
            setStories(storiesBackUp);
         } 
       },[selectedTags,storiesBackUp])
 
     const handleOnSelectedCreatorsChange = (position) => {
+        setPageNumState(0);
         const updatedCheckedStates = checkedCreatorsStates.map((item, index) =>index === position ? !item : item);
         setCheckedCreatorsStates(updatedCheckedStates);
         let selected = [];
@@ -102,6 +110,7 @@ const ReadingList = (props)=>{
         setSelectedCreators(selected);
     }  
     const handleOnSelectedTagsChange = (position) => {
+        setPageNumState(0);
         const updatedCheckedStates = checkedTagsStates.map((item, index) =>index === position ? !item : item);
         setCheckedTagsStates(updatedCheckedStates);
         let selected = [];
@@ -132,8 +141,8 @@ const ReadingList = (props)=>{
     const handleCallbackRowsPerPage = (e)=>{
         setRowsPerPage(e)
     }
-    const handleCallbackCurrentPage = (e)=>{
-        setCurrentPage(e)
+    const handleCallbackCurrentPage = (e)=>{ 
+         setCurrentPage(e)
     } 
     const handleTargetChange= (e)=>{
         if(e.target.value===""){
@@ -158,7 +167,6 @@ const ReadingList = (props)=>{
     }
     const openStory = (id) => {
        history.push(`/story/${id}`);
-       console.log(props.stories)
     }
     const handleLike = async (storyId) =>{ 
         try {
@@ -203,30 +211,31 @@ const ReadingList = (props)=>{
     
     return (
         <div className="readingListMain">
-            <div class="row">
-                <div class="col-sm-2">
-                    <div class="col-xs-2 active-cyan">
+            <div className="row">
+                <div className="col-sm-2">
+                    <div className="col-xs-2 active-cyan">
                         <input 
-                            class="form-control" 
+                            className="form-control" 
                             type="text" 
                             placeholder="keywords"
                             value = {target}
                             onChange ={(e)=>handleTargetChange(e)}
                         /> {error}   
-                    <div class=" pt-1 active-cyan">
+                    <div className=" pt-1 active-cyan">
                         <button className="btn btn-outline-info" onClick={onSearch}>  search </button>
                     </div>
                     </div>
                 </div>   
-               
                 <div className="col-sm-3">
+                    {pageNumState}
                     by usernames
                     <div className="stories-checkbox-div">
                         <ul>
-                        {creators.sort((a,b)=> a.toLowerCase().localeCompare(b.toLowerCase()))
+                        {checkedCreatorsStates.length>0 && 
+                            creators.sort((a,b)=> a.toLowerCase().localeCompare(b.toLowerCase()))
                                  .map((name, index)=>
-                                <li>
-                                    <div  key={index}> 
+                                <li key={index} >
+                                    <div> 
                                     <input 
                                         type="checkbox"
                                         id={`custom-checkbox-story-creator${index}`}
@@ -236,7 +245,7 @@ const ReadingList = (props)=>{
                                         onChange={() => handleOnSelectedCreatorsChange(index)}
                                     />
                                     &nbsp;
-                                    <label for={`custom-checkbox-story-creator${index}`}>{name}</label>
+                                    <label htmlFor={`custom-checkbox-story-creator${index}`}>{name}</label>
                                     </div> 
                                 </li>
                             )}
@@ -247,9 +256,9 @@ const ReadingList = (props)=>{
                     by topics
                     <div className="stories-checkbox-div">
                         <ul>
-                        {tags.sort().map((name, index)=>
-                                <li>
-                                    <div  key={index}> 
+                        {checkedTagsStates.length>0 && tags.sort().map((name, index)=>
+                                <li key={index}>
+                                    <div > 
                                     <input 
                                         type="checkbox"
                                         id={`custom-checkbox-story-tag${index}`}
@@ -259,7 +268,7 @@ const ReadingList = (props)=>{
                                         onChange={() => handleOnSelectedTagsChange(index)}
                                     />
                                     &nbsp;
-                                    <label for={`custom-checkbox-story-tag${index}`}>{name}</label>
+                                    <label htmlFor={`custom-checkbox-story-tag${index}`}>{name}</label>
                                     </div> 
                                 </li>
                             )}
@@ -270,7 +279,7 @@ const ReadingList = (props)=>{
                     <button className="btn btn-sm btn-outline-primary" onClick={onClearFilter}>  clear filter </button>
                 </div> 
             </div>
-            <WordsPagination wordsNum={stories.length} 
+            <ReadingPagination wordsNum={stories.length} 
             callbackRowsPerPage={handleCallbackRowsPerPage} 
             callbackCurrentPage={handleCallbackCurrentPage }/>
             <Grid 

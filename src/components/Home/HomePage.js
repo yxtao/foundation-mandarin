@@ -38,9 +38,9 @@ const HomePage=()=> {
             width="853"
             height="480"
             src = "https://www.youtube.com/embed/Erw0XCYaHI4?rel=0"
-            frameborder="0" 
+            frameBorder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
+            allowFullScreen
             title="user guide"
           />
         </div>
@@ -59,7 +59,7 @@ const HomePage=()=> {
           >
             <Grid item xs={8}>
                 <div>
-                <textarea class="form-control" 
+                <textarea className="form-control" 
                     rows="2" 
                     value={code} 
                     onChange={onCodeChange} placeholder="access code"

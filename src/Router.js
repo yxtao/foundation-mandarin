@@ -81,7 +81,6 @@ const Router = ()=>{
     useEffect(()=>{
         let wordObjsTemp = [];
         wordList.forEach((wordObj, index)=>{
-            console.log("wordData", wordObj);
             if(likedWords.includes(wordObj.wordId)){     
                let wordInfo = wordObj;
                 wordObjsTemp.push(wordInfo);

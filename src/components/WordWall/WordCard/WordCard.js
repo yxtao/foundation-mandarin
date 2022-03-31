@@ -35,7 +35,7 @@ const WordCard = ({wordData,
          <h4>{wordData.pinyin? wordData.pinyin : ""}</h4> 
          <p>{wordData.wordMeaning? wordData.wordMeaning: ""}</p> 
          {wordData.phrases.map((phrase,index)=>
-              <p> {phrase} </p>)}
+              <p key={index}> {phrase} </p>)}
         </div>
         </Link>
       </CardActionArea>

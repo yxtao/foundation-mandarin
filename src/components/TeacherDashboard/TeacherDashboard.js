@@ -34,7 +34,6 @@ const TeacherDashboard = ()=>{
     useEffect(()=>{
         let wordObjsTemp = [];
         wordList.forEach((wordObj, index)=>{
-            console.log("wordData", wordObj);
             if(likedWords.includes(wordObj.wordId)){     
                let wordInfo = wordObj;
                 wordObjsTemp.push(wordInfo);
@@ -62,8 +61,6 @@ const TeacherDashboard = ()=>{
     useEffect(()=>{
         let objsTemp = [];
             storyList.forEach((storyObj, index)=>{
-            console.log("storyData", storyObj);
-            console.log("likedstories", likedStories);
             if(likedStories.includes(storyObj.storyId)){     
                let storyInfo = storyObj;
                 objsTemp.push(storyInfo);
@@ -92,7 +89,6 @@ const TeacherDashboard = ()=>{
             if(value===true){
                 selected.push(myStories[index]);
             }
-            console.log(selected)
         })
        setSelectedStories(selected);
     }
@@ -274,9 +270,9 @@ const TeacherDashboard = ()=>{
                                 我的字库
                          </button>
                         <ul>
-                        {myWords.map((word, index)=>
-                        <li>
-                             <div  key={index}> 
+                        { checkedStates.length>0 && myWords.map((word, index)=>
+                        <li key={index}>
+                             <div> 
                              <button        
                                  type="button" 
                                  className="btn btn-outline-light" 
@@ -303,9 +299,9 @@ const TeacherDashboard = ()=>{
                            我的短文
                         </button>
                         <ul>
-                        {myStories.map((story, index)=> 
-                        <li>
-                            <div  key={index}> 
+                        { checkedStoryStates.length>0 && myStories.map((story, index)=> 
+                        <li  key={index}>
+                            <div> 
                             <button        
                                  type="button" 
                                  className="btn btn-outline-light" 
@@ -341,10 +337,10 @@ const TeacherDashboard = ()=>{
                         生成学生码
                     </button>
                     <ul>
-                    {selectedWords.map((word)=><li>{word.name +" "} </li>)}
+                    {selectedWords.map((word, index)=><li key={index}>{word.name +" "} </li>)}
                     </ul>
                     <ul>
-                    {selectedStories.map((story)=><li>{story.name +" "} </li>)}
+                    {selectedStories.map((story, index)=><li key={index}>{story.name +" "} </li>)}
                     </ul>
                 </div>
                 <div className = "flex-item p-md-2">
@@ -355,7 +351,7 @@ const TeacherDashboard = ()=>{
                         </button>
                     <div>
                     {likedWordObjs.map((word, index)=>
-                        <div  key={index}  className="p-md-2 flex-column">       
+                        <div key={index}  className="p-md-2 flex-column">       
                             <button        
                                 type="button" 
                                 className="btn btn-outline-light" 

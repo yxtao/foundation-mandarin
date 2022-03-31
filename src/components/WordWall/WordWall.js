@@ -6,8 +6,9 @@ import {checkedAuthState,
     firebaseState,
     isTeacherState, 
     userIdState,
-    likedWordList } from "../../store/AuthAtoms"
-import {Grid} from "@material-ui/core";
+    likedWordList } from "../../store/AuthAtoms";
+import { wordPagestate } from '../../store/storyWordsAtoms';
+import { Grid } from "@material-ui/core";
 import WordCard from'./WordCard/WordCard';
 import WordsPagination from './WordCard/WordsPagination/WordsPagnation';
 import "./WordWall.css";
@@ -25,7 +26,8 @@ const WordWall = (props)=>{
     const [wordPageArrays, setwordPageArrays] = useState([]);
     const [pagesNum, setPagesNum]= useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [pageNumState, setPageNumState] = useRecoilState(wordPagestate);
+    const [currentPage, setCurrentPage] = useState(pageNumState);
     const [error,setError] = useState("");
     const [creators, setCreators] = useState([]);
     const [checkedStates, setCheckedStates] = useState([]);
@@ -54,6 +56,8 @@ const WordWall = (props)=>{
      if(selectedCreators.length!==0){
          const result = wordListCopy.filter((word)=>selectedCreators.includes(word.creator));
          setWordList(result);
+         setCurrentPage(0);
+         setRowsPerPage(8);
      }else{
         setWordList(wordListBackUp);
      } 
@@ -64,12 +68,15 @@ const WordWall = (props)=>{
     if(selectedPinyin.length!==0){
         const result = wordListCopy.filter((word)=>selectedPinyin.includes(word.pinyin.toUpperCase().charAt(0)));
         setWordList(result);
+        setCurrentPage(0);
+        setRowsPerPage(8);
     }else{
        setWordList(wordListBackUp);
     } 
   },[selectedPinyin, wordListBackUp])
 
     const handleOnChange = (position) => {
+        setPageNumState(0);
         const updatedCheckedStates = checkedStates.map((item, index) =>index === position ? !item : item);
         setCheckedStates(updatedCheckedStates);
         let selected = [];
@@ -77,11 +84,11 @@ const WordWall = (props)=>{
             if(value===true){
                 selected.push(creators[index]);
             }
-            console.log(selected)
         })
         setSelectedCreators(selected);
     }
     const handleSelectedPinyinOnChange = (position) => {
+        setPageNumState(0);
         const updatedCheckedStates = checkedPinyinStates.map((item, index) =>index === position ? !item : item);
         setCheckedPinyinStates(updatedCheckedStates);
         let selected = [];
@@ -89,7 +96,6 @@ const WordWall = (props)=>{
             if(value===true){
                 selected.push(pinyinLetters[index]);
             }
-            console.log(selected)
         })
         setSelectedPinyin(selected);
     }
@@ -103,6 +109,8 @@ const WordWall = (props)=>{
     const onSearch = ()=>{
         let wordListCopy = [...wordList];
         if(target !== ""){
+            setCurrentPage(0);
+            setRowsPerPage(8);
             const result = wordListCopy.filter((word)=>word.name === target);
             setWordList(result);
         }else{
@@ -185,7 +193,7 @@ const WordWall = (props)=>{
         <div className="wallMain">
             <div className="row">
                 <div className="col-sm-2">
-                    <div class="col-xs-2 active-cyan">
+                    <div className="col-xs-2 active-cyan">
                         <input 
                             className="form-control" 
                             type="text" 
@@ -203,10 +211,11 @@ const WordWall = (props)=>{
                     by usernames
                   <div className= "creators-checkbox-div">
                     <ul>
-                    {creators.sort((a,b)=> a.toLowerCase().localeCompare(b.toLowerCase()))
+                    {checkedStates.length>0 &&
+                        creators.sort((a,b)=> a.toLowerCase().localeCompare(b.toLowerCase()))
                              .map((name, index)=>
-                            <li>
-                                <div  key={index}> 
+                            <li key={index} >
+                                <div> 
                                 <input 
                                     type="checkbox"
                                     id={`custom-checkbox-${index}`}
@@ -216,7 +225,7 @@ const WordWall = (props)=>{
                                     onChange={() => handleOnChange(index)}
                                 />
                                 &nbsp;
-                                <label for={`custom-checkbox-${index}`}>{name}</label>
+                                <label htmlFor={`custom-checkbox-${index}`}>{name}</label>
                                 </div> 
                             </li>
                         )}
@@ -227,9 +236,10 @@ const WordWall = (props)=>{
                     1st letter of Pinyin
                     <div className="creators-checkbox-div"> 
                     <ul>
-                        {pinyinLetters.sort().map((letter, index)=>
-                            <li>
-                                <div  key={index}> 
+                        {checkedPinyinStates.length>0 &&
+                           pinyinLetters.sort().map((letter, index)=>
+                            <li key={index} >
+                                <div  > 
                                 <input 
                                     type="checkbox"
                                     id={`custom-checkbox-pinyin-${index}`}
@@ -239,7 +249,7 @@ const WordWall = (props)=>{
                                     onChange={() => handleSelectedPinyinOnChange(index)}
                                 />
                                 &nbsp;
-                                <label for={`custom-checkbox-pinyin-${index}`}>{letter}</label>
+                                <label htmlFor={`custom-checkbox-pinyin-${index}`}>{letter}</label>
                                 </div> 
                             </li>
                         )}

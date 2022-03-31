@@ -4,12 +4,27 @@ import firebase from "../firebase/firebase";
 export const storyliststate = atom({
     key: "storyliststate",
     default: [],
-  });  
+  }); 
+export const storyPagestate = atom({
+    key: "storypagestate",
+    default: 0,
+  }); 
+export const storyPageCountPerPageState = atom({
+    key: "storypagecountperpagrstate",
+    default: 8,
+  }); 
 export const wordliststate = atom({
     key: "wordliststate",
     default: [],
   });
-
+export const wordPagestate = atom({
+    key: "wordpagestate",
+    default: 0,
+  });
+export const wordPageCountPerPageState = atom({
+    key: "wordpagecountperpagrstate",
+    default: 8,
+  }); 
 export const storylistcopystate = atom({
   key: "storylistcopystate",
   default: [],

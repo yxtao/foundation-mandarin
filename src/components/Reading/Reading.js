@@ -34,10 +34,6 @@ const Reading = (props)=>{
         story && story.contents && setContents(story.contents);
     },[story])
     
-
-    const handleDeleteCallback=(wordId)=>{
-      setNotes((preNotes)=>preNotes.filter(note=>note !== wordId))
-    }
     const handleAddCallback =(wordId) =>{
       setNotes([...notes,wordId])
     }
@@ -77,81 +73,75 @@ const Reading = (props)=>{
     }, [notes, user, isAdmin, isTeacher])
 
     if (!story) return <h1>loading</h1>
-    if(editMode && story.contents.length!==0 ){
-        return( 
-        <div className="readingMain">
-              {error}
-            <div className="text-right">  
-                <button 
-                className="btn btn-outline-danger"
-                onClick={offEditMode}
-                > save 确定保存
-                </button>
-            </div>
-                <ul className="list-group list-group-flush">
-                    <li className="list-group-item">
-                        <div>
-                            {contents.map((content, index)=> 
-                            <div 
-                                className = "row m-3"
-                                key={index}>
-                                <div className="p-2"> Level
-                                        <input 
-                                            defaultValue={levels[index]}
-                                            value={levels[index]}
-                                            onChange={(e)=>handlelevelsChange(e,index)}/>
-                                </div>
-                                <div className = "col">
-                                    <div className="p-2" > 
-                                        <textarea 
-                                            rows={6}
-                                            cols="100"
-                                            defaultValue = {content}
-                                            value={contents[index]} 
-                                            style={{overflowY:"auto",overflowX:"auto",padding:"1vh 1vw 1vh 1vw"}}
-                                            onChange={(e)=>handleContentsChange(e, index)}/>
-                                    </div> 
-                                </div>
-                                <hr/>
+       
+    return( 
+            <div className="readingMain">
+                {error}
+                {editMode && story.contents.length > 0 ?
+                <>
+                <div className="text-right">  
+                    <button 
+                    className="btn btn-outline-danger"
+                    onClick={offEditMode}
+                    > save 确定保存
+                    </button>
+                </div>
+                    <ul className="list-group list-group-flush">  
+                        {contents.length>0 && levels.length>0 && contents.map((content, index)=> 
+                        <li key= {index} className="list-group-item" >
+                        <div className = "row m-3">
+                            <div className="p-2"> Level
+                                    <input 
+                                        value={levels[index]}
+                                        onChange={(e)=>handlelevelsChange(e,index)}/>
                             </div>
-                            )}
+                            <div className = "col">
+                                <div className="p-2" > 
+                                    <textarea 
+                                        rows={6}
+                                        cols="100"
+                                        value={contents[index]? contents[index]:""} 
+                                        style={{overflowY:"auto",overflowX:"auto",padding:"1vh 1vw 1vh 1vw"}}
+                                        onChange={(e)=>handleContentsChange(e, index)}/>
+                                </div> 
+                            </div>
+                            <hr/>
                         </div>
-                    </li>
-                </ul>    
-        </div>
-    )} 
-    return(
-        <div className="readingMain">
-        {error}
-           { isTeacher && story.creator === user &&
-            <div className="p-1 text-right">  
-                <button 
-                className="btn btn-outline-danger"
-                onClick={startEditMode}
-                >edit 编辑
-                </button>
-            </div>
-           }
-            {story.contents.length!==0 ? <Story story= {story}  parentCallback = {handleAddCallback} words={words}/>: <div>no content</div>}
-            <div className="p-5">
-            <Grid container 
-                direction="row"
-                alignItems="stretch"
-                justifyContent="flex-start"
-                spacing={2}
-               >
-                {cardList.filter(item=> notes.includes(item.name)).map((item,index)=> 
-                        <Grid key={index} item xs={6} sm={2} md={2} > 
-                           <WordCard wordData={item} 
-                                parentDeleteCallback = {handleDeleteCallback} 
-                                hideDelete={true}
-                                hideLike = {true}
-                                hideRemoveLike = {true}/>
-                         </Grid>)} 
-            </Grid>
-            </div>
-        </div>
-    )
-}
+                        </li>)}    
+                    </ul> 
+                </> 
+                :
+                <>
+                    { isTeacher && story.creator === user &&
+                    <div className="p-1 text-right">  
+                        <button 
+                        className="btn btn-outline-danger"
+                        onClick={startEditMode}
+                        >edit 编辑
+                        </button>
+                    </div>
+                    }
+                    {story.contents.length > 0 ? <Story story= {story}  parentCallback = {handleAddCallback} words={words}/>: <div>no content</div>}
+                    <div className="p-5">
+                        <Grid container 
+                            direction="row"
+                            alignItems="stretch"
+                            justifyContent="flex-start"
+                            spacing={2}
+                        >
+                            {cardList.length>0 && cardList.filter(item=> notes.includes(item.name)).map((item,index)=> 
+                                    <Grid key={index} item xs={6} sm={2} md={2} > 
+                                    <WordCard wordData={item} 
+                                            hideDelete={true}
+                                            hideLike = {true}
+                                            hideRemoveLike = {true}/>
+                                    </Grid>)} 
+                        </Grid>
+                    </div>
+                </>
+             }  
+        </div>        
+    )}
+   
 
 export default Reading
