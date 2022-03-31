@@ -10,7 +10,7 @@ import { checkedAuthState,
           likedWordList,
           likedStoryList
          } from "../../store/AuthAtoms"
-import {userlevelstate, wordsetstate} from "../../store/storyWordsAtoms";
+import {userlevelstate, wordsetstate, wordPagestate, storyPagestate, wordPageCountPerPageState,storyPageCountPerPageState} from "../../store/storyWordsAtoms";
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 
@@ -30,11 +30,19 @@ const SignInUp = ()=>{
   const [user, setUser] = useRecoilState(usernameState);
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
+  const [wordPage, setWordPage] = useRecoilState(wordPagestate);
+  const [storyPage, setStoryPage] = useRecoilState(storyPagestate);
+  const [wordsRow,setWordsRow] = useRecoilState(wordPageCountPerPageState);
+  const [storiesRow, setStoriesRow] = useRecoilState(storyPageCountPerPageState);
 
   useEffect(()=>{
     if(isAuthticated && userId){
      const fetchData = async (userId)=>{
         await updateRecoilUserInfo(userId);
+        setWordPage(0);
+        setStoryPage(0);
+        setWordsRow(8);
+        setStoriesRow(8);
      }
       fetchData(userId);
       history.push("/teacherDashboard");
