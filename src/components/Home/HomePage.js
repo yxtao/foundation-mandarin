@@ -1,8 +1,8 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import { useHistory } from 'react-router';
 import { useRecoilState, useRecoilValue} from "recoil";
 import { checkedAuthState, usernameState, isAdminState, firebaseState, isTeacherState } from "../../store/AuthAtoms" 
-import {accesscodestate, codeliststate} from "../../store/storyWordsAtoms" 
+import {accesscodestate, codeliststate, storyPageCountPerPageState, wordPagestate, storyPagestate, wordPageCountPerPageState} from "../../store/storyWordsAtoms" 
 import Grid from '@material-ui/core/Grid';
 import "./home.css";
 
@@ -16,12 +16,22 @@ const HomePage=()=> {
   const [isAuthticated, setIsAuthenticated] = useRecoilState(checkedAuthState);
   const [accessCode, setAccessCode] = useRecoilState(accesscodestate);
   const [error, setError] = useState("");
+  const [wordPage, setWordPage] = useRecoilState(wordPagestate);
+  const [storyPage, setStoryPage] = useRecoilState(storyPagestate);
+  const [wordsRow,setWordsRow] = useRecoilState(wordPageCountPerPageState);
+  const [storiesRow, setStoriesRow] = useRecoilState(storyPageCountPerPageState);
+
+  useEffect(()=>{
+    setWordPage(0);
+    setStoryPage(0);
+    setWordsRow(8);
+    setStoriesRow(8);
+  },[])
   const onCodeChange =(e)=>{
     setCode(e.target.value.trim())
   }
   const checkCode=()=>{
     let obj = codeList.find((element)=> element.code === code);
-    console.log("obj code", obj)
     if (obj){
       setAccessCode(code);
       history.push("/reading");

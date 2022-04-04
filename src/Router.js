@@ -129,6 +129,9 @@ const Router = ()=>{
             setWordList(newWordList);
             setStoryList(newStoryList);
           }
+        }else{
+            setWordList(wordListCopy);
+            setStoryList(storyListCopy);
         }
     },[accessCode, wordListCopy, storyListCopy,codeList])
    

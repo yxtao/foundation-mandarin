@@ -45,6 +45,7 @@ const SignIn = (props) =>{
                     <br/>
                     <Grid item>
                       <TextField 
+                        type="password"
                         value = {password}
                         onInput = {e => setPassword(e.target.value.trim())}
                         placeholder="password"

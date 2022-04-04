@@ -7,7 +7,13 @@ import {usernameState,
         isTeacherState,
         likedWordList,
         likedStoryList} from "../../store/AuthAtoms"
-import {storyliststate, wordliststate,storyPageCountPerPageState, wordPagestate, storyPagestate, wordPageCountPerPageState } from "../../store/storyWordsAtoms";
+import {storyliststate, 
+    wordliststate,
+    accesscodestate,
+    storyPageCountPerPageState, 
+    wordPagestate, 
+    storyPagestate, 
+    wordPageCountPerPageState } from "../../store/storyWordsAtoms";
 import "./TeacherDashboard.css";
 
 const TeacherDashboard = ()=>{
@@ -30,6 +36,7 @@ const TeacherDashboard = ()=>{
     const [checkedStoryStates, setCheckedStoryStates] = useState([]);
     const [error,setError] = useState("");
     const [code,setCode] = useState("");
+    const [accessCode, setAccessCode] = useRecoilState(accesscodestate);
     const [wordPage, setWordPage] = useRecoilState(wordPagestate);
     const [storyPage, setStoryPage] = useRecoilState(storyPagestate);
     const [wordsRow,setWordsRow] = useRecoilState(wordPageCountPerPageState);
@@ -40,6 +47,7 @@ const TeacherDashboard = ()=>{
         setStoryPage(0);
         setWordsRow(8);
         setStoriesRow(8);
+        setAccessCode("");
     },[])
     
     useEffect(()=>{
