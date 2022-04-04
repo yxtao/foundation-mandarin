@@ -337,8 +337,8 @@ const CardDetail = (props)=>{
                 <ul className="list-group list-group-flush">
                         
                     {phrasesData.map((obj, index)=> 
-                        <li className="list-group-item">
-                        <div className = "row" key={index}>
+                        <li className="list-group-item" key={index}>
+                        <div className = "row" >
                             <div className = "col">
                                 <h3 className="card-title">{obj.phrase}</h3>
                                 <p className="card-title">{" "}Level {obj.phraseLevel}</p>

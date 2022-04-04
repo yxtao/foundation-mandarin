@@ -7,7 +7,7 @@ import {usernameState,
         isTeacherState,
         likedWordList,
         likedStoryList} from "../../store/AuthAtoms"
-import {storyliststate, wordliststate,} from "../../store/storyWordsAtoms";
+import {storyliststate, wordliststate,storyPageCountPerPageState, wordPagestate, storyPagestate, wordPageCountPerPageState } from "../../store/storyWordsAtoms";
 import "./TeacherDashboard.css";
 
 const TeacherDashboard = ()=>{
@@ -30,6 +30,17 @@ const TeacherDashboard = ()=>{
     const [checkedStoryStates, setCheckedStoryStates] = useState([]);
     const [error,setError] = useState("");
     const [code,setCode] = useState("");
+    const [wordPage, setWordPage] = useRecoilState(wordPagestate);
+    const [storyPage, setStoryPage] = useRecoilState(storyPagestate);
+    const [wordsRow,setWordsRow] = useRecoilState(wordPageCountPerPageState);
+    const [storiesRow, setStoriesRow] = useRecoilState(storyPageCountPerPageState);
+    
+    useEffect(()=>{
+        setWordPage(0);
+        setStoryPage(0);
+        setWordsRow(8);
+        setStoriesRow(8);
+    },[])
     
     useEffect(()=>{
         let wordObjsTemp = [];
