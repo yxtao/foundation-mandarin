@@ -61,7 +61,8 @@ const FilterReadingList = (props)=>{
         setSelectedTags([]);
     }
     return(
-        <>   <div className="row">
+        <>  
+         <div className="row">
                   <div className="col-sm-4">
                     by topics
                     <div className="stories-checkbox-div">
