@@ -17,7 +17,7 @@
 
 .flex-item{ 
     display:flex;
-    width:30vw;
+    width:50vw;
     height: 40vh;
     flex-direction: column;
     overflow-y:auto;

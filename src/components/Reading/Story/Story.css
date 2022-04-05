@@ -1,18 +1,17 @@
 .storyMain{
     background-color: transparent;
-    /* background-image: linear-gradient(0deg,rgba(178, 235, 218, 0.418), rgba(165, 229, 245, 0.529),#fafbfc4d ); */
     opacity:0.8;
     height:60%;
-    overflow-y:auto;
-    padding:1vw;
 }
 .storyContent{
-    height: 40vh;
+    height: 50vh;
     line-height:3;
     box-shadow: 3px 1px 1px 0 rgb(4, 127, 243);  
-    overflow-x: auto;
     overflow-y: auto;
     white-space: pre-line; 
+}
+.nextpage{
+  font-size: x-large;
 }
 @media only screen and (max-width: 768px) {
     .storyContent{
@@ -20,12 +19,6 @@
       line-height:2;
     }
   }
-  .storyMain{
-    margin: 5vw;
-  }
-  .nextpage{
-    font-size: x-large;
-  }
-  
+ 
   
  

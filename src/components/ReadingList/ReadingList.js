@@ -1,26 +1,11 @@
 import React, {useEffect, useState} from'react';
-import { useHistory } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-        usernameState, 
-        firebaseState,
-        isTeacherState, 
-        userIdState,
-        likedWordList,
-        likedStoryList } from "../../store/AuthAtoms"
+import { useRecoilState } from "recoil";
 import { storyPagestate } from '../../store/storyWordsAtoms';
-import {Grid} from "@material-ui/core";
-import ReadingPagination from './ReadingPagination/ReadingPagination';
+import DisplayReading from './DisplayReading/DisplayReading';
 
 import './ReadingList.css'
 
 const ReadingList = (props)=>{
-    const history = useHistory();
-    const isTeacher = useRecoilValue(isTeacherState);
-    const firebase = useRecoilValue(firebaseState);
-    const [likedStories, setLikedStories] = useRecoilState(likedStoryList);
-    const [userId, setUserId] = useRecoilState(userIdState);
-    const [userName, setUserName] = useRecoilState(usernameState);
     const [stories, setStories] = useState(props.stories);
     const [storiesBackUp,setStoriesBackUp] = useState(props.stories);
     const [target, setTarget] = useState("");
@@ -50,6 +35,7 @@ const ReadingList = (props)=>{
     const [selectedTags,setSelectedTags] = useState([]);
     const [checkedTagsStates, setCheckedTagsStates] = useState([]);
 
+
     useEffect(()=>{  
         let temp = [];
         storiesBackUp.forEach((e)=>{
@@ -58,7 +44,7 @@ const ReadingList = (props)=>{
             }
         })
         setCreators(temp);   
-    },[storiesBackUp])
+    },[])
 
     useEffect(()=>{
         setCheckedCreatorsStates( new Array(creators.length).fill(false)); 
@@ -119,27 +105,7 @@ const ReadingList = (props)=>{
         })
         setSelectedTags(selected);
     }  
-    useEffect(()=>{
-        const pagesArray=[]; 
-        if(stories.length<rowsPerPage) {
-            pagesArray.push(stories);
-            setStoryPageArrays(pagesArray);
-        } else{
-              for(let i = 0; i<stories.length; i=i+rowsPerPage) {
-                  const storiesCopy =[...stories];
-                  let shortArray = storiesCopy.slice(i,i+rowsPerPage)
-                  pagesArray.push(shortArray);
-              }
-              setStoryPageArrays(pagesArray);
-          }
-      },[rowsPerPage, stories])
 
-    const handleCallbackRowsPerPage = (e)=>{
-        setRowsPerPage(e)
-    }
-    const handleCallbackCurrentPage = (e)=>{ 
-         setCurrentPage(e)
-    } 
     const handleTargetChange= (e)=>{
         if(e.target.value===""){
             setStories(props.stories);
@@ -160,49 +126,6 @@ const ReadingList = (props)=>{
         setCheckedCreatorsStates( new Array(creators.length).fill(false)); 
         setSelectedCreators([]);
         setSelectedTags([]);
-    }
-    const openStory = (id) => {
-       history.push(`/story/${id}`);
-    }
-    const handleLike = async (storyId) =>{ 
-        try {
-            await updatelikedStories(userId, [...likedStories,storyId]);
-        }catch(err){
-            setError(err.message)
-        }
-        setLikedStories((pre) => [...pre,storyId]);
-    }
-    const handleRemoveLike = async (storyId) =>{
-        let likedStoriesCopy = [...likedStories];
-            likedStoriesCopy = likedStoriesCopy.filter(s=> s!==storyId);
-        try {
-            await updatelikedStories(userId, likedStoriesCopy);
-        }catch(err){
-            setError(err.message)
-        }
-        setLikedStories(likedStoriesCopy);
-     }
-     const updatelikedStories = async(uid, stories)=>{
-        try {
-            const docRef = firebase.firestore().collection("users").doc(uid);
-            const doc = await docRef.get(); 
-            if(!doc.exists) { 
-                 setError("NOT FOUND"); 
-                 return;
-             }
-            await docRef.update({
-                likedPassages:stories
-            })
-          }catch(err){    
-            setError(err.message);
-          }
-      }
-    const handleDeleteStory = async(storyId)=>{
-        try{
-            await firebase.firestore().collection("story").doc(storyId).delete();
-        }catch(err){
-            setError(err.message);
-        }
     }
     
     return (
@@ -274,53 +197,8 @@ const ReadingList = (props)=>{
                     <button className="btn btn-sm btn-outline-primary" onClick={onClearFilter}>  clear filter </button>
                 </div> 
             </div>
-            <ReadingPagination wordsNum={stories.length} 
-            callbackRowsPerPage={handleCallbackRowsPerPage} 
-            callbackCurrentPage={handleCallbackCurrentPage }/>
-            <Grid 
-                container 
-                direction="row"
-                alignItems="stretch"
-                justifyContent="flex-start"
-                spacing={2} >
-            {storyPageArrays.length!==0 && 
-            storyPageArrays[currentPage] &&
-            storyPageArrays[currentPage].length!==0 && 
-            storyPageArrays[currentPage].map((story,index)=> 
-            <Grid key={index} item xs={12} sm={4} md={3} > 
-                <div className="reading-list-card">
-                    <div onClick={()=>openStory(story.storyId)}>  
-                        <p className="h2 pl-3 text-dark">{story.name} </p>            
-                        <p className="pl-3 text-dark">{" by-"+story.creator} </p>
-                    </div>
-                    <div className = "words-div">
-                        <div  key={index}  className="p-2 flex-row">  
-                            {isTeacher && story.creator!== userName && !likedStories.includes(story.storyId) &&
-                            <button        
-                                type="button" 
-                                className="btn btn-outline-light" 
-                                onClick={()=>handleLike(story.storyId)}>    
-                                <h4 className="text-success">♡</h4>
-                            </button> }
-                            {likedStories.includes(story.storyId) &&
-                            <button 
-                                type="button" 
-                                className="btn btn-outline-light"
-                                onClick={()=>handleRemoveLike(story.storyId) }>    
-                                <h4 className="text-success">♥</h4>
-                            </button> }
-                            { story.creator === userName &&
-                            <button 
-                                type="button" 
-                                className="btn btn-outline-light"
-                                onClick={()=>handleDeleteStory(story.storyId) }>    
-                                <span className="text-success"> 🗑  删除 </span>
-                            </button> }
-                        </div> 
-                    </div>
-                </div> 
-            </Grid>) }
-         </Grid>
+           <DisplayReading 
+           stories = {stories}/>
     </div>        
     )
 }

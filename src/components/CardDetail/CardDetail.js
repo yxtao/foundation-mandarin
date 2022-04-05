@@ -5,13 +5,14 @@ import {usernameState,
         userIdState,
         isTeacherState,
         } from "../../store/AuthAtoms"
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import test1 from "../../assets/images/wordcards/test1.jpg";
 import "./CardDetail.css"
 
 const CardDetail = (props)=>{
     const wordId = useParams().word; 
+    const history = useHistory();
     const isTeacher = useRecoilValue(isTeacherState);
     const user = useRecoilValue(usernameState);
     const [error, setError] = useState("");
@@ -104,6 +105,26 @@ const CardDetail = (props)=>{
                 sentences, 
             })
         setEditMode(false);
+        }catch(err){
+            setError(err.message);
+        }
+    }
+    const addToWordDB = async () =>{
+        // WARNING: wordList is updated once firebase snapshot works
+        try {
+            let wordObj = {
+                ...wordData,
+                creator: user,
+                wordId:user+wordData.name}
+            await firebase.firestore().collection("chinesewords").doc(user+wordData.name).set(wordObj)    
+          }catch(err){    
+            setError(err.message);
+          }
+    }
+    const handleDeleteCallback = async () =>{
+        try{
+            await firebase.firestore().collection("chinesewords").doc(wordData.wordId).delete();
+            history.push("/myWordwall");
         }catch(err){
             setError(err.message);
         }
@@ -289,14 +310,24 @@ const CardDetail = (props)=>{
         <div className="container-wrapper-detail p-lg-2"> 
            
             <div className="card cardDiv">
-            {isTeacher && wordData.creator === user &&
-            <div className="m-3 text-right">
+            {isTeacher && wordData.creator === user ? 
+             <div className="buttons-arrangement-div">
                 <button 
-                    className="btn btn-outline-danger"
-                    onClick={startEditMode}
-                > edit 编辑
+                className="btn btn-outline-success m-3"
+                onClick={startEditMode} >edit 编辑
                 </button>
-             </div>}
+                <button 
+                className="btn btn-outline-danger m-3"
+                onClick={handleDeleteCallback} > 🗑  删除
+                </button>
+             </div>:
+             <div className="m-3 text-right" >
+                 <button 
+                    className="btn btn-outline-danger"
+                    onClick={addToWordDB}
+                > add 收藏
+                </button>
+             </div>    }
                 <div className="container">
                     <div className = "row p-2 p-lg-3">
                         {wordData && "image" in wordData ?

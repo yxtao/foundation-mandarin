@@ -9,11 +9,11 @@ import WordCard from '../WordWall/WordCard/WordCard'
 import "./Reading.css";
   
 const Reading = (props)=>{
+    const firebase = useRecoilValue(firebaseState);
     const user = useRecoilValue(usernameState);
     const isAdmin = useRecoilValue(isAdminState);
     const isTeacher = useRecoilValue(isTeacherState);
     const [error, setError] = useState("");
-    const firebase = useRecoilValue(firebaseState);
     const [notes,setNotes] = useState([])
     const [story, setStory] = useState(null)
     const [words, setWords] = useState(props.words);
@@ -72,6 +72,26 @@ const Reading = (props)=>{
         }
     }, [notes, user, isAdmin, isTeacher])
 
+    const addToStoryDB = async () =>{
+        // WARNING: storyList is updated once firebase snapshot works
+        try {
+            let storyObj = {
+                ...story,
+                creator: user,
+                storyId:user+story.name}
+            await firebase.firestore().collection("story").doc(user+story.name).set(storyObj)    
+          }catch(err){    
+            setError(err.message);
+          }
+    }
+    const handleDeleteStory = async(storyId)=>{
+        try{
+            await firebase.firestore().collection("story").doc(storyId).delete();
+        }catch(err){
+            setError(err.message);
+        }
+    }
+
     if (!story) return <h1>loading</h1>
        
     return( 
@@ -112,17 +132,27 @@ const Reading = (props)=>{
                 </> 
                 :
                 <>
-                    { isTeacher && story.creator === user &&
-                    <div className="p-1 text-right">  
+                    { isTeacher && story.creator === user ?
+                    <div className="buttons-arrangement-div">
+                        <button 
+                        className="btn btn-outline-success m-3"
+                        onClick={startEditMode} >edit 编辑
+                        </button>
+                        <button 
+                        className="btn btn-outline-danger m-3"
+                        onClick={handleDeleteStory} > 🗑  删除
+                        </button>
+                    </div> :
+                    <div className="p-1 text-right">
                         <button 
                         className="btn btn-outline-danger"
-                        onClick={startEditMode}
-                        >edit 编辑
+                        onClick={addToStoryDB}
+                        >add 收藏
                         </button>
                     </div>
                     }
                     {story.contents.length > 0 ? <Story story= {story}  parentCallback = {handleAddCallback} words={words}/>: <div>no content</div>}
-                    <div className="p-5">
+                    <div className="p-1">
                         <Grid container 
                             direction="row"
                             alignItems="stretch"

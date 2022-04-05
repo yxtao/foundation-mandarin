@@ -2,9 +2,14 @@
     background-color: transparent;
     opacity:0.8;
     height:100%;
-    overflow-y:auto;
     font-family: 'Times New Roman';
 }
+.buttons-arrangement-div{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
 textarea {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;

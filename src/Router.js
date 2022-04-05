@@ -148,7 +148,7 @@ const Router = ()=>{
                 <Route path="/likedWordwall" component={()=>userName? < WordWall words={likedWordObjs} /> : <SignOut/> } />
                 <Route path="/myreading" component={()=>userName? < ReadingList stories={storyList.filter((story)=> story.creator === userName)}/> : <SignOut/>} />
                 <Route path="/likedReading" component={()=>userName? < ReadingList stories={likedStoryObjs} /> : <SignOut/> } />
-                <Route path="/reading" component={ ()=> <ReadingList stories={storyList} words={wordList}/>  } />
+                <Route path="/reading/" component={ ()=> <ReadingList stories={storyList} words={wordList}/>  } />
                 <Route path="/addStory" component={UploadStory} />
                 <Route path="/addWord" component={UploadWord} />
                 <Route path="/checkCodes" component={userName?AccessCode:SignOut} />

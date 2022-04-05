@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from'react';
-import { useParams } from 'react-router-dom';
+import { useHistory} from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from "recoil";
 import {checkedAuthState, 
     usernameState, 
@@ -279,9 +279,9 @@ const WordWall = (props)=>{
                             parentDeleteCallback={handleDeleteCallback} 
                             parentLikeCallback = {handleLikeCallback}
                             parentRemoveLikeCallback = {handleRemoveLikeCallback }
-                            hideDelete={!isTeacher || item.creator !== userName }
-                            hideLike = {!isTeacher || item.creator === userName || likedWords.includes(item.wordId)}
-                            hideRemoveLike = {!isTeacher || item.creator === userName || !likedWords.includes(item.wordId) }/> 
+                            hideDelete={true }
+                            hideLike = {true}
+                            hideRemoveLike = {true }/> 
                         </Grid>) 
                 } 
             </Grid>

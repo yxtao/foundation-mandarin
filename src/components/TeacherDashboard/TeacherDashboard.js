@@ -1,3 +1,5 @@
+import { ThemeProvider } from '@material-ui/core';
+import { FolderShared } from '@material-ui/icons';
 import React ,{useState, useEffect} from 'react';
 import { useHistory } from 'react-router';
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -15,7 +17,14 @@ import {storyliststate,
     storyPagestate, 
     wordPageCountPerPageState } from "../../store/storyWordsAtoms";
 import "./TeacherDashboard.css";
+const testStories =[
+  {name:"title1", folder:"1st"},
+  {name:"title1-2", folder:"1st"},
+  {name:"title2-1", folder:"2nd"},
+  {name:"title2-2", folder:"2nd"},
+  {name:"title-6"}
 
+]
 const TeacherDashboard = ()=>{
     const history = useHistory();
     const isTeacher = useRecoilValue(isTeacherState);
@@ -26,8 +35,10 @@ const TeacherDashboard = ()=>{
     const [likedStories, setLikedStories] = useRecoilState(likedStoryList);
     const [storyList, setStoryList] = useRecoilState(storyliststate);
     const [wordList, setWordList] = useRecoilState(wordliststate);
-    const [likedWordObjs, setLikedWordObjs] = useState([]);
-    const [likedStoryObjs, setLikedStoryObjs] = useState([]);
+    
+    const [folders, setFolders] = useState([]);
+    const [selectedFolder, setSelectedFolder] = useState("default");
+
     const [selectedWords, setSelectedWords] = useState([]);
     const [selectedStories, setSelectedStories] = useState([]);
     const [myWords, setMywords] = useState([]);
@@ -49,18 +60,24 @@ const TeacherDashboard = ()=>{
         setStoriesRow(8);
         setAccessCode("");
     },[])
-    
-    useEffect(()=>{
-        let wordObjsTemp = [];
-        wordList.forEach((wordObj, index)=>{
-            if(likedWords.includes(wordObj.wordId)){     
-               let wordInfo = wordObj;
-                wordObjsTemp.push(wordInfo);
-            }   
-        })    
-        setLikedWordObjs(wordObjsTemp);
-    },[wordList, likedWords])
 
+    useEffect(()=>{
+        const temp =[];
+        testStories.forEach((story,index)=>{
+            if(story.folder){
+                !temp.includes(story.folder) && temp.push(story.folder)
+            }
+        })
+        setFolders(temp);
+    },[])
+
+    const handleClickFolder =(folder)=>{
+        setSelectedFolder(folder)
+   }
+   useEffect(()=>{
+      setMyStories(testStories.filter((story)=>story.folder === selectedFolder))
+   },[selectedFolder])
+      
    useEffect(()=>{
       setMywords(wordList.filter((word)=>word.creator===user));
    }, [wordList,user])
@@ -71,22 +88,13 @@ const TeacherDashboard = ()=>{
 
    useEffect(()=>{
     setMyStories(storyList.filter((story)=>story.creator===user));
+    console.log(storyList)
+    console.log(myStories)
    }, [storyList,user])
 
    useEffect(()=>{  
       setCheckedStoryStates( new Array(myStories.length).fill(false));
     },[myStories.length])
-
-    useEffect(()=>{
-        let objsTemp = [];
-            storyList.forEach((storyObj, index)=>{
-            if(likedStories.includes(storyObj.storyId)){     
-               let storyInfo = storyObj;
-                objsTemp.push(storyInfo);
-            }   
-        })
-        setLikedStoryObjs(objsTemp);
-    }, [storyList, likedStories])
 
     const handleOnChange = (position) => {
         const updatedCheckedStates = checkedStates.map((item, index) =>index === position ? !item : item);
@@ -153,85 +161,7 @@ const TeacherDashboard = ()=>{
             setError(err.message);
           }
     } 
-
-    const handleRemoveLike = async (wordId) =>{
-        let words = [...likedWords];
-            words= words.filter(word=> word!==wordId);
-        try {
-            await updatelikedWordCards(userId, words);
-        }catch(err){
-            setError(err.message)
-        }
-        setLikedWords(words);
-     }
-     const updatelikedWordCards = async(uid, words)=>{
-        try {
-            const docRef = firebase.firestore().collection("users").doc(uid);
-            const doc = await docRef.get(); 
-            if(!doc.exists) { 
-                 setError("NOT FOUND"); 
-                 return;
-             }
-            await docRef.update({
-                likedWordCards:words
-            })
-          }catch(err){    
-            setError(err.message);
-          }
-      }
-
-    const addToWordDB = async (word) =>{
-        // WARNING: wordList is updated once firebase snapshot works
-        try {
-            let wordObj = {
-                ...word,
-                creator: user,
-                wordId:user+word.name}
-            await handleRemoveLike(word.wordId); 
-            await firebase.firestore().collection("chinesewords").doc(user+word.name).set(wordObj)    
-          }catch(err){    
-            setError(err.message);
-          }
-    }
-  
-    const addToStoryDB = async (story) =>{
-        // WARNING: storyList is updated once firebase snapshot works
-        try {
-            let storyObj = {
-                ...story,
-                creator: user,
-                storyId:user+story.name}
-            await handleRemoveStoryLike(story.storyId); 
-            await firebase.firestore().collection("story").doc(user+story.name).set(storyObj)    
-          }catch(err){    
-            setError(err.message);
-          }
-    }
-    const handleRemoveStoryLike = async (storyId) =>{
-        let stories = [...likedStories];
-            stories= stories.filter(story=> story!==storyId);
-        try {
-            await updatelikedStories(userId, stories);
-        }catch(err){
-            setError(err.message)
-        }
-        setLikedStories(stories);
-     }
-     const updatelikedStories = async(uid, stories)=>{
-        try {
-            const docRef = firebase.firestore().collection("users").doc(uid);
-            const doc = await docRef.get(); 
-            if(!doc.exists) { 
-                 setError("NOT FOUND"); 
-                 return;
-             }
-            await docRef.update({
-                likedPassages:stories
-            })
-          }catch(err){    
-            setError(err.message);
-          }
-      }
+    
     const redirectToHomePage = ()=>{
         history.push("/")
     }
@@ -256,14 +186,9 @@ const TeacherDashboard = ()=>{
     const redirectToMyStoryList = ()=>{
         history.push("/myreading");
     }
-    const redirectToLikedStoryList = ()=>{
-        history.push("/likedReading")
-    }
+    
     const redirectToOwnerList = () =>{
         history.push("/myWordwall");
-    }
-    const redirectToLikedList = () =>{
-        history.push("/likedWordwall");
     }
     const redirtToAccessCode =() =>[
         history.push("/checkCodes")
@@ -339,13 +264,19 @@ const TeacherDashboard = ()=>{
                          </li>
                         )}
                         </ul>
-                    </div>
-                    <div className="flex-item p-md-3">
-                        <button className="btn btn-outline-info m-md-2" onClick={redirectToAddWord}>  添加字</button>
-                        <button className="btn btn-outline-info m-md-2" onClick={redirectToAddStory}>  添加短文 </button>
-                        <button className="btn btn-outline-info m-md-2" onClick= {redirectToWordwall}> 字库 </button>
-                        <button className="btn btn-outline-info m-md-2" onClick={redirecToStoryList}> 短文库 </button>
-                        <button className="btn btn-outline-info m-md-2" onClick={redirtToAccessCode}>学生码</button>
+
+                        <ul>
+                        {folders.length>0 && folders.map((folder, index)=> 
+                        <li  key={index}>
+                            <button        
+                                 type="button" 
+                                 className="btn btn-outline-light" 
+                                 onClick={()=>handleClickFolder(folder)}>    
+                                 <span className="text-success">  {folder}</span>
+                             </button>
+                         </li>
+                        )}
+                        </ul>
                     </div>
                 </div>
             <div className = "flex-div">
@@ -362,53 +293,13 @@ const TeacherDashboard = ()=>{
                     {selectedStories.map((story, index)=><li key={index}>{story.name +" "} </li>)}
                     </ul>
                 </div>
-                <div className = "flex-item p-md-2">
-                    <button 
-                        className="btn btn-outline-info"
-                        onClick={redirectToLikedList}> 
-                        收藏的字
-                        </button>
-                    <div>
-                    {likedWordObjs.map((word, index)=>
-                        <div key={index}  className="p-md-2 flex-column">       
-                            <button        
-                                type="button" 
-                                className="btn btn-outline-light" 
-                                onClick={()=>redirtToDetailWord(word.wordId) }>    
-                                <span className="text-success">{word.name}</span>
-                            </button>
-                            <button 
-                                type="button" 
-                                className="btn btn-outline-light"
-                                onClick={()=>addToWordDB(word) }>    
-                                <span className="text-info"> + 加到我的字库 </span>
-                            </button>
-                        </div>)}
+                <div className="flex-item p-md-3">
+                        <button className="btn btn-outline-info m-md-2" onClick={redirectToAddWord}>  添加字</button>
+                        <button className="btn btn-outline-info m-md-2" onClick={redirectToAddStory}>  添加短文 </button>
+                        <button className="btn btn-outline-info m-md-2" onClick= {redirectToWordwall}> 字库 </button>
+                        <button className="btn btn-outline-info m-md-2" onClick={redirecToStoryList}> 短文库 </button>
+                        <button className="btn btn-outline-info m-md-2" onClick={redirtToAccessCode}>学生码</button>
                     </div>
-                </div>
-                <div className = "flex-item p-md-2">
-                    <button 
-                        className="btn btn-outline-info"
-                        onClick={redirectToLikedStoryList}>  收藏的短文
-                    </button>
-                    <div className = "stories-div">
-                    {likedStoryObjs.map((story, index)=>
-                        <div  key={index}  className="p-md-2 flex-column">       
-                            <button        
-                                type="button" 
-                                className="btn btn-outline-light" 
-                                onClick={()=>redirtToStory(story.storyId) }>    
-                                <span className="text-success">  {story.name}</span>
-                            </button>
-                            <button 
-                                type="button" 
-                                className="btn btn-outline-light"
-                                onClick={()=>addToStoryDB(story) }>    
-                                <span className="text-info"> + 加入我的短文库</span>
-                            </button>
-                        </div>)}
-                    </div>
-                </div>
              </div>
         </div>
     )
